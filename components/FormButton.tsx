@@ -4,21 +4,23 @@ import { twMerge } from 'tailwind-merge'
 
 interface FormButtonProps {
   children: ReactNode
-  loading?: boolean
+  isLoading?: boolean
   className?: string
 }
 
 const FormButton = function ({
   children,
-  loading,
+  isLoading,
   className,
   ...buttonProps
 }: FormButtonProps & ComponentPropsWithoutRef<'button'>) {
   return (
     <button
+      disabled={isLoading}
       className={twMerge(
         'bg-black text-white block w-full px-5 py-4 capitalize rounded-xl shadow-custom',
-        className
+        className,
+        isLoading && 'bg-[#5B5B5B1A] cursor-not-allowed'
       )}
       {...buttonProps}
     >
