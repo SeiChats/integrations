@@ -6,7 +6,7 @@ import FormButton from '@/components/FormButton'
 
 export default function Home() {
   return (
-    <div className="p-4 grid min-h-[100dvh]">
+    <div className="grid h-full">
       <div>
         <Image src={cancelIcon} alt="close" className="w-4 block ml-auto" />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">

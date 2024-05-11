@@ -16,6 +16,12 @@
   }
 }
 
+html {
+  background: #191d1d;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
 body {
   background: #141717;
   color: #ffffff;
