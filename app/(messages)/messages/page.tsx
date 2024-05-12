@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import newMessageImg from '../../icons/new-message.svg'
+import newMessageImg from '../../../icons/new-message.svg'
 import SearchBar from '@/components/SearchBar'
 
 const MessagesPage = function () {

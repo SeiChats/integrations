@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 
 import caret from '../icons/caret.svg'
 import { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface DropDownProps {
   label: string
@@ -32,8 +33,6 @@ const DropDown = function ({
     }
     animate('img', { rotate: 0 })
   }, [isOpen])
-
-  console.log(uniqueOptions)
 
   return (
     <label htmlFor={htmlFor} className="block relative capitalize mb-6">
@@ -65,7 +64,10 @@ const DropDown = function ({
             {uniqueOptions.map(option => (
               <p
                 key={option}
-                className="hover:bg-[#434545] px-8 py-3"
+                className={twMerge(
+                  'hover:bg-[#434545] px-8 py-3 cursor-pointer',
+                  selectedOption === option && 'bg-[#434545]/30'
+                )}
                 onClick={() => {
                   if (selectedOption === option) return
                   setSelectedOption(option)
