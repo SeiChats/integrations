@@ -1,6 +1,7 @@
-import Image from 'next/image'
-import eyeIcon from '../icons/eye.svg'
-import { ComponentPropsWithoutRef } from 'react'
+'use client'
+import { EyeIcon } from './icons'
+
+import { ComponentPropsWithoutRef, useState } from 'react'
 
 interface PasswordInputProps {
   label: string
@@ -12,19 +13,25 @@ const PasswordInput = function ({
   htmlFor,
   ...inputProps
 }: PasswordInputProps & ComponentPropsWithoutRef<'input'>) {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   return (
     <label htmlFor={htmlFor} className="capitalize block relative mb-6">
       {label}
       <input
-        type="password"
+        type={isPasswordVisible ? 'text' : 'password'}
         name={htmlFor}
         {...inputProps}
         className="bg-transparent border border-white/20 shadow-custom mt-4 pl-4 pr-12 py-3 rounded-xl w-full"
       />
-      <Image
-        src={eyeIcon}
+      {/* <Image
+        src={eye}
         alt="show password"
-        className="absolute w-6 inset-[auto_1em_0.8em_auto]"
+        className="absolute w-6 inset-[auto_1em_0.8em_auto] cursor-pointer"
+      /> */}
+      <EyeIcon
+        visible={isPasswordVisible}
+        onClick={() => setIsPasswordVisible(prev => !prev)}
+        className="absolute w-6 inset-[auto_1em_0.8em_auto] cursor-pointer"
       />
     </label>
   )
