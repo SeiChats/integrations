@@ -10,10 +10,10 @@ const RecoverPin = function () {
         htmlFor="secret-question"
         placeholder="Choose a secret question"
         options={[
-          'Whats your Nickname?',
+          "What's your Nickname?",
           'How much was your first loss in web3?',
-          'Whats your pet name?',
-          'Whats your mentors name?',
+          "What's your pet name?",
+          "What's your mentors name?",
           'First child name?',
         ]}
       />
