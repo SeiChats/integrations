@@ -1,7 +1,5 @@
-import Image from 'next/image'
-
 import checkedIcon from '../icons/checked.svg'
-import { convertTimestampToTime } from '@/utils/utils'
+import { convertTimestampToTime } from '../utils/utils'
 
 interface MessagePreviewProps {
   message: string
@@ -19,12 +17,12 @@ const MessagePreview = function ({
     <div className="">
       <div />
       <p>
-        {message.slice(0, 8)}***{message.slice(10)}
+        {recipient.slice(0, 8)}***{recipient.slice(10)}
       </p>
       <p>trusted</p>
       <time>{time}</time>
       <p>{message}</p>
-      <Image src={checkedIcon} alt="sent" />
+      <img src={checkedIcon} alt="sent" />
     </div>
   )
 }

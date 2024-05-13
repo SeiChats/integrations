@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import search from '../icons/sms-search.svg'
 
 interface SearchBarProps {}
@@ -6,7 +5,7 @@ interface SearchBarProps {}
 const SearchBar = function ({}: SearchBarProps) {
   return (
     <label htmlFor="mail-search" className="block mb-4 relative">
-      <Image
+      <img
         src={search}
         alt="sms-search"
         className="absolute inset-[auto_auto_50%_1em] translate-y-1/2"
