@@ -1,8 +1,6 @@
 import search from '../icons/sms-search.svg'
 
-interface SearchBarProps {}
-
-const SearchBar = function ({}: SearchBarProps) {
+const SearchBar = function () {
   return (
     <label htmlFor="mail-search" className="block mb-4 relative">
       <img
