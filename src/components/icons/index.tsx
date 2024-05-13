@@ -1,5 +1,3 @@
-'use client'
-
 import { ComponentPropsWithoutRef } from 'react'
 import { motion } from 'framer-motion'
 

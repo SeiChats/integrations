@@ -1,9 +1,6 @@
-'use client'
-
-import Image from 'next/image'
 import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 
-import caret from '../icons/caret.svg'
+import caret from '../assets/caret.svg'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -50,7 +47,7 @@ const DropDown = function ({
         }}
       />
       <div ref={scope} className="w-max absolute inset-[auto_1em_1.6em_auto]">
-        <Image src={caret} alt="drop down arrow" className="w-4" />
+        <img src={caret} alt="drop down arrow" className="w-4" />
       </div>
       <AnimatePresence>
         {isOpen && (

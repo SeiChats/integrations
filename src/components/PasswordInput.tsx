@@ -1,4 +1,3 @@
-'use client'
 import { EyeIcon } from './icons'
 
 import { ComponentPropsWithoutRef, useState } from 'react'
@@ -23,11 +22,6 @@ const PasswordInput = function ({
         {...inputProps}
         className="bg-transparent border border-white/20 shadow-custom mt-4 pl-4 pr-12 py-3 rounded-xl w-full"
       />
-      {/* <Image
-        src={eye}
-        alt="show password"
-        className="absolute w-6 inset-[auto_1em_0.8em_auto] cursor-pointer"
-      /> */}
       <EyeIcon
         visible={isPasswordVisible}
         onClick={() => setIsPasswordVisible(prev => !prev)}
