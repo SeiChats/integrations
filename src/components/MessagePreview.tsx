@@ -1,4 +1,4 @@
-import checkedIcon from '../icons/checked.svg'
+import checkedIcon from '../assets/checked.svg'
 import { convertTimestampToTime } from '../utils/utils'
 
 interface MessagePreviewProps {
