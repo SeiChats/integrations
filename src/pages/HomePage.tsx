@@ -1,4 +1,5 @@
 import cancelIcon from '../assets/cancel.svg'
+import logo from '../assets/logo.png'
 import PasswordInput from '../components/PasswordInput'
 import FormButton from '../components/FormButton'
 
@@ -29,13 +30,7 @@ export default function Home() {
         </form>
       </div>
       {/* TODO check back on width */}
-      <img
-        className="mt-auto mx-auto my-4"
-        src="/logo.png"
-        alt="seichat logo"
-        width={120}
-        height={30}
-      />
+      <img className="mt-auto mx-auto my-4" src={logo} alt="seichat logo" />
     </div>
   )
 }

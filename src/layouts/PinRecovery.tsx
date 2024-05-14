@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
 import cancelIcon from '../assets/cancel.svg'
+import logo from '../assets/logo.png'
 import RouteContext from '../ContextProvider'
 import EnterPin from '../pages/EnterPin'
 import RecoverPin from '../pages/RecoverPin'
@@ -23,13 +24,7 @@ const PinRecovery = function () {
         </form>
       </div>
       {/* TODO check back on width and height */}
-      <img
-        className="mt-auto mx-auto my-4"
-        src="/logo.png"
-        alt="seichat logo"
-        width={120}
-        height={30}
-      />
+      <img className="mt-auto mx-auto my-4" src={logo} alt="seichat logo" />
     </div>
   )
 }
