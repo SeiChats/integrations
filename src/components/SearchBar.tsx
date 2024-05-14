@@ -1,4 +1,4 @@
-import search from '../icons/sms-search.svg'
+import search from '../assets/sms-search.svg'
 
 const SearchBar = function () {
   return (

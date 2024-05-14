@@ -1,6 +1,6 @@
-import attachmentIcon from '../icons/attachment.svg'
-import galleryIcon from '../icons/gallery.svg'
-import arrow from '../icons/arrow.svg'
+import attachmentIcon from '../assets/attachment.svg'
+import galleryIcon from '../assets/gallery.svg'
+import arrow from '../assets/arrow.svg'
 import { twMerge } from 'tailwind-merge'
 
 interface MessagingWidgetProps {
