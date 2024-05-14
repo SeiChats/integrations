@@ -10,7 +10,7 @@ import Home from './pages/HomePage'
 function App() {
   const { route } = useContext(RouteContext)
   return (
-    <div className="text-white h-[600px] rounded-3xl p-6 font-inter">
+    <div className="text-white h-[600px] rounded-3xl p-6 font-inter rounded-md">
       {/*TODO abstract routing by creating a route component*/}
       {(route === 'messages' || route === 'support') && <MessagesLayout />}
       {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
