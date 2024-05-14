@@ -1,11 +1,12 @@
-import MessagingWidget from '..//components/MessagingWidget'
+import MessagingWidget from '../components/MessagingWidget'
+import nftBG from '../assets/nft-bg.png'
 
 const Support = function () {
   return (
     <div className="row-span-2 grid grid-rows-[1fr_auto]">
       <div className="grid place-content-center">
         {/*TODO check back on width and height */}
-        <img src="/nft-bg.png" alt="no messages" width={151} height={135} />
+        <img src={nftBG} alt="no messages" />
         <p className="capitalize font-semibold text-lg mt-4">sei something!</p>
       </div>
       <div className="relative">
