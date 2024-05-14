@@ -1,13 +1,29 @@
-import cancelIcon from '../assets/cancel.svg'
+import { useState, useEffect } from 'react'
+import detectEthereumProvider from '@metamask/detect-provider'
+
 import logo from '../assets/logo.png'
 import PasswordInput from '../components/PasswordInput'
 import FormButton from '../components/FormButton'
+import CloseWidget from '../components/CloseWidget'
 
 export default function Home() {
+  const [hasProvider, setHasProvider] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    const getProvider = async () => {
+      const provider = await detectEthereumProvider({ silent: true })
+      console.log(provider)
+      // Transform provider to true or false.
+      setHasProvider(Boolean(provider))
+    }
+
+    getProvider()
+  }, [])
+
   return (
     <div className="grid h-full">
       <div>
-        <img src={cancelIcon} alt="close" className="w-4 block ml-auto" />
+        <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">
           create pin
         </h1>
@@ -26,7 +42,12 @@ export default function Home() {
               down somewhere safe
             </p>
           </div>
-          <FormButton className="mt-8">check</FormButton>
+          <FormButton
+            className="mt-8 disabled:cursor-not-allowed"
+            disabled={!hasProvider}
+          >
+            check
+          </FormButton>
         </form>
       </div>
       {/* TODO check back on width */}

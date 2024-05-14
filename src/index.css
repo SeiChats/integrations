@@ -10,9 +10,11 @@ html {
   min-height: 100vh;
 }
 #seichats-widget {
-  width: min(90%, 375px);
-  background-color: rgb(20 23 23);
+  /* width: min(90%, 375px);
+  background-color: #141717; */
+  width: 100%;
   position: fixed;
-  inset: auto 1em 1em auto;
+  padding: 1em;
+  inset: auto 0 0 auto;
   border-radius: 20px;
 }

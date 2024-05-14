@@ -1,10 +1,10 @@
 import { useContext } from 'react'
 
-import cancelIcon from '../assets/cancel.svg'
 import logo from '../assets/logo.png'
 import RouteContext from '../ContextProvider'
 import EnterPin from '../pages/EnterPin'
 import RecoverPin from '../pages/RecoverPin'
+import CloseWidget from '../components/CloseWidget'
 
 const PinRecovery = function () {
   const { route } = useContext(RouteContext)
@@ -12,7 +12,7 @@ const PinRecovery = function () {
   return (
     <div className="grid h-full">
       <div>
-        <img src={cancelIcon} alt="close" className="w-4 block ml-auto" />
+        <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">
           pin recovery
         </h1>
