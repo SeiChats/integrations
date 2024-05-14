@@ -14,4 +14,5 @@ html {
   background-color: rgb(20 23 23);
   position: fixed;
   inset: auto 1em 1em auto;
+  border-radius: 20px;
 }
