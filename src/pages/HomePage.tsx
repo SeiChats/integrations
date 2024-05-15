@@ -26,9 +26,6 @@ export default function Home() {
       }
 
       try {
-        // await window.ethereum.request({
-        //   method: 'wallet_revokePermissions',
-        // })
         setIsConnecting(true)
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts',
@@ -58,7 +55,7 @@ export default function Home() {
           setIsWidgetVisible(false)
           console.log('Please connect to MetaMask.')
         } else {
-          // console.error(err)
+          console.error(err)
         }
       } finally {
         setIsConnecting(false)
