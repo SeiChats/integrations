@@ -6,11 +6,14 @@ import PasswordInput from '../components/PasswordInput'
 import FormButton from '../components/FormButton'
 import CloseWidget from '../components/CloseWidget'
 import RouteContext from '../ContextProvider'
+import checkIcon from '../assets/correct.svg'
 
 export default function Home() {
-  const { setIsWidgetVisible } = useContext(RouteContext)
+  const { setIsWidgetVisible, navigateTo } = useContext(RouteContext)
   const [wallet, setWallet] = useState<{ accounts: string[] }>({ accounts: [] })
   const [isConnecting, setIsConnecting] = useState(false)
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const hasWallet = !!wallet.accounts[0]?.length
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export default function Home() {
   const updateWallet = async (accounts: any) => {
     setWallet({ accounts })
   }
+  const isPasswordValid = password === confirmPassword && password?.length >= 3
 
   return (
     <div className="grid h-full">
@@ -85,13 +89,27 @@ export default function Home() {
           <PasswordInput
             label="enter password"
             htmlFor="password"
+            onChange={e => {
+              setPassword(e.target.value)
+            }}
             disabled={isConnecting || !hasWallet}
           />
           <PasswordInput
             label="re-enter password"
             htmlFor="password"
+            onChange={e => {
+              setConfirmPassword(e.target.value)
+            }}
             disabled={isConnecting || !hasWallet}
-          />
+          >
+            {isPasswordValid && (
+              <img
+                src={checkIcon}
+                alt="correct"
+                className="w-4 object-contain"
+              />
+            )}
+          </PasswordInput>
           <div className="flex items-start gap-2 text-sm">
             <p>*</p>
             <p>
@@ -101,7 +119,8 @@ export default function Home() {
           </div>
           <FormButton
             className="mt-8 disabled:cursor-not-allowed"
-            disabled={isConnecting || !hasWallet}
+            disabled={isConnecting || !hasWallet || !isPasswordValid}
+            onClick={() => navigateTo('recover-pin')}
           >
             check
           </FormButton>
