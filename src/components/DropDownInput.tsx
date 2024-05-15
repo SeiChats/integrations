@@ -42,6 +42,7 @@ const DropDown = function ({
         name={htmlFor}
         placeholder={placeholder}
         className="bg-transparent border border-white/20 outline-none shadow-custom mt-4 pl-4 pr-12 py-4 rounded-xl w-full cursor-pointer"
+        title={selectedOption}
         onClick={() => {
           setIsOpen(prev => !prev)
         }}
