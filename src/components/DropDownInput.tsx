@@ -36,7 +36,7 @@ const DropDown = function ({
       {label}
       <input
         type="text"
-        value={selectedOption}
+        defaultValue={selectedOption}
         readOnly
         tabIndex={-1}
         name={htmlFor}
