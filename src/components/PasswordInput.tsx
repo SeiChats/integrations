@@ -30,7 +30,7 @@ const PasswordInput = function ({
       <EyeIcon
         visible={isPasswordVisible}
         onClick={() => setIsPasswordVisible(prev => !prev)}
-        className="absolute w-6 inset-[auto_1em_0.8em_auto] cursor-pointer"
+        className="absolute w-6 inset-[auto_1em_0.95em_auto] cursor-pointer"
       />
     </label>
   )
