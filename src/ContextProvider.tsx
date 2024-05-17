@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
+import { insertUser, lookupUser } from './api'
 
 const RouteContext = createContext<{
   route: string
@@ -22,7 +23,33 @@ export function Provider({ children }: { children: ReactNode }) {
   const [address, setAddress] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log(address)
+    if (!address) return
+    ;(async function () {
+      const data = await insertUser({
+        wallet_address: address,
+      })
+      console.log(data)
+
+      if (
+        data.status === 500 ||
+        data?.error?.code === '23505' ||
+        data?.error?.details.endsWith('already exists.')
+      ) {
+        const isUser = await lookupUser(address)
+        console.log(isUser)
+        if (isUser.status === 200 || isUser.data?.length === 0) {
+          setRoute(
+            'enter-pin'
+            // callbackUrl ? `/login?callbackUrl=${callbackUrl}` : "/login"
+          )
+        } else {
+          setRoute('set-pin')
+        }
+      } else {
+        setIsWidgetVisible(false)
+        console.log(`Something went wrong. Please try again later.`)
+      }
+    })()
   }, [address])
 
   return (

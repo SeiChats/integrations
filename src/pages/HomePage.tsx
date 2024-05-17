@@ -1,75 +1,26 @@
-import { useState, useEffect, useContext } from 'react'
-import detectEthereumProvider from '@metamask/detect-provider'
+import { useState } from 'react'
 
 import logo from '../assets/logo.png'
 import PasswordInput from '../components/PasswordInput'
 import FormButton from '../components/FormButton'
 import CloseWidget from '../components/CloseWidget'
-import RouteContext from '../ContextProvider'
 import checkIcon from '../assets/correct.svg'
+import { motion } from 'framer-motion'
 
 export default function Home() {
-  const { setIsWidgetVisible, navigateTo, setAddress, address } =
-    useContext(RouteContext)
-  const [isConnecting, setIsConnecting] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const hasWallet = !!address?.length
 
-  useEffect(() => {
-    const getProvider = async () => {
-      const provider = await detectEthereumProvider({ silent: true })
-      console.log(provider)
-      // Transform provider to true or false.
-      const hasProvider = Boolean(provider)
-
-      if (!hasProvider) {
-        setIsWidgetVisible(false)
-        return
-      }
-
-      try {
-        setIsConnecting(true)
-        const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
-          params: [
-            {
-              chainId: '0xae3f3',
-              chainName: 'Sei Devnet',
-              rpcUrls: [
-                'https://evm-rpc.arctic-1.seinetwork.io',
-                'https://evm-rpc.arctic-1.seinetwork.io',
-              ],
-            },
-          ],
-        })
-        console.log('connected accounts')
-        setAddress(accounts?.[0])
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xae3f3' }],
-        })
-        console.log('switched chain')
-      } catch (err: any) {
-        console.log(err.code, err.message)
-        if (err.code === 4001) {
-          // EIP-1193 userRejectedRequest error.
-          // If this happens, the user rejected the connection request.
-          setIsWidgetVisible(false)
-          console.log('Please connect to MetaMask.')
-        } else {
-          console.error(err)
-        }
-      } finally {
-        setIsConnecting(false)
-      }
-    }
-    getProvider()
-  }, [])
   const isPasswordValid = password === confirmPassword && password?.length >= 3
 
   return (
-    <div className="grid h-full">
+    <motion.div
+      className="grid h-full"
+      initial={{ opacity: 0, x: '100%' }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: '-100%' }}
+      transition={{ type: 'tween' }}
+    >
       {/* {wallet.accounts[0]} */}
       <div>
         <CloseWidget />
@@ -88,7 +39,6 @@ export default function Home() {
             onChange={e => {
               setPassword(e.target.value)
             }}
-            disabled={isConnecting || !hasWallet}
           />
           <PasswordInput
             label="re-enter password"
@@ -96,7 +46,6 @@ export default function Home() {
             onChange={e => {
               setConfirmPassword(e.target.value)
             }}
-            disabled={isConnecting || !hasWallet}
           >
             {isPasswordValid && (
               <img
@@ -115,8 +64,7 @@ export default function Home() {
           </div>
           <FormButton
             className="mt-8 disabled:cursor-not-allowed"
-            disabled={isConnecting || !hasWallet || !isPasswordValid}
-            onClick={() => navigateTo('recover-pin')}
+            disabled={!password.trim().length || password !== confirmPassword}
           >
             check
           </FormButton>
@@ -124,6 +72,6 @@ export default function Home() {
       </div>
       {/* TODO check back on width */}
       <img className="mt-auto mx-auto my-4" src={logo} alt="seichat logo" />
-    </div>
+    </motion.div>
   )
 }
