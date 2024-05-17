@@ -9,12 +9,12 @@ import RouteContext from '../ContextProvider'
 import checkIcon from '../assets/correct.svg'
 
 export default function Home() {
-  const { setIsWidgetVisible, navigateTo } = useContext(RouteContext)
-  const [wallet, setWallet] = useState<{ accounts: string[] }>({ accounts: [] })
+  const { setIsWidgetVisible, navigateTo, setAddress, address } =
+    useContext(RouteContext)
   const [isConnecting, setIsConnecting] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const hasWallet = !!wallet.accounts[0]?.length
+  const hasWallet = !!address?.length
 
   useEffect(() => {
     const getProvider = async () => {
@@ -44,13 +44,13 @@ export default function Home() {
           ],
         })
         console.log('connected accounts')
-        updateWallet(accounts)
+        setAddress(accounts?.[0])
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0xae3f3' }],
         })
         console.log('switched chain')
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.code, err.message)
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error.
@@ -66,10 +66,6 @@ export default function Home() {
     }
     getProvider()
   }, [])
-
-  const updateWallet = async (accounts: any) => {
-    setWallet({ accounts })
-  }
   const isPasswordValid = password === confirmPassword && password?.length >= 3
 
   return (
