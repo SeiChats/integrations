@@ -48,7 +48,6 @@ export const lookupUser = async (wallet: string) => {
         error,
       }
     }
-    console.log('HAS PASSWORD :', !!data.password)
 
     if (!data?.password) {
       throw new Error('No password')
@@ -69,7 +68,6 @@ export const updateUser = async (data: {
   wallet_address: string
   password: string
 }) => {
-  console.log('data:', data)
   const { wallet_address, password } = data
   const cryptoPass = encryptPassword(password) as string
   const { error } = await supabase
