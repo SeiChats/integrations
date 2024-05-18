@@ -1,15 +1,23 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useMutation } from '@tanstack/react-query'
 
 import logo from '../assets/logo.png'
 import PasswordInput from '../components/PasswordInput'
 import FormButton from '../components/FormButton'
 import CloseWidget from '../components/CloseWidget'
 import checkIcon from '../assets/correct.svg'
-import { motion } from 'framer-motion'
+import { updateUser } from '../api'
+import RouteContext from '../providers/ContextProvider'
 
 export default function Home() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const { address } = useContext(RouteContext)
+
+  const { isPending, isError, mutate } = useMutation({
+    mutationFn: updateUser,
+  })
 
   const isPasswordValid = password === confirmPassword && password?.length >= 3
 
@@ -21,7 +29,6 @@ export default function Home() {
       exit={{ opacity: 0, x: '-100%' }}
       transition={{ type: 'tween' }}
     >
-      {/* {wallet.accounts[0]} */}
       <div>
         <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">
@@ -32,7 +39,17 @@ export default function Home() {
           <span className="text-[#57E44B] font-semibold">Six-digit</span> pin
           for extra security
         </p>
-        <form action="" className="mt-8">
+        <form
+          method="GET"
+          onSubmit={e => {
+            e.preventDefault()
+
+            const data = mutate({ wallet_address: address!, password })
+
+            console.log(data)
+          }}
+          className="mt-8"
+        >
           <PasswordInput
             label="enter password"
             htmlFor="password"
@@ -65,8 +82,9 @@ export default function Home() {
           <FormButton
             className="mt-8 disabled:cursor-not-allowed"
             disabled={!password.trim().length || password !== confirmPassword}
+            isLoading={isPending}
           >
-            check
+            {isPending ? 'checking' : 'check'}
           </FormButton>
         </form>
       </div>

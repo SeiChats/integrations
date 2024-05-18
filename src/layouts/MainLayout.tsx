@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import App from '../App'
 import seichatLogo from '../assets/seichat.svg'
-import RouteContext from '../ContextProvider'
+import RouteContext from '../providers/ContextProvider'
 
 const MainLayout = function () {
   const { isWidgetVisible, setIsWidgetVisible } = useContext(RouteContext)

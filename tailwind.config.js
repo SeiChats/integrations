@@ -6,6 +6,11 @@ export default {
       fontFamily: {
         inter: ['inter', 'nunito'],
       },
+      keyframes: {
+        rotate: {
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
     },
   },
   plugins: [],

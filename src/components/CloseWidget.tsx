@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import cancelIcon from '../assets/cancel.svg'
-import RouteContext from '../ContextProvider'
+import RouteContext from '../providers/ContextProvider'
 
 const CloseWidget = function () {
   const { setIsWidgetVisible } = useContext(RouteContext)

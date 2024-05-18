@@ -5,7 +5,7 @@ import { useContext } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import MessagesLayout from './layouts/MessagesLayout'
-import RouteContext from './ContextProvider'
+import RouteContext from './providers/ContextProvider'
 import PinRecovery from './layouts/PinRecovery'
 import Home from './pages/HomePage'
 import Loading from './pages/Loading'
