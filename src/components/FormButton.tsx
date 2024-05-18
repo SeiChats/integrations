@@ -18,9 +18,9 @@ const FormButton = function ({
     <button
       disabled={isLoading}
       className={twMerge(
-        'bg-black text-white w-full px-5 py-4 capitalize rounded-xl shadow-custom flex items-center gap-4 justify-center disabled:bg-[#333333] transition-colors',
+        'bg-black text-white w-full px-5 py-4 capitalize rounded-xl shadow-custom flex items-center gap-4 justify-center disabled:bg-[#333333] disabled:cursor-not-allowed transition-colors',
         className,
-        isLoading && 'bg-[#5B5B5B1A] cursor-not-allowed'
+        isLoading && 'bg-[#5B5B5B1A]'
       )}
       {...buttonProps}
     >

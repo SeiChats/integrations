@@ -9,6 +9,8 @@ interface DropDownProps {
   htmlFor: string
   placeholder: string
   options: string[]
+  selectedOption?: string
+  setSelectedOption: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 const DropDown = function ({
@@ -16,9 +18,10 @@ const DropDown = function ({
   htmlFor,
   placeholder,
   options,
+  selectedOption,
+  setSelectedOption,
 }: DropDownProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<string>()
   const [scope, animate] = useAnimate()
 
   const uniqueOptions = new Array(...new Set(options))

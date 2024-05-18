@@ -19,7 +19,13 @@ const PinRecovery = function () {
         <p className="text-sm opacity-80">
           Lets setup your pin recovery support, wink wink
         </p>
-        <form action="" className="mt-8">
+        <form
+          action=""
+          onSubmit={e => {
+            e.preventDefault()
+          }}
+          className="mt-8"
+        >
           {route === 'enter-pin' ? <EnterPin /> : <RecoverPin />}
         </form>
       </div>

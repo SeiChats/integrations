@@ -15,7 +15,7 @@ export default function Home() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const { address } = useContext(RouteContext)
 
-  const { isPending, isError, mutate } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: updateUser,
   })
 
@@ -88,7 +88,6 @@ export default function Home() {
           </FormButton>
         </form>
       </div>
-      {/* TODO check back on width */}
       <img className="mt-auto mx-auto my-4" src={logo} alt="seichat logo" />
     </motion.div>
   )

@@ -28,18 +28,16 @@ export function Provider({ children }: { children: ReactNode }) {
       const data = await insertUser({
         wallet_address: address,
       })
-      console.log(data)
-
       if (
         data.status === 500 ||
         data?.error?.code === '23505' ||
         data?.error?.details.endsWith('already exists.')
       ) {
         const isUser = await lookupUser(address)
-        console.log(isUser)
+
         if (isUser.status === 200 || isUser.data?.length === 0) {
           setRoute(
-            'enter-pin'
+            'login'
             // callbackUrl ? `/login?callbackUrl=${callbackUrl}` : "/login"
           )
         } else {
