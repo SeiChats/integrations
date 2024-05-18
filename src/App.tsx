@@ -9,6 +9,7 @@ import RouteContext from './providers/ContextProvider'
 import PinRecovery from './layouts/PinRecovery'
 import Home from './pages/HomePage'
 import Loading from './pages/Loading'
+import Login from './pages/Login'
 
 function App() {
   const { route } = useContext(RouteContext)
@@ -27,6 +28,7 @@ function App() {
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
         {route === 'set-pin' && <Home />}
         {route === '/' && <Loading />}
+        {route === 'login' && <Login />}
         {/* <Suspense fallback={<Loading />}></Suspense> */}
       </AnimatePresence>
     </motion.div>

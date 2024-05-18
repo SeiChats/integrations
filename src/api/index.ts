@@ -83,3 +83,54 @@ export const updateUser = async (data: {
     status: 200,
   }
 }
+
+export const addRecoveryAnswer = async (data: {
+  question: string
+  answer: string
+  wallet_address: string
+}) => {
+  const { wallet_address, question, answer } = data
+
+  try {
+    const { error } = await supabase
+      .from('users')
+      .update({
+        recovery_question: question,
+        recovery_answer: answer.toLowerCase(),
+      })
+      .eq('wallet_address', wallet_address)
+
+    if (error) return { status: 500 }
+
+    return {
+      status: 200,
+    }
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const login = async function (data: {
+  address: string
+  password: string
+}) {
+  const { data: user } = await supabase
+    .from('users')
+    .select()
+    .eq('wallet_address', data.address)
+    .single()
+
+  if (!user) {
+    throw new Error('User does not exist')
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(data.password, user.password)
+
+  return { isPasswordCorrect, hasSecurityQuestion: !!user.recovery_question }
+}
+// const { data: data1 } = await supabase
+// .from('users')
+// .select('*')
+// .eq('wallet_address', address)
+// console.log(data1)

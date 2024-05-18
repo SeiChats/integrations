@@ -1,4 +1,5 @@
 import newMessageImg from '../assets/new-message.svg'
+import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
 
 const Messages = function () {
@@ -7,7 +8,7 @@ const Messages = function () {
       <SearchBar />
       <div className="h-full grid place-content-center relative">
         <div>
-          <img src="/nft-bg.png" alt="no messages" width={151} height={135} />
+          <img src={nftBG} alt="no messages" />
           <p className="capitalize font-semibold mt-4 mb-3">no new messages</p>
           <button className="bg-black capitalize outline-none border-none rounded-full px-5 py-3 cursor-pointer text-sm">
             send message
