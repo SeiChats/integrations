@@ -36,10 +36,7 @@ export function Provider({ children }: { children: ReactNode }) {
         const isUser = await lookupUser(address)
 
         if (isUser.status === 200 || isUser.data?.length === 0) {
-          setRoute(
-            'login'
-            // callbackUrl ? `/login?callbackUrl=${callbackUrl}` : "/login"
-          )
+          setRoute('login')
         } else {
           setRoute('set-pin')
         }
