@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import logo from '../assets/logo.png'
-import RouteContext from '../ContextProvider'
+import RouteContext from '../providers/ContextProvider'
 import EnterPin from '../pages/EnterPin'
 import RecoverPin from '../pages/RecoverPin'
 import CloseWidget from '../components/CloseWidget'

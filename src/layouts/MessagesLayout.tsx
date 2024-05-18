@@ -5,7 +5,7 @@ import inbox from '../assets/inbox.svg'
 import sent from '../assets/sent.svg'
 import draft from '../assets/draft.svg'
 import logoWhite from '../assets/logo-white.svg'
-import RouteContext from '../ContextProvider'
+import RouteContext from '../providers/ContextProvider'
 import Messages from '../pages/Messages'
 import Support from '../pages/Support'
 

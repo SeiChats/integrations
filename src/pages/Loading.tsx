@@ -2,7 +2,7 @@ import { useEffect, useContext } from 'react'
 import detectEthereumProvider from '@metamask/detect-provider'
 
 import seichatLogo from '../assets/seichat.svg'
-import RouteContext from '../ContextProvider'
+import RouteContext from '../providers/ContextProvider'
 import { motion } from 'framer-motion'
 
 const Loading = function () {
