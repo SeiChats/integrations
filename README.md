@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Seichats Widget Integration Guide
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+The Seichats Widget allows you to easily add a chat widget to your website. Follow these simple steps to integrate the widget into your application.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Integration Steps
+
+To integrate the Seichats Widget, you need to add a few lines of code to your HTML file and include a specific `<div>` element in your HTML body.
+
+### Step 1: Add Stylesheet and Script
+
+Add the following lines of code to the `<head>` section of your HTML file. This includes the necessary CSS and JavaScript for the widget.
+
+```html
+<head>
+  <link
+    href="https://keith-web3.github.io/integrations/dist/index.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://keith-web3.github.io/integrations/dist/index.js"
+    defer
+  ></script>
+</head>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Step 2: Add Widget Container
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Include the following `<div>` element in the `<body>` section of your HTML file. This is where the Seichats Widget will be rendered.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```html
+<body>
+  <!-- Other content of your body -->
 
-## Learn More
+  <div id="seichats-widget"></div>
 
-To learn more about Next.js, take a look at the following resources:
+  <!-- Other content of your body -->
+</body>
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Step 3: Run Your Application
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.
 
-## Deploy on Vercel
+### Example
+Here’s an example of a complete HTML file with the Seichats Widget integrated:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Application</title>
+  <link
+    href="https://keith-web3.github.io/integrations/dist/index.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://keith-web3.github.io/integrations/dist/index.js"
+    defer
+  ></script>
+</head>
+<body>
+  <h1>Welcome to My Application</h1>
+  <p>This is a sample application with the Seichats Widget integrated.</p>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  <div id="seichats-widget"></div>
+</body>
+</html>
+```
