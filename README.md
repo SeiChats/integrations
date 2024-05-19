@@ -1,30 +1,72 @@
-# React + TypeScript + Vite
+# Seichats Widget Integration Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+The Seichats Widget allows you to easily add a chat widget to your website. Follow these simple steps to integrate the widget into your application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Integration Steps
 
-## Expanding the ESLint configuration
+To integrate the Seichats Widget, you need to add a few lines of code to your HTML file and include a specific `<div>` element in your HTML body.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Step 1: Add Stylesheet and Script
 
-- Configure the top-level `parserOptions` property like this:
+Add the following lines of code to the `<head>` section of your HTML file. This includes the necessary CSS and JavaScript for the widget.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```html
+<head>
+  <link
+    href="https://keith-web3.github.io/integrations/dist/index.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://keith-web3.github.io/integrations/dist/index.js"
+    defer
+  ></script>
+</head>
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Step 2: Add Widget Container
+
+Include the following `<div>` element in the `<body>` section of your HTML file. This is where the Seichats Widget will be rendered.
+
+```html
+<body>
+  <!-- Other content of your body -->
+
+  <div id="seichats-widget"></div>
+
+  <!-- Other content of your body -->
+</body>
+```
+
+### Step 3: Run Your Application
+
+After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.
+
+### Example
+Here’s an example of a complete HTML file with the Seichats Widget integrated:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Application</title>
+  <link
+    href="https://keith-web3.github.io/integrations/dist/index.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://keith-web3.github.io/integrations/dist/index.js"
+    defer
+  ></script>
+</head>
+<body>
+  <h1>Welcome to My Application</h1>
+  <p>This is a sample application with the Seichats Widget integrated.</p>
+
+  <div id="seichats-widget"></div>
+</body>
+</html>
+```
