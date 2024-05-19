@@ -1,7 +1,7 @@
 // import { Suspense } from 'react'
 // import Loading from './pages/Loading'
 
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import MessagesLayout from './layouts/MessagesLayout'
@@ -12,7 +12,22 @@ import Loading from './pages/Loading'
 import Login from './pages/Login'
 
 function App() {
-  const { route } = useContext(RouteContext)
+  const { route, setIsWidgetVisible } = useContext(RouteContext)
+  const widgetRef = useRef<HTMLDivElement>(null)
+
+  const handleOuterClick = function (this: Document, ev: MouseEvent) {
+    if (!widgetRef.current) {
+      return
+    }
+    if (!widgetRef.current?.contains(ev.target as Node)) {
+      setIsWidgetVisible(false)
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('click', handleOuterClick, true)
+
+    return () => document.removeEventListener('click', handleOuterClick)
+  }, [])
 
   return (
     <motion.div
@@ -20,6 +35,7 @@ function App() {
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
       transition={{ type: 'tween', duration: 0.2 }}
+      ref={widgetRef}
       className="text-white h-[600px] rounded-3xl p-6 font-inter w-[min(90%,_375px)] bg-[#141717] origin-bottom ml-auto"
     >
       <AnimatePresence>
