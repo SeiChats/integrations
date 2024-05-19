@@ -13,10 +13,13 @@ import RouteContext from '../providers/ContextProvider'
 export default function Home() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const { address } = useContext(RouteContext)
+  const { address, navigateTo } = useContext(RouteContext)
 
   const { isPending, mutate } = useMutation({
     mutationFn: updateUser,
+    onSuccess() {
+      navigateTo('recover-pin')
+    },
   })
 
   const isPasswordValid = password === confirmPassword && password?.length >= 3
