@@ -36,13 +36,11 @@ const Loading = function () {
             },
           ],
         })
-        console.log('connected accounts')
-        setAddress(accounts?.[0])
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0xae3f3' }],
         })
-        console.log('switched chain')
+        setAddress(accounts?.[0])
       } catch (err: any) {
         console.log(err.code, err.message)
         if (err.code === 4001) {
@@ -51,10 +49,29 @@ const Loading = function () {
           setIsWidgetVisible(false)
           console.log('Please connect to MetaMask.')
         } else {
-          console.error(err)
+          if (err.code === 4902) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: '0xae3f3',
+                  chainName: 'Sei Devnet',
+                  nativeCurrency: {
+                    name: 'Sei',
+                    symbol: 'SEI',
+                    decimals: 18,
+                  },
+                  rpcUrls: [
+                    'https://evm-rpc-arctic-1.sei-apis.com',
+                    'https://evm-rpc-arctic-1.sei-apis.com',
+                  ],
+                },
+              ],
+            })
+
+            getProvider()
+          }
         }
-      } finally {
-        // setIsConnecting(false)
       }
     }
     getProvider()
