@@ -10,9 +10,12 @@ import { addRecoveryAnswer } from '../api'
 const RecoverPin = function () {
   const [selectedOption, setSelectedOption] = useState<string>()
   const [answer, setAnswer] = useState<string>()
-  const { address } = useContext(RouteContext)
+  const { address, navigateTo } = useContext(RouteContext)
   const { mutate, isPending } = useMutation({
     mutationFn: addRecoveryAnswer,
+    onSuccess() {
+      navigateTo('login')
+    },
   })
 
   return (
