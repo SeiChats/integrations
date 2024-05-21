@@ -23,21 +23,23 @@ const SentMessages = function () {
   })
 
   return (
-    <div className=" row-start-2 row-end-4 min-h-full relative">
+    <div className=" row-start-2 row-end-4 min-h-full relative overflow-y-auto overflow-x-hidden overflow__bar">
       {isPending ? (
         <img
           src={seichatLogo}
           className="absolute inset-[50%_50%_auto_auto] w-16 block translate-y--1/2 translate-x-1/2"
         />
       ) : (
-        data?.map((message: Message) => (
-          <MessagePreview
-            key={message.messageId}
-            message={message.message.message}
-            recipient={message.receiver}
-            timeStamp={+message.timestamp}
-          />
-        ))
+        data
+          ?.sort((a: Message, b: Message) => +b.timestamp - +a.timestamp)
+          .map((message: Message) => (
+            <MessagePreview
+              key={message.messageId}
+              message={message.message.message}
+              recipient={message.receiver}
+              timeStamp={+message.timestamp}
+            />
+          ))
       )}
     </div>
   )

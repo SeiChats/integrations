@@ -20,3 +20,11 @@ html {
   inset: auto 0 0 auto;
   border-radius: 20px;
 }
+
+.overflow__bar::-webkit-scrollbar {
+  width: 3px !important;
+  height: 3px !important;
+}
+.overflow__bar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+}

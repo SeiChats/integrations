@@ -2,8 +2,9 @@ import bcrypt from 'bcryptjs'
 
 export function convertTimestampToTime(timestamp: number) {
   // Create a new Date object using the timestamp
-  const date = new Date(timestamp)
+  const date = new Date(timestamp * 1000)
 
+  console.log(date)
   // Get the hours and minutes from the date object
   let hours = date.getHours()
   let minutes: string | number = date.getMinutes()

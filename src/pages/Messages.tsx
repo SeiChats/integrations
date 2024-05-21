@@ -1,4 +1,3 @@
-import newMessageImg from '../assets/new-message.svg'
 import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
 import seichatLogo from '../assets/seichat.svg'
@@ -48,24 +47,19 @@ const Messages = function () {
                 send message
               </button>
             </div>
-            <div
-              onClick={() => navigateTo('send-message')}
-              className="bg-[#CF3A46] cursor-pointer p-2 w-max rounded-[50%] z-10 absolute
-        inset-[auto_0_1em_auto]"
-            >
-              <img src={newMessageImg} alt="new message" />
-            </div>
           </>
         ) : (
           <div>
-            {data?.map((message: Message) => (
-              <MessagePreview
-                key={message.messageId}
-                message={message.message.message}
-                recipient={message.receiver}
-                timeStamp={+message.timestamp}
-              />
-            ))}
+            {data
+              ?.sort((a: Message, b: Message) => +b.timestamp - +a.timestamp)
+              .map((message: Message) => (
+                <MessagePreview
+                  key={message.messageId}
+                  message={message.message.message}
+                  recipient={message.receiver}
+                  timeStamp={+message.timestamp}
+                />
+              ))}
           </div>
         )}
       </div>
