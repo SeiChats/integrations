@@ -5,6 +5,7 @@ import RouteContext from '../providers/ContextProvider'
 import Messages from '../pages/Messages'
 import Support from '../pages/Support'
 import Footer from '../components/Footer'
+import SentMessages from '../pages/SentMessages'
 
 const MessagesLayout = function () {
   const { route } = useContext(RouteContext)
@@ -21,7 +22,13 @@ const MessagesLayout = function () {
           {/*TODO make name and logo dynamic*/}
         </ul>
       </header>
-      {route === 'messages' ? <Messages /> : <Support />}
+      {route === 'messages' ? (
+        <Messages />
+      ) : route === 'sent-messages' ? (
+        <SentMessages />
+      ) : (
+        <Support />
+      )}
       <Footer />
     </div>
   )

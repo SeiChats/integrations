@@ -3,6 +3,7 @@
 
 import { useContext, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { twMerge } from 'tailwind-merge'
 
 import MessagesLayout from './layouts/MessagesLayout'
 import RouteContext from './providers/ContextProvider'
@@ -11,7 +12,6 @@ import Home from './pages/HomePage'
 import Loading from './pages/Loading'
 import Login from './pages/Login'
 import SendMessage from './pages/SendMessage'
-import { twMerge } from 'tailwind-merge'
 
 function App() {
   const { route, setIsWidgetVisible } = useContext(RouteContext)
@@ -39,13 +39,15 @@ function App() {
       transition={{ type: 'tween', duration: 0.2 }}
       ref={widgetRef}
       className={twMerge(
-        'text-white h-[600px] rounded-3xl p-6 font-inter w-[min(90%,_375px)] bg-[#141717] origin-bottom ml-auto overflow-hidden',
+        'text-white h-[600px] rounded-3xl p-6 font-inter w-[min(90%,_400px)] bg-[#141717] origin-bottom ml-auto overflow-hidden',
         route === 'send-message' && 'p-0 bg-[#171b1b]'
       )}
     >
       <AnimatePresence>
         {/*TODO abstract routing by creating a route component*/}
-        {(route === 'messages' || route === 'support') && <MessagesLayout />}
+        {(route === 'messages' ||
+          route === 'support' ||
+          route === 'sent-messages') && <MessagesLayout />}
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
         {route === 'set-pin' && <Home />}
         {route === '/' && <Loading />}

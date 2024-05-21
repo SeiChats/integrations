@@ -7,7 +7,7 @@ import MessagingWidget from '../components/MessagingWidget'
 import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
-import { useMutation } from '@tanstack/react-query'
+import { QueryClient, useMutation } from '@tanstack/react-query'
 import { handleSendMessage } from '../api'
 
 const SendMessage = function () {
@@ -15,8 +15,13 @@ const SendMessage = function () {
   const [sendTo, setSendTo] = useState('')
   const subjectInputRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
+
+  const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
     mutationFn: handleSendMessage,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [address, 'messages'] })
+    },
   })
 
   return (
