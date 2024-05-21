@@ -20,7 +20,7 @@ const SendMessage = function () {
   const { mutate, isPending } = useMutation({
     mutationFn: handleSendMessage,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: [address, 'messages'] })
+      queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
     },
   })
 

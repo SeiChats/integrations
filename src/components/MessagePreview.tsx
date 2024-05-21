@@ -16,7 +16,7 @@ const MessagePreview = function ({
   const time = convertTimestampToTime(timeStamp)
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.03 }}
       className="grid grid-cols-[auto_1fr_auto] grid-rows-[repeat(2,_auto)] gap-x-4 gap-y-2 items-center bg-[#191D1D] p-3 mb-3 rounded-lg cursor-pointer"
     >
       <div className="bg-[#D9D9D9] w-4 h-4 rounded-[50%] row-start-1 row-span-1 col-start-1 col-span-1" />

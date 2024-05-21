@@ -6,7 +6,7 @@ import { getMessagesSentBy } from '../api/contract/contractFunctions'
 import MessagePreview from '../components/MessagePreview'
 import RouteContext from '../providers/ContextProvider'
 
-interface Message {
+export interface Message {
   messageId: string
   message: {
     message: string
@@ -19,7 +19,7 @@ const SentMessages = function () {
   const { address } = useContext(RouteContext)
   const { data, isPending } = useQuery({
     queryFn: getMessagesSentBy,
-    queryKey: [address, 'messages'],
+    queryKey: [address, 'messages-sent'],
   })
   console.log(data)
   return (
