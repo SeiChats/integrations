@@ -10,6 +10,8 @@ import PinRecovery from './layouts/PinRecovery'
 import Home from './pages/HomePage'
 import Loading from './pages/Loading'
 import Login from './pages/Login'
+import SendMessage from './pages/SendMessage'
+import { twMerge } from 'tailwind-merge'
 
 function App() {
   const { route, setIsWidgetVisible } = useContext(RouteContext)
@@ -36,7 +38,10 @@ function App() {
       exit={{ scale: 0, opacity: 0 }}
       transition={{ type: 'tween', duration: 0.2 }}
       ref={widgetRef}
-      className="text-white h-[600px] rounded-3xl p-6 font-inter w-[min(90%,_375px)] bg-[#141717] origin-bottom ml-auto"
+      className={twMerge(
+        'text-white h-[600px] rounded-3xl p-6 font-inter w-[min(90%,_375px)] bg-[#141717] origin-bottom ml-auto overflow-hidden',
+        route === 'send-message' && 'p-0 bg-[#171b1b]'
+      )}
     >
       <AnimatePresence>
         {/*TODO abstract routing by creating a route component*/}
@@ -45,6 +50,7 @@ function App() {
         {route === 'set-pin' && <Home />}
         {route === '/' && <Loading />}
         {route === 'login' && <Login />}
+        {route === 'send-message' && <SendMessage />}
         {/* <Suspense fallback={<Loading />}></Suspense> */}
       </AnimatePresence>
     </motion.div>

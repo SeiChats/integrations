@@ -11,7 +11,7 @@ const SearchBar = function () {
       <input
         type="text"
         name="mail-search"
-        className="outline-none pl-12 pr-4 py-3 bg-[#191C1C] rounded-xl w-full"
+        className="outline-none pl-12 pr-4 py-3 bg-[#191D1D] rounded-xl w-full"
       />
     </label>
   )
