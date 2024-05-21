@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
+
+import seichatLogo from '../assets/seichat.svg'
 import { getMessagesSentBy } from '../api/contract/contractFunctions'
 import MessagePreview from '../components/MessagePreview'
 import RouteContext from '../providers/ContextProvider'
@@ -23,7 +25,10 @@ const SentMessages = function () {
   return (
     <div className=" row-start-2 row-end-4 min-h-full relative">
       {isPending ? (
-        <img className="absolute inset-[50%_50%_auto_auto] w-16 block translate-y--1/2 translate-x-1/2" />
+        <img
+          src={seichatLogo}
+          className="absolute inset-[50%_50%_auto_auto] w-16 block translate-y--1/2 translate-x-1/2"
+        />
       ) : (
         data?.map((message: Message) => (
           <MessagePreview
