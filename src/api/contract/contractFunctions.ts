@@ -209,10 +209,7 @@ export const getMessagesSentBy = async () => {
 export const getMessagesReceivedBy = async () => {
   const contract = await getContract()
 
-  console.log(contract)
-
   const transactionResponse = await contract.getMessagesReceivedBy()
-  console.log('PAYLOAD', transactionResponse)
   if (transactionResponse) {
     const url = `https://chatbackend-production-9908.up.railway.app/encryption/decrypt`
     try {

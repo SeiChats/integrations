@@ -21,7 +21,7 @@ const SentMessages = function () {
     queryFn: getMessagesSentBy,
     queryKey: [address, 'messages-sent'],
   })
-  console.log(data)
+
   return (
     <div className=" row-start-2 row-end-4 min-h-full relative">
       {isPending ? (
