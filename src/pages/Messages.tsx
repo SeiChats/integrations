@@ -1,8 +1,19 @@
+import { useQuery } from '@tanstack/react-query'
 import newMessageImg from '../assets/new-message.svg'
 import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
+import { getMessagesSentBy } from '../api/contract/contractFunctions'
+import { useContext } from 'react'
+import RouteContext from '../providers/ContextProvider'
 
 const Messages = function () {
+  const { address } = useContext(RouteContext)
+  const { data } = useQuery({
+    queryFn: getMessagesSentBy,
+    queryKey: [address, 'messages'],
+  })
+
+  console.log(data)
   return (
     <>
       <SearchBar />

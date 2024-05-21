@@ -56,6 +56,8 @@ export const getContract = async (): Promise<ethers.Contract> => {
 
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, signer)
 
+    console.log(contract)
+
     return contract
   }
 }

@@ -38,7 +38,7 @@ const Loading = function () {
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0xae3f3' }],
         })
-        setAddress(accounts.[0])
+        setAddress(accounts?.[0])
       } catch (err: any) {
         console.log(err.code, err.message)
         if (err.code === 4001) {
