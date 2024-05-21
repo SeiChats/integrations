@@ -122,8 +122,6 @@ export const isRead = async (messageId: any) => {
 export const getMessagesSentBy = async () => {
   const contract = await getContract()
 
-  console.log(await contract.getAddress())
-
   const transactionResponse = await contract.getMessagesSentBy()
 
   console.log(transactionResponse)

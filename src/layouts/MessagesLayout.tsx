@@ -22,7 +22,7 @@ const MessagesLayout = function () {
           {/*TODO make name and logo dynamic*/}
         </ul>
       </header>
-      {route === 'messages' ? (
+      {route === 'inbox' ? (
         <Messages />
       ) : route === 'sent-messages' ? (
         <SentMessages />

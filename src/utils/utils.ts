@@ -8,8 +8,6 @@ export function convertTimestampToTime(timestamp: number) {
   let hours = date.getHours()
   let minutes: string | number = date.getMinutes()
 
-  console.log(minutes)
-
   // Determine whether it's AM or PM
   const amOrPm = hours >= 12 ? 'PM' : 'AM'
 

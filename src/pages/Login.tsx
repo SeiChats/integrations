@@ -18,7 +18,7 @@ const Login = function () {
     onSuccess(data) {
       if (data.isPasswordCorrect) {
         if (data.hasSecurityQuestion) {
-          navigateTo('messages')
+          navigateTo('inbox')
         } else {
           navigateTo('recover-pin')
         }

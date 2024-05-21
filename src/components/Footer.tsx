@@ -22,10 +22,10 @@ const Footer = function ({ className }: FooterProps) {
     >
       <div className="w-full h-[1px] bg-white/5 my-4" />
       {/* TODO change links to buttons */}
-      <a href="/">
+      <div onClick={() => navigateTo('inbox')} className="cursor-pointer">
         <img src={inbox} alt="inbox" className="mx-auto mb-1" />
         <span className="opacity-80">inbox</span>
-      </a>
+      </div>
       <div
         onClick={() => navigateTo('sent-messages')}
         className="cursor-pointer"

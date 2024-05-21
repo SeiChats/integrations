@@ -45,7 +45,7 @@ function App() {
     >
       <AnimatePresence>
         {/*TODO abstract routing by creating a route component*/}
-        {(route === 'messages' ||
+        {(route === 'inbox' ||
           route === 'support' ||
           route === 'sent-messages') && <MessagesLayout />}
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
