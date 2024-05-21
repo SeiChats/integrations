@@ -2,6 +2,13 @@ import Cookies from 'js-cookie'
 import { supabase } from '../services/supabase'
 
 import bcrypt from 'bcryptjs'
+import axios from 'axios'
+import {
+  generateId,
+  getCurrentTime12HrFormat,
+  getCurrentDateFormatted,
+} from '../utils/utils'
+import { sendMessage } from './contract/contractFunctions'
 
 export function encryptPassword(password: string): string {
   const salt = bcrypt.genSaltSync(10)
@@ -127,8 +134,34 @@ export const login = async function (data: {
 
   return { isPasswordCorrect, hasSecurityQuestion: !!user.recovery_question }
 }
-// const { data: data1 } = await supabase
-// .from('users')
-// .select('*')
-// .eq('wallet_address', address)
-// console.log(data1)
+export const handleSendMessage = async function (data1: {
+  message: string
+  subject: string
+  receiver: string
+}) {
+  const data = {
+    payload: JSON.stringify({
+      id: generateId(),
+      subject: data1.subject,
+      message: data1.message,
+      attachments: null, //TODO check back on this
+      createdAt: new Date().toUTCString(),
+      time: getCurrentTime12HrFormat(),
+      date: getCurrentDateFormatted(),
+    }),
+  }
+  const url = `https://chatbackend-production-9908.up.railway.app/encryption`
+  try {
+    const encryptData = await axios.post(url, data)
+    // this is the sendMessage contract function
+
+    const SendMessageContract = await sendMessage({
+      receiver: data1.receiver.trim(),
+      cipherIv: encryptData.data['iv'],
+      encryptedMessage: encryptData.data['encryptedPayload'],
+    })
+    console.log(SendMessageContract)
+  } catch (error) {
+    console.log(`Error: `, error)
+  }
+}

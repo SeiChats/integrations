@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 
 import minimizeIcon from '../assets/minus.svg'
 import closeIcon from '../assets/cancel.svg'
@@ -7,10 +7,18 @@ import MessagingWidget from '../components/MessagingWidget'
 import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
+import { useMutation } from '@tanstack/react-query'
+import { handleSendMessage } from '../api'
 
 const SendMessage = function () {
   const { address } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
+  const subjectInputRef = useRef<HTMLInputElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
+  const { mutate, isPending } = useMutation({
+    mutationFn: handleSendMessage,
+  })
+
   return (
     <div className="grid grid-rows-[1fr_auto] h-full">
       <div className="p-6 grid grid-rows-[auto_1fr] h-full">
@@ -35,7 +43,8 @@ const SendMessage = function () {
               <input
                 onBlur={e => {
                   setSendTo(e.target.value)
-                  const address = e.target.value
+                  const address = e.target.value.trim()
+                  if (address.length < 37) return
                   e.target.value = `${address?.slice(0, 5)}....${address?.slice(
                     37
                   )}`
@@ -53,6 +62,7 @@ const SendMessage = function () {
             <p className="capitalize text-sm flex items-center gap-4">
               subject:
               <input
+                ref={subjectInputRef}
                 type="text"
                 className="border-none outline-none bg-transparent w-full"
               />
@@ -60,7 +70,10 @@ const SendMessage = function () {
           </div>
           <div className="relative mt-4 pt-4">
             <Divider />
-            <textarea className="resize-none w-full bg-transparent h-full" />
+            <textarea
+              ref={messageRef}
+              className="resize-none w-full bg-transparent h-full"
+            />
           </div>
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
@@ -70,7 +83,16 @@ const SendMessage = function () {
               </span>
               Save as Draft
             </button>
-            <MessagingWidget />
+            <MessagingWidget
+              isLoading={isPending}
+              onSend={() => {
+                mutate({
+                  message: messageRef.current!.value,
+                  receiver: sendTo,
+                  subject: subjectInputRef.current!.value,
+                })
+              }}
+            />
           </div>
         </div>
       </div>

@@ -2,12 +2,19 @@ import attachmentIcon from '../assets/attachment.svg'
 import galleryIcon from '../assets/gallery.svg'
 import arrow from '../assets/arrow.svg'
 import { twMerge } from 'tailwind-merge'
+import LoadingSpinner from './LoadingSpinner'
 
 interface MessagingWidgetProps {
   className?: string
+  onSend?: () => void
+  isLoading?: boolean
 }
 
-const MessagingWidget = function ({ className }: MessagingWidgetProps) {
+const MessagingWidget = function ({
+  className,
+  onSend,
+  isLoading,
+}: MessagingWidgetProps) {
   return (
     <div
       className={twMerge(
@@ -26,9 +33,20 @@ const MessagingWidget = function ({ className }: MessagingWidgetProps) {
         className="cursor-pointer w-4 block"
       />
       <div className="w-[1px] h-4 bg-[#D9D9D91A]" />
-      <div className="p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer">
-        <img src={arrow} alt="send" />
-      </div>
+      <button
+        className={twMerge(
+          'p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer border-none outline-none',
+          isLoading && 'cursor-not-allowed opacity-65'
+        )}
+        disabled={isLoading}
+        onClick={onSend}
+      >
+        {isLoading ? (
+          <LoadingSpinner radii={20} ringWidth={3} ringColor="#ffffff" />
+        ) : (
+          <img src={arrow} alt="send" />
+        )}
+      </button>
     </div>
   )
 }
