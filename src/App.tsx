@@ -12,6 +12,7 @@ import Home from './pages/HomePage'
 import Loading from './pages/Loading'
 import Login from './pages/Login'
 import SendMessage from './pages/SendMessage'
+import Message from './pages/Message'
 
 function App() {
   const { route, setIsWidgetVisible } = useContext(RouteContext)
@@ -53,6 +54,8 @@ function App() {
         {route === '/' && <Loading />}
         {route === 'login' && <Login />}
         {route === 'send-message' && <SendMessage />}
+        {route.startsWith('messages/') && <Message />}
+
         {/* <Suspense fallback={<Loading />}></Suspense> */}
       </AnimatePresence>
     </motion.div>

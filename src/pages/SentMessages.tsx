@@ -12,19 +12,20 @@ export interface Message {
     message: string
   }
   receiver: string
+  sender: string
   timestamp: string
 }
 
 const SentMessages = function () {
   const { address } = useContext(RouteContext)
-  const { data, isPending } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: getMessagesSentBy,
     queryKey: [address, 'messages-sent'],
   })
 
   return (
     <div className=" row-start-2 row-end-4 min-h-full relative overflow-y-auto overflow-x-hidden overflow__bar">
-      {isPending ? (
+      {isLoading ? (
         <img
           src={seichatLogo}
           className="absolute inset-[50%_50%_auto_auto] w-16 block translate-y--1/2 translate-x-1/2"
@@ -35,6 +36,7 @@ const SentMessages = function () {
           .map((message: Message) => (
             <MessagePreview
               key={message.messageId}
+              messageId={message.messageId}
               message={message.message.message}
               recipient={message.receiver}
               timeStamp={+message.timestamp}

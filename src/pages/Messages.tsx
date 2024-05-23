@@ -17,8 +17,6 @@ const Messages = function () {
     queryKey: [address, 'messages-received'],
   })
 
-  console.log(data)
-
   return (
     <>
       <SearchBar />
@@ -55,8 +53,9 @@ const Messages = function () {
               .map((message: Message) => (
                 <MessagePreview
                   key={message.messageId}
+                  messageId={message.messageId}
                   message={message.message.message}
-                  recipient={message.receiver}
+                  recipient={message.sender}
                   timeStamp={+message.timestamp}
                 />
               ))}

@@ -19,10 +19,13 @@ const SendMessage = function () {
   const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
     mutationFn: handleSendMessage,
-    onSuccess() {
+    onSuccess(data) {
+      console.log(data)
       queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
     },
   })
+
+  const disabled = !sendTo.length
 
   return (
     <div className="grid grid-rows-[1fr_auto] h-full">
@@ -77,12 +80,15 @@ const SendMessage = function () {
             <Divider />
             <textarea
               ref={messageRef}
-              className="resize-none w-full bg-transparent h-full"
+              className="resize-none w-full border-none outline-none overflow-y-auto overflow__bar bg-transparent h-full"
             />
           </div>
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
-            <button className="flex items-center gap-2 text-sm text-[#D6D6D6]">
+            <button
+              disabled={disabled}
+              className="flex items-center gap-2 text-sm text-[#D6D6D6] disabled:cursor-not-allowed disabled:opacity-80"
+            >
               <span className="p-2 bg-[#FFA7A733] rounded-lg">
                 <img src={trashIcon} alt="save to draft" className="w-4" />
               </span>
@@ -90,7 +96,16 @@ const SendMessage = function () {
             </button>
             <MessagingWidget
               isLoading={isPending}
+              disabled={disabled}
               onSend={() => {
+                if (subjectInputRef.current?.value.trim() === '') {
+                  subjectInputRef.current.focus()
+                  return
+                }
+                if (messageRef.current?.value.trim() === '') {
+                  messageRef.current.focus()
+                  return
+                }
                 mutate({
                   message: messageRef.current!.value,
                   receiver: sendTo,

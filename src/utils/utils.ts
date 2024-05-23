@@ -4,7 +4,6 @@ export function convertTimestampToTime(timestamp: number) {
   // Create a new Date object using the timestamp
   const date = new Date(timestamp * 1000)
 
-  console.log(date)
   // Get the hours and minutes from the date object
   let hours = date.getHours()
   let minutes: string | number = date.getMinutes()
@@ -22,6 +21,53 @@ export function convertTimestampToTime(timestamp: number) {
   const timeString = hours + ':' + minutes + amOrPm
 
   return timeString
+}
+
+export function formatTimestamp(timestamp: number) {
+  // Create a new Date object from the timestamp
+  const date = new Date(+timestamp * 1000)
+
+  console.log(date)
+  // Get hours and minutes
+  let hours = date.getHours()
+  const minutes = date.getMinutes()
+
+  // Determine AM/PM
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+
+  // Convert hours from 24-hour format to 12-hour format
+  hours = hours % 12
+  hours = hours ? hours : 12 // The hour '0' should be '12'
+
+  // Pad minutes with leading zero if necessary
+  const minutesStr = minutes < 10 ? `0${minutes}` : minutes
+
+  // Format the time part
+  const timeStr = `${hours}:${minutesStr}${ampm}`
+
+  // Get the day of the week
+  const daysOfWeek = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ]
+  const dayOfWeek = daysOfWeek[date.getDay()]
+
+  // Get the day of the month
+  const dayOfMonth = date.getDate()
+
+  // Get the year
+  const year = date.getFullYear()
+
+  // Format the date part
+  const dateStr = `${dayOfWeek} ${dayOfMonth}, ${year}`
+
+  // Combine time and date parts
+  return `${timeStr} | ${dateStr}`
 }
 
 // Function to encrypt a password using bcryptjs

@@ -3,13 +3,15 @@ import { insertUser, lookupUser } from '../api'
 
 const RouteContext = createContext<{
   route: string
-  navigateTo: (route: string) => void
+  prevRoute: string | null
+  navigateTo: (route: string | -1) => void
   isWidgetVisible: boolean
   address: string | null
   setAddress: React.Dispatch<React.SetStateAction<string | null>>
   setIsWidgetVisible: React.Dispatch<React.SetStateAction<boolean>>
 }>({
   route: '/',
+  prevRoute: null,
   navigateTo: () => {},
   isWidgetVisible: false,
   address: null,
@@ -19,6 +21,7 @@ const RouteContext = createContext<{
 
 export function Provider({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState('/')
+  const [prevRoute, setPrevRoute] = useState<string | null>(null)
   const [isWidgetVisible, setIsWidgetVisible] = useState(false)
   const [address, setAddress] = useState<string | null>(null)
 
@@ -51,8 +54,14 @@ export function Provider({ children }: { children: ReactNode }) {
     <RouteContext.Provider
       value={{
         route,
-        navigateTo(route) {
-          setRoute(route)
+        prevRoute,
+        navigateTo(newRoute) {
+          setPrevRoute(route)
+          if (newRoute === -1) {
+            setRoute(prevRoute!)
+            return
+          }
+          setRoute(newRoute)
         },
         address,
         setAddress,
