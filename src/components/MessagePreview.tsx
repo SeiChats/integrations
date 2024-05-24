@@ -38,7 +38,7 @@ const MessagePreview = function ({
         {time}
       </time>
       <p
-        className="row-start-2 row-span-1 col-start-2 col-span-1 lowercase"
+        className="row-start-2 row-span-1 break-words col-start-2 col-span-1 lowercase max-w-[214px]"
         title={message}
       >
         {message.length > 30 ? `${message.slice(0, 30)}...` : message}
