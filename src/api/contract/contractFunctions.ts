@@ -20,6 +20,11 @@ export const sendMessage = async (data: sendMessageDTO) => {
   const cipherIv = data.cipherIv
   const message = data.encryptedMessage
   try {
+    await window.ethereum?.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0xae3f3' }],
+    })
+
     const contract = await getContract()
     if (contract) console.log(contract)
 

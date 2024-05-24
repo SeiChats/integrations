@@ -10,6 +10,8 @@ import {
 import { Message as MessageInterface } from './SentMessages'
 import { formatTimestamp, getCurrentTime12HrFormat } from '../utils/utils'
 import Footer from '../components/Footer'
+import { motion } from 'framer-motion'
+import SentDocumentCard from '../components/SentDocument'
 
 const Message = function () {
   const { route, address, navigateTo, prevRoute } = useContext(RouteContext)
@@ -24,6 +26,8 @@ const Message = function () {
   const messageData = data?.find(
     (message: MessageInterface) => message.messageId === messageId
   )
+
+  console.log(messageData)
 
   return (
     <div className="h-full grid grid-rows-[repeat(4,_auto)_1fr_auto]">
@@ -61,9 +65,28 @@ const Message = function () {
         <p className="font-semibold">{messageData.message.subject}</p>
       </div>
       <div className="bg-[#4A4C54] h-[1px] my-4" />
-      <pre className="whitespace-pre-wrap word__break font-inter font-normal leading-6">
+      <pre className="whitespace-pre-wrap word__break break-words font-inter font-normal leading-6 block max-w-[352px]">
         {messageData.message.message}
       </pre>
+      {messageData.message?.attachments.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 30 }}
+          className="flex flex-wrap w-full py-2 gap-y-4 gap-x-2 md:gap-x-3  overflow-y-auto max-h-[200px] md:max-h-[400px] lg:max-h-[600px] lg:py-4 sm:pr-2 min-[900px]:grid grid-cols-3 lg:flex min-[1250px]:grid"
+          data-show-scrollbar
+        >
+          {messageData.message?.attachments.map((file, index) => (
+            <SentDocumentCard
+              key={file.url + index}
+              name={file.name}
+              index={index}
+              type={file.type}
+              fileUrl={file.url}
+            />
+          ))}
+        </motion.div>
+      )}
       <Footer className="mt-auto" />
     </div>
   )

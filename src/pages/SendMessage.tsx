@@ -1,3 +1,4 @@
+import { QueryClient, useMutation } from '@tanstack/react-query'
 import { useContext, useRef, useState } from 'react'
 
 import minimizeIcon from '../assets/minus.svg'
@@ -7,14 +8,28 @@ import MessagingWidget from '../components/MessagingWidget'
 import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
-import { QueryClient, useMutation } from '@tanstack/react-query'
 import { handleSendMessage } from '../api'
+import DocumentCard from '../components/Document'
+import { twMerge } from 'tailwind-merge'
 
 const SendMessage = function () {
   const { address } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
   const subjectInputRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
+  const [fileList, setFileList] = useState<
+    {
+      url: string
+      type: string
+      name: string
+      size: string
+      id: string
+      CID: any
+    }[]
+  >([])
+  const [uploadedFiles, setUploadedFiles] = useState<(File & { id: string })[]>(
+    []
+  )
 
   const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
@@ -65,7 +80,7 @@ const SendMessage = function () {
               />
             </p>
           </div>
-          <div className="relative pt-4 mt-4">
+          <div className="relative py-4 mt-4">
             <Divider />
             <p className="capitalize text-sm flex items-center gap-4">
               subject:
@@ -75,13 +90,40 @@ const SendMessage = function () {
                 className="border-none outline-none bg-transparent w-full"
               />
             </p>
+            <Divider position="bottom" />
           </div>
-          <div className="relative mt-4 pt-4">
-            <Divider />
+          <div
+            className="relative mt-4 pt-4 max-h-[119px] overflow-y-auto overflow__bar cursor-text"
+            onClick={() => messageRef.current?.focus()}
+          >
             <textarea
               ref={messageRef}
-              className="resize-none w-full border-none outline-none overflow-y-auto overflow__bar bg-transparent h-full"
+              onKeyUp={e => {
+                const target = e.target as HTMLTextAreaElement
+                target.style.height = 'auto'
+                const scHeight = target.scrollHeight
+                target.style.height = `${scHeight}px`
+              }}
+              className="resize-none w-full border-none outline-none bg-transparent "
             />
+            {fileList.map((file, index) => (
+              <DocumentCard
+                key={file.id}
+                name={file.name}
+                size={file.size}
+                type={file.type}
+                imageUrl={file.url}
+                index={index}
+                handleDelete={function () {
+                  setFileList(prev => {
+                    return prev.filter(prevFile => prevFile.id !== file.id)
+                  })
+                  setUploadedFiles(prev => {
+                    return prev.filter(prevFile => prevFile.id !== file.id)
+                  })
+                }}
+              />
+            ))}
           </div>
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
@@ -97,6 +139,10 @@ const SendMessage = function () {
             <MessagingWidget
               isLoading={isPending}
               disabled={disabled}
+              setFileList={setFileList}
+              fileList={fileList}
+              uploadedFiles={uploadedFiles}
+              setUploadedFiles={setUploadedFiles}
               onSend={() => {
                 if (subjectInputRef.current?.value.trim() === '') {
                   subjectInputRef.current.focus()
@@ -110,6 +156,7 @@ const SendMessage = function () {
                   message: messageRef.current!.value,
                   receiver: sendTo,
                   subject: subjectInputRef.current!.value,
+                  fileUrls: fileList,
                 })
               }}
             />
@@ -121,9 +168,20 @@ const SendMessage = function () {
   )
 }
 
-const Divider = function () {
+const Divider = function ({
+  position = 'top',
+}: {
+  position?: 'top' | 'bottom'
+}) {
   return (
-    <div className="absolute inset-[0_-16px_auto_-16px] bg-[#FFFFFF0F] h-[1px]" />
+    <div
+      className={twMerge(
+        'absolute bg-[#FFFFFF0F] h-[1px]',
+        position === 'top'
+          ? 'inset-[0_-16px_auto_-16px] '
+          : 'inset-[auto_-16px_0_-16px] '
+      )}
+    />
   )
 }
 
