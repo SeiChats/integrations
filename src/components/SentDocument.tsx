@@ -28,13 +28,13 @@ const SentDocumentCard = ({ name, index, type, fileUrl }: Props) => {
             <img
               src={fileUrl ?? imageFile}
               alt="docs"
-              className="size-[70px] object-contain rounded xl:rounded-md"
+              className="size-[60px] object-contain rounded xl:rounded-md"
             />
           ) : (
             <img
               src={pdf}
               alt="docs"
-              className="size-[70px] object-contain rounded xl:rounded-md"
+              className="size-[60px] object-contain rounded xl:rounded-md"
             />
           )}
 

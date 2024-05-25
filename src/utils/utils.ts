@@ -174,7 +174,7 @@ export function shrinkString({
   afterLength?: number
   useDot?: boolean
 }): string {
-  if (address.length <= 4) {
+  if (address?.length <= 4) {
     return address // Not enough characters to shrink
   }
 

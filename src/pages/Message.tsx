@@ -73,8 +73,7 @@ const Message = function () {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 30 }}
-          className="flex flex-wrap w-full py-2 gap-y-4 gap-x-2 md:gap-x-3  overflow-y-auto max-h-[200px] md:max-h-[400px] lg:max-h-[600px] lg:py-4 sm:pr-2 min-[900px]:grid grid-cols-3 lg:flex min-[1250px]:grid"
-          data-show-scrollbar
+          className="flex flex-wrap gap-4"
         >
           {messageData.message?.attachments.map((file, index) => (
             <SentDocumentCard

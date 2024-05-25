@@ -95,7 +95,7 @@ const SendMessage = function () {
             <Divider position="bottom" />
           </div>
           <div
-            className="relative mt-4 pt-4 max-h-[119px] overflow-y-auto overflow__bar cursor-text"
+            className="relative mt-4 max-h-[119px] overflow-y-auto overflow__bar cursor-text"
             onClick={() => messageRef.current?.focus()}
           >
             <textarea
@@ -111,24 +111,26 @@ const SendMessage = function () {
             {uploadProgress !== 0 && uploadProgress !== 100 && (
               <Progress value={uploadProgress} />
             )}
-            {fileList.map((file, index) => (
-              <DocumentCard
-                key={file.id}
-                name={file.name}
-                size={file.size}
-                type={file.type}
-                imageUrl={file.url}
-                index={index}
-                handleDelete={function () {
-                  setFileList(prev => {
-                    return prev.filter(prevFile => prevFile.id !== file.id)
-                  })
-                  setUploadedFiles(prev => {
-                    return prev.filter(prevFile => prevFile.id !== file.id)
-                  })
-                }}
-              />
-            ))}
+            <div>
+              {fileList.map((file, index) => (
+                <DocumentCard
+                  key={file.id}
+                  name={file.name}
+                  size={file.size}
+                  type={file.type}
+                  imageUrl={file.url}
+                  index={index}
+                  handleDelete={function () {
+                    setFileList(prev => {
+                      return prev.filter(prevFile => prevFile.id !== file.id)
+                    })
+                    setUploadedFiles(prev => {
+                      return prev.filter(prevFile => prevFile.id !== file.id)
+                    })
+                  }}
+                />
+              ))}
+            </div>
           </div>
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
