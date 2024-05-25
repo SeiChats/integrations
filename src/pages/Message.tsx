@@ -65,27 +65,29 @@ const Message = function () {
         <p className="font-semibold">{messageData.message.subject}</p>
       </div>
       <div className="bg-[#4A4C54] h-[1px] my-4" />
-      <pre className="whitespace-pre-wrap word__break break-words font-inter font-normal leading-6 block max-w-[352px]">
-        {messageData.message.message}
-      </pre>
-      {messageData.message?.attachments.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 30 }}
-          className="flex flex-wrap gap-4"
-        >
-          {messageData.message?.attachments.map((file, index) => (
-            <SentDocumentCard
-              key={file.url + index}
-              name={file.name}
-              index={index}
-              type={file.type}
-              fileUrl={file.url}
-            />
-          ))}
-        </motion.div>
-      )}
+      <div>
+        <pre className="whitespace-pre-wrap word__break break-words font-inter font-normal leading-6 block max-w-[352px]">
+          {messageData.message.message}
+        </pre>
+        {messageData.message?.attachments.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            className="flex flex-wrap gap-4"
+          >
+            {messageData.message?.attachments.map((file, index) => (
+              <SentDocumentCard
+                key={file.url + index}
+                name={file.name}
+                index={index}
+                type={file.type}
+                fileUrl={file.url}
+              />
+            ))}
+          </motion.div>
+        )}
+      </div>
       <Footer className="mt-auto" />
     </div>
   )
