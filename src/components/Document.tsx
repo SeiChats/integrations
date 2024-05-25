@@ -20,7 +20,6 @@ const DocumentCard = ({
   imageUrl,
   handleDelete,
 }: Props) => {
-  console.log(name, ':', type)
   return (
     <AnimatePresence>
       <motion.div

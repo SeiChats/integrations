@@ -1,5 +1,6 @@
 import { QueryClient, useMutation } from '@tanstack/react-query'
 import { useContext, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import minimizeIcon from '../assets/minus.svg'
 import closeIcon from '../assets/cancel.svg'
@@ -10,26 +11,27 @@ import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
 import { handleSendMessage } from '../api'
 import DocumentCard from '../components/Document'
-import { twMerge } from 'tailwind-merge'
+import { Progress } from '../components/shadcn/ui/progress'
+
+interface FileData {
+  url: string
+  type: string
+  name: string
+  size: string
+  id: string
+  CID: any
+}
 
 const SendMessage = function () {
   const { address } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
   const subjectInputRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
-  const [fileList, setFileList] = useState<
-    {
-      url: string
-      type: string
-      name: string
-      size: string
-      id: string
-      CID: any
-    }[]
-  >([])
+  const [fileList, setFileList] = useState<FileData[]>([])
   const [uploadedFiles, setUploadedFiles] = useState<(File & { id: string })[]>(
     []
   )
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
@@ -106,6 +108,9 @@ const SendMessage = function () {
               }}
               className="resize-none w-full border-none outline-none bg-transparent "
             />
+            {uploadProgress !== 0 && uploadProgress !== 100 && (
+              <Progress value={uploadProgress} />
+            )}
             {fileList.map((file, index) => (
               <DocumentCard
                 key={file.id}
@@ -137,6 +142,7 @@ const SendMessage = function () {
               Save as Draft
             </button>
             <MessagingWidget
+              setUploadProgress={setUploadProgress}
               isLoading={isPending}
               disabled={disabled}
               setFileList={setFileList}

@@ -3,9 +3,10 @@ import galleryIcon from '../assets/gallery.svg'
 import arrow from '../assets/arrow.svg'
 import { twMerge } from 'tailwind-merge'
 import LoadingSpinner from './LoadingSpinner'
-import { handleUploadFiles } from '../api'
+// import { handleUploadFiles } from '../api'
 import { useEffect, useRef } from 'react'
-import { generateId } from '../utils/utils'
+import { formatFileSize, generateId } from '../utils/utils'
+import axios from 'axios'
 
 interface MessagingWidgetProps {
   className?: string
@@ -42,6 +43,7 @@ interface MessagingWidgetProps {
       })[]
     >
   >
+  setUploadProgress: React.Dispatch<React.SetStateAction<number>>
 }
 
 const MessagingWidget = function ({
@@ -53,9 +55,119 @@ const MessagingWidget = function ({
   setUploadedFiles,
   fileList,
   setFileList,
+  setUploadProgress,
 }: MessagingWidgetProps) {
   const imageRef = useRef<HTMLInputElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  const handleUploadFiles = async function (files: (File & { id: string })[]) {
+    const selectedFiles = files
+    if (!selectedFiles) return
+
+    console.log(selectedFiles)
+
+    const newFiles = Array.from(selectedFiles)
+      .filter(file => file.size <= 4000000) // Filter out files larger than 4MB
+      .map(file => ({
+        data: file,
+        name: file.name,
+        size: formatFileSize(file.size),
+        id: file.id,
+        path: URL.createObjectURL(file),
+        type: file.type.toLowerCase().startsWith('image') ? 'image' : 'file',
+      }))
+
+    if (selectedFiles.length > newFiles.length) {
+      // At least one file was filtered out due to size
+      console.log(
+        `${selectedFiles.length - newFiles.length} File size exceeds 4MB`
+      )
+    }
+
+    let fileData: {
+      url: string
+      type: string
+      name: string
+      size: string
+      id: string
+      CID: any
+    }[] = []
+
+    for (const file of newFiles) {
+      console.log(file)
+      file.name
+      console.log('uploading')
+      const data = new FormData()
+      data.set('file', file.data)
+      data.set('file_type', file.type!)
+      data.set('file_name', file.name)
+      data.set('file_size', file.size)
+      data.set('name', file.name)
+
+      const len = data.get('length') as unknown as number
+      const formFile: File | null = data.get('file') as unknown as File
+      data.append('file', formFile)
+      const file_type: string | null = data.get(
+        'file_type'
+      ) as unknown as string
+      const file_name: string | null = data.get(
+        'file_name'
+      ) as unknown as string
+      const file_size: string | null = data.get(
+        'file_size'
+      ) as unknown as string
+
+      Array.from({ length: Number(len) }).forEach((_, i) => {
+        const name: string | null = data.get('name' + i) as unknown as string
+
+        data.append(
+          'pinataMetadata',
+          JSON.stringify({
+            name,
+            keyvalues: {
+              file_type: file_type,
+            },
+          })
+        )
+      })
+
+      const res = await axios.post(
+        'https://api.pinata.cloud/pinning/pinFileToIPFS',
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT_KEY}`,
+          },
+          onUploadProgress(progressEvent) {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total!
+            )
+            setUploadProgress(percent)
+          },
+        }
+      )
+
+      const { IpfsHash } = res.data
+      console.log(IpfsHash, file_type)
+      const fileUrl = `${import.meta.env.VITE_PINATA_URL}`
+
+      fileData = [
+        ...fileData,
+        {
+          url: `${fileUrl}${IpfsHash}`,
+          type: file_type,
+          name: file_name,
+          size: file_size,
+          CID: IpfsHash,
+          id: file.id,
+        },
+      ]
+    }
+
+    return fileData
+  }
+
   useEffect(() => {
     imageRef.current!.value = ''
     fileRef.current!.value = ''
@@ -111,7 +223,7 @@ const MessagingWidget = function ({
                   return file
                 })
 
-              return [...prev, ...newFiles]
+              return [...newFiles, ...prev]
             })
           }}
           multiple
@@ -147,7 +259,7 @@ const MessagingWidget = function ({
                   return file
                 })
 
-              return [...prev, ...newFiles]
+              return [...newFiles, ...prev]
             })
           }}
           className="hidden"
