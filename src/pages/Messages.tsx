@@ -23,7 +23,7 @@ const Messages = function () {
       <div
         className={twMerge(
           'h-full grid',
-          (isLoading || data.length === 0) && 'place-content-center'
+          (isLoading || data?.length === 0) && 'place-content-center'
         )}
       >
         {isLoading ? (

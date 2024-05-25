@@ -61,7 +61,9 @@ const MessagingWidget = function ({
   const fileRef = useRef<HTMLInputElement>(null)
 
   const handleUploadFiles = async function (files: (File & { id: string })[]) {
-    const selectedFiles = files
+    const selectedFiles = files.filter(
+      file => !fileList.some(fileData => fileData.id === file.id)
+    )
     if (!selectedFiles) return
 
     console.log(selectedFiles)
@@ -94,9 +96,6 @@ const MessagingWidget = function ({
     }[] = []
 
     for (const file of newFiles) {
-      console.log(file)
-      file.name
-      console.log('uploading')
       const data = new FormData()
       data.set('file', file.data)
       data.set('file_type', file.type!)
@@ -181,7 +180,7 @@ const MessagingWidget = function ({
       const files = await handleUploadFiles(uploadedFiles)
       if (files?.length === 0) return
 
-      setFileList(files!)
+      setFileList(prev => [...files!, ...prev])
     })()
   }, [uploadedFiles.length])
 
