@@ -12,6 +12,7 @@ import { formatTimestamp, getCurrentTime12HrFormat } from '../utils/utils'
 import Footer from '../components/Footer'
 import { motion } from 'framer-motion'
 import SentDocumentCard from '../components/SentDocument'
+import { FileData } from './SendMessage'
 
 const Message = function () {
   const { route, address, navigateTo, prevRoute } = useContext(RouteContext)
@@ -26,8 +27,6 @@ const Message = function () {
   const messageData = data?.find(
     (message: MessageInterface) => message.messageId === messageId
   )
-
-  console.log(messageData)
 
   return (
     <div className="h-full grid grid-rows-[repeat(4,_auto)_1fr_auto]">
@@ -76,15 +75,17 @@ const Message = function () {
             exit={{ opacity: 0, y: 30 }}
             className="flex flex-wrap gap-4"
           >
-            {messageData.message?.attachments.map((file, index) => (
-              <SentDocumentCard
-                key={file.url + index}
-                name={file.name}
-                index={index}
-                type={file.type}
-                fileUrl={file.url}
-              />
-            ))}
+            {messageData.message?.attachments.map(
+              (file: FileData, index: number) => (
+                <SentDocumentCard
+                  key={file.url + index}
+                  name={file.name}
+                  index={index}
+                  type={file.type}
+                  fileUrl={file.url}
+                />
+              )
+            )}
           </motion.div>
         )}
       </div>

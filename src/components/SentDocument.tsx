@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'
 
 import pdf from '../assets/pdf.svg'
 import imageFile from '../assets/image-file.svg'
-import { shrinkString } from '../utils/utils'
 import downloadIcon from '../assets/download.svg'
 
 interface Props {

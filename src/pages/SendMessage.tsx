@@ -13,7 +13,7 @@ import { handleSendMessage } from '../api'
 import DocumentCard from '../components/Document'
 import { Progress } from '../components/shadcn/ui/progress'
 
-interface FileData {
+export interface FileData {
   url: string
   type: string
   name: string
