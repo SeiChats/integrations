@@ -1,5 +1,5 @@
 import { QueryClient, useMutation } from '@tanstack/react-query'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import minimizeIcon from '../assets/minus.svg'
@@ -32,6 +32,7 @@ const SendMessage = function () {
     []
   )
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [isDisabled, setIsDisabled] = useState(true)
 
   const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
@@ -42,7 +43,16 @@ const SendMessage = function () {
     },
   })
 
-  const disabled = !sendTo.length
+  const updateDisabled = function () {
+    const receiver = !!sendTo.trim().length
+    const subject = !!subjectInputRef.current?.value.trim().length
+    const message = !!messageRef.current?.value.trim().length
+    const files = !!fileList.length
+
+    setIsDisabled(!(receiver && subject && (message || files) && !isPending))
+  }
+
+  useEffect(updateDisabled, [fileList.length])
 
   return (
     <div className="grid grid-rows-[1fr_auto] h-full">
@@ -77,6 +87,7 @@ const SendMessage = function () {
                 onFocus={e => {
                   e.target.value = sendTo
                 }}
+                onChange={updateDisabled}
                 type="text"
                 className="border-none outline-none bg-transparent w-full"
               />
@@ -89,6 +100,7 @@ const SendMessage = function () {
               <input
                 ref={subjectInputRef}
                 type="text"
+                onChange={updateDisabled}
                 className="border-none outline-none bg-transparent w-full"
               />
             </p>
@@ -100,6 +112,7 @@ const SendMessage = function () {
           >
             <textarea
               ref={messageRef}
+              onChange={updateDisabled}
               onKeyUp={e => {
                 const target = e.target as HTMLTextAreaElement
                 target.style.height = 'auto'
@@ -135,7 +148,7 @@ const SendMessage = function () {
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
             <button
-              disabled={disabled}
+              disabled={isDisabled}
               className="flex items-center gap-2 text-sm text-[#D6D6D6] disabled:cursor-not-allowed disabled:opacity-80"
             >
               <span className="p-2 bg-[#FFA7A733] rounded-lg">
@@ -146,7 +159,7 @@ const SendMessage = function () {
             <MessagingWidget
               setUploadProgress={setUploadProgress}
               isLoading={isPending}
-              disabled={disabled}
+              disabled={isDisabled}
               setFileList={setFileList}
               fileList={fileList}
               uploadedFiles={uploadedFiles}
