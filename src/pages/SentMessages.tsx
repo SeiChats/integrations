@@ -8,12 +8,15 @@ import RouteContext from '../providers/ContextProvider'
 
 export interface Message {
   messageId: string
+  isRead: boolean
   message: {
     message: string
+    createdAt: Date
   }
   receiver: string
   sender: string
   timestamp: string
+  tag: string
 }
 
 const SentMessages = function () {
@@ -40,6 +43,7 @@ const SentMessages = function () {
               message={message.message.message}
               recipient={message.receiver}
               timeStamp={+message.timestamp}
+              isRead={message.isRead}
             />
           ))
       )}

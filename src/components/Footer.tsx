@@ -33,10 +33,10 @@ const Footer = function ({ className }: FooterProps) {
         <img src={sent} alt="sent" className="mx-auto mb-1 mt-1" />
         <span className="opacity-80">sent</span>
       </div>
-      <a href="/">
+      <div onClick={() => navigateTo('drafts')} className="cursor-pointer">
         <img src={draft} alt="draft" className="mx-auto mb-1 mt-1" />
         <span className="opacity-80">draft</span>
-      </a>
+      </div>
       <a href="/">
         <img src={logoWhite} alt="home" className="mx-auto" />
       </a>

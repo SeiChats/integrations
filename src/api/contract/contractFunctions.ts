@@ -1,6 +1,7 @@
 import { getContract } from './getContract'
 import { ethers } from 'ethers'
 import axios from 'axios'
+import { supabase } from '@/services/supabase'
 
 interface sendMessageDTO {
   receiver: string
@@ -380,4 +381,35 @@ export const getMessagesMovedToTrash = async () => {
     }
   }
   return transactionResponse
+}
+
+export async function addMessageToDraft({
+  message_payload,
+  wallet_address,
+  receiver,
+  cipherIv,
+  timeStamp,
+}: {
+  message_payload: string
+  wallet_address: string
+  receiver: string
+  cipherIv: string
+  timeStamp: number
+}) {
+  if (!wallet_address) return
+
+  const { data: result, error } = await supabase
+    .from('messages')
+    .insert({
+      payload: message_payload,
+      author: wallet_address,
+      tag: 'draft',
+      receiver,
+      cipher_iv: cipherIv,
+      timestamp: timeStamp,
+    })
+    .select()
+  if (error) return error
+
+  return result
 }

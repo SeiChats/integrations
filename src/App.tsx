@@ -48,7 +48,8 @@ function App() {
         {/*TODO abstract routing by creating a route component*/}
         {(route === 'inbox' ||
           route === 'support' ||
-          route === 'sent-messages') && <MessagesLayout />}
+          route === 'sent-messages' ||
+          route === 'drafts') && <MessagesLayout />}
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
         {route === 'set-pin' && <Home />}
         {route === '/' && <Loading />}

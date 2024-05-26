@@ -9,7 +9,7 @@ import MessagingWidget from '../components/MessagingWidget'
 import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
-import { handleSendMessage } from '../api'
+import { handleSaveToDraft, handleSendMessage } from '../api'
 import DocumentCard from '../components/Document'
 import { Progress } from '../components/shadcn/ui/progress'
 
@@ -40,6 +40,13 @@ const SendMessage = function () {
     onSuccess(data) {
       console.log(data)
       queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
+    },
+  })
+
+  const { mutate: saveToDraft, isPending: isSavingToDraft } = useMutation({
+    mutationFn: handleSaveToDraft,
+    onSuccess(data) {
+      console.log(data)
     },
   })
 
@@ -148,7 +155,16 @@ const SendMessage = function () {
           <div className="flex items-center justify-between relative pt-4 mt-4">
             <Divider />
             <button
-              disabled={isDisabled}
+              disabled={isDisabled || isSavingToDraft || isPending}
+              onClick={() => {
+                saveToDraft({
+                  message: messageRef.current!.value,
+                  receiver: sendTo,
+                  subject: subjectInputRef.current!.value,
+                  fileUrls: fileList,
+                  address: address!,
+                })
+              }}
               className="flex items-center gap-2 text-sm text-[#D6D6D6] disabled:cursor-not-allowed disabled:opacity-80"
             >
               <span className="p-2 bg-[#FFA7A733] rounded-lg">
@@ -158,8 +174,8 @@ const SendMessage = function () {
             </button>
             <MessagingWidget
               setUploadProgress={setUploadProgress}
-              isLoading={isPending}
-              disabled={isDisabled}
+              isLoading={isPending || isSavingToDraft}
+              disabled={isDisabled || isSavingToDraft || isPending}
               setFileList={setFileList}
               fileList={fileList}
               uploadedFiles={uploadedFiles}

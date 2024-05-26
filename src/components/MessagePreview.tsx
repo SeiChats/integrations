@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion'
-import checkedIcon from '../assets/checked.svg'
+import checkedIcon from '../assets/check-single.svg'
+import doubleCheckedIcon from '../assets/checked.svg'
 import { convertTimestampToTime } from '../utils/utils'
 import { useContext } from 'react'
 import RouteContext from '../providers/ContextProvider'
+import { twMerge } from 'tailwind-merge'
 
 interface MessagePreviewProps {
   message: string
   messageId: string
   recipient: string
   timeStamp: number
+  isRead: boolean
+  isDraft?: boolean
 }
 
 const MessagePreview = function ({
@@ -16,6 +20,8 @@ const MessagePreview = function ({
   messageId,
   recipient,
   timeStamp,
+  isDraft,
+  isRead,
 }: MessagePreviewProps) {
   const time = convertTimestampToTime(timeStamp)
   const { navigateTo } = useContext(RouteContext)
@@ -31,23 +37,28 @@ const MessagePreview = function ({
           {recipient.slice(0, 5)}***{recipient.slice(37)}
         </p>
         <p className="bg-[#EFFCF4] text-[#507A5F] capitalize p-1 rounded text-[0.7rem] font-semibold">
-          trusted
+          {isDraft ? 'draft' : 'trusted'}
         </p>
       </div>
       <time className="row-start-1 row-span-1 col-start-3 col-span-1">
         {time}
       </time>
       <p
-        className="row-start-2 row-span-1 break-words col-start-2 col-span-1 lowercase max-w-[214px]"
+        className={twMerge(
+          'row-start-2 row-span-1 break-words col-start-2 lowercase',
+          isDraft ? 'col-span-2 max-w-[274px]' : 'col-span-1 max-w-[214px]'
+        )}
         title={message}
       >
         {message.length > 30 ? `${message.slice(0, 30)}...` : message}
       </p>
-      <img
-        src={checkedIcon}
-        alt="sent"
-        className="row-start-2 row-span-1 col-start-3 col-span-1 ml-auto"
-      />
+      {!isDraft && (
+        <img
+          src={isRead ? doubleCheckedIcon : checkedIcon}
+          alt="sent"
+          className="row-start-2 row-span-1 col-start-3 col-span-1 ml-auto w-4"
+        />
+      )}
     </motion.div>
   )
 }

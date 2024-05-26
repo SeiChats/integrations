@@ -9,7 +9,7 @@ import {
   getCurrentDateFormatted,
   formatFileSize,
 } from '../utils/utils'
-import { sendMessage } from './contract/contractFunctions'
+import { addMessageToDraft, sendMessage } from './contract/contractFunctions'
 
 export function encryptPassword(password: string): string {
   const salt = bcrypt.genSaltSync(10)
@@ -269,4 +269,100 @@ export const handleUploadFiles = async function (
   }
 
   return fileData
+}
+
+export const handleSaveToDraft = async (data1: {
+  message: string
+  subject: string
+  receiver: string
+  address: string
+  fileUrls: {
+    url: string
+    type: string
+    name: string
+    size: string
+    CID: any
+  }[]
+}) => {
+  const data = {
+    payload: JSON.stringify({
+      id: generateId(),
+      subject: data1.subject,
+      message: data1.message,
+      attachments: data1.fileUrls ?? [],
+      createdAt: new Date().toUTCString(),
+      time: getCurrentTime12HrFormat(),
+      date: getCurrentDateFormatted(),
+    }),
+  }
+  const url = `https://chatbackend-production-9908.up.railway.app/encryption`
+  try {
+    console.log('DATA BEFORE ENCRYPT: ', data)
+
+    const encryptData = await axios.post(url, data)
+
+    console.log(`Message encrypted: `, encryptData.data)
+
+    const resFromDb = await addMessageToDraft({
+      message_payload: encryptData.data['encryptedPayload'],
+      wallet_address: data1.address,
+      receiver: data1.receiver.trim(),
+      cipherIv: encryptData.data['iv'],
+      timeStamp: Date.now(),
+    })
+
+    console.log(resFromDb)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export async function getAllMessagesbyTag(tag: string, wallet: string) {
+  if (!tag) throw new Error('Tag not found')
+  const { data, error } = await supabase
+    .from('messages')
+    .select('*')
+    .eq('tag', tag)
+    .eq('author', wallet)
+  if (error) throw new Error(error.message)
+
+  return data
+}
+
+export const getAllDecryptedMessagesByTag = async (data: {
+  tag: string
+  address: string
+}) => {
+  const transactionResponse = await getAllMessagesbyTag(data.tag, data.address)
+
+  if (transactionResponse) {
+    const url = `https://chatbackend-production-9908.up.railway.app/encryption/decrypt`
+    try {
+      const MessagesSentBy = transactionResponse.map(async message => {
+        try {
+          const decryptData = await axios.post(url, {
+            iv: message.cipher_iv,
+            encryptedData: message.payload,
+          })
+
+          const decryptedMessage = {
+            sender: message.author,
+            receiver: message.receiver,
+            message: JSON.parse(decryptData.data['decryptedData']),
+            id: message.messageId,
+            isRead: message.is_read,
+            isLiked: message.is_liked,
+            tag: message.tag,
+          }
+          return decryptedMessage
+        } catch (error) {
+          console.log(error)
+        }
+      })
+      return await Promise.all(MessagesSentBy)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return transactionResponse
 }
