@@ -19,8 +19,6 @@ const Drafts = function () {
     queryKey: [address, 'drafts'],
   })
 
-  console.log(data)
-
   return (
     <>
       <SearchBar />
@@ -56,11 +54,13 @@ const Drafts = function () {
               ?.sort((a: Message, b: Message) => +b.timestamp - +a.timestamp)
               .map((message: Message) => (
                 <MessagePreview
-                  key={message.messageId}
-                  messageId={message.messageId}
+                  key={message.id}
+                  messageId={message.id}
                   message={message.message.message}
                   recipient={message.receiver}
-                  timeStamp={new Date(message.message.createdAt).getTime()}
+                  timeStamp={
+                    new Date(message.message.createdAt).getTime() / 1000
+                  }
                   isRead={message.isRead}
                   isDraft
                 />

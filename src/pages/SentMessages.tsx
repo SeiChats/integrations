@@ -8,6 +8,7 @@ import RouteContext from '../providers/ContextProvider'
 
 export interface Message {
   messageId: string
+  id: string
   isRead: boolean
   message: {
     message: string

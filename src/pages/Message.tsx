@@ -13,19 +13,32 @@ import Footer from '../components/Footer'
 import { motion } from 'framer-motion'
 import SentDocumentCard from '../components/SentDocument'
 import { FileData } from './SendMessage'
+import { getAllDecryptedMessagesByTag } from '@/api'
 
 const Message = function () {
   const { route, address, navigateTo, prevRoute } = useContext(RouteContext)
   const fromInbox = prevRoute === 'inbox'
+  const fromDraft = prevRoute === 'drafts'
+
+  const getDrafts = function () {
+    return getAllDecryptedMessagesByTag({ tag: 'draft', address: address! })
+  }
 
   const { data } = useQuery({
-    queryFn: fromInbox ? getMessagesReceivedBy : getMessagesSentBy,
-    queryKey: [address, fromInbox ? 'messages-received' : 'messages-sent'],
+    queryFn: fromDraft
+      ? getDrafts
+      : fromInbox
+      ? getMessagesReceivedBy
+      : getMessagesSentBy,
+    queryKey: [
+      address,
+      fromDraft ? 'drafts' : fromInbox ? 'messages-received' : 'messages-sent',
+    ],
   })
 
   const messageId = route.split('/')[1]
-  const messageData = data?.find(
-    (message: MessageInterface) => message.messageId === messageId
+  const messageData = data?.find((message: MessageInterface) =>
+    fromDraft ? message.id === messageId : message.messageId === messageId
   )
 
   return (
@@ -52,7 +65,11 @@ const Message = function () {
           </p>
         </div>
         <p className="row-start-2 row-span-1 col-start-3 col-span-1 text-[0.75rem]">
-          {formatTimestamp(messageData.timestamp)}
+          {formatTimestamp(
+            fromDraft
+              ? new Date(messageData.message.createdAt).getTime() / 1000
+              : messageData.timestamp
+          )}
         </p>
         <p className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm">
           {getCurrentTime12HrFormat()}
