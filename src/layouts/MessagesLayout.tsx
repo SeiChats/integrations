@@ -3,7 +3,6 @@ import { useContext } from 'react'
 import logo from '../assets/placeholder-logo.jpg'
 import RouteContext from '../providers/ContextProvider'
 import Messages from '../pages/Messages'
-import Support from '../pages/Support'
 import Footer from '../components/Footer'
 import SentMessages from '../pages/SentMessages'
 import newMessageImg from '../assets/new-message.svg'
@@ -14,10 +13,19 @@ const MessagesLayout = function () {
 
   return (
     <div className="h-full grid grid-rows-[max-content_max-content_1fr_max-content] relative">
-      <header className="h-max mb-4">
+      <header className="h-max mb-6">
         <ul className="flex items-center justify-between gap-4 capitalize">
-          <li className="cursor-pointer">messages</li>
-          <li className="flex items-center gap-2 cursor-pointer">
+          <li
+            className="cursor-pointer relative"
+            onClick={() => navigateTo('sent-messages')}
+          >
+            messages
+            <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
+          </li>
+          <li
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => navigateTo('support')}
+          >
             pallet support{' '}
             <img src={logo} alt={`pallet logo`} className=" rounded-md" />
           </li>
@@ -28,10 +36,8 @@ const MessagesLayout = function () {
         <Messages />
       ) : route === 'sent-messages' ? (
         <SentMessages />
-      ) : route === 'drafts' ? (
-        <Drafts />
       ) : (
-        <Support />
+        <Drafts />
       )}
       <div
         onClick={() => navigateTo('send-message')}

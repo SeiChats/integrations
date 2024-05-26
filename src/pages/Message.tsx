@@ -90,7 +90,7 @@ const Message = function () {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
-            className="flex flex-wrap gap-4"
+            className="flex flex-wrap"
           >
             {messageData.message?.attachments.map(
               (file: FileData, index: number) => (

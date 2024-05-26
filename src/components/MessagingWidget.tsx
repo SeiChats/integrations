@@ -1,16 +1,15 @@
+import { useEffect, useRef } from 'react'
+import axios from 'axios'
+import { twMerge } from 'tailwind-merge'
 import attachmentIcon from '../assets/attachment.svg'
 import galleryIcon from '../assets/gallery.svg'
 import arrow from '../assets/arrow.svg'
-import { twMerge } from 'tailwind-merge'
 import LoadingSpinner from './LoadingSpinner'
-// import { handleUploadFiles } from '../api'
-import { useEffect, useRef } from 'react'
 import { formatFileSize, generateId } from '../utils/utils'
-import axios from 'axios'
 
 interface MessagingWidgetProps {
   className?: string
-  onSend?: () => void
+  onSend: () => void
   disabled?: boolean
   isLoading?: boolean
   fileList: {
@@ -62,7 +61,7 @@ const MessagingWidget = function ({
 
   const handleUploadFiles = async function (files: (File & { id: string })[]) {
     const selectedFiles = files.filter(
-      file => !fileList.some(fileData => fileData.id === file.id)
+      file => !fileList!.some(fileData => fileData.id === file.id)
     )
     if (!selectedFiles) return
 

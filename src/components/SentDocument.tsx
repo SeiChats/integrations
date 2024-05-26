@@ -20,7 +20,7 @@ const SentDocumentCard = ({ name, index, type, fileUrl }: Props) => {
         delay: 0.3 * index,
         type: 'spring',
       }}
-      className="card relative cursor-default rounded-md bg-white/20 border border-white/20 flex items-center justify-center gap-1 group/card mb-4 w-full mt-4"
+      className="card relative cursor-default rounded-md bg-white/20 border border-white/20 flex items-center justify-center gap-1 group/card w-full mt-4"
     >
       <div className="card-content p-4 w-full grid grid-rows-1 grid-cols-[auto_1fr_auto] gap-4 items-center">
         {type === 'image' ? (

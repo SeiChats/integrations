@@ -13,6 +13,7 @@ import Loading from './pages/Loading'
 import Login from './pages/Login'
 import SendMessage from './pages/SendMessage'
 import Message from './pages/Message'
+import SupportLayout from './layouts/SupportLayout'
 
 function App() {
   const { route, setIsWidgetVisible } = useContext(RouteContext)
@@ -47,9 +48,9 @@ function App() {
       <AnimatePresence>
         {/*TODO abstract routing by creating a route component*/}
         {(route === 'inbox' ||
-          route === 'support' ||
           route === 'sent-messages' ||
           route === 'drafts') && <MessagesLayout />}
+        {route.startsWith('support') && <SupportLayout />}
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
         {route === 'set-pin' && <Home />}
         {route === '/' && <Loading />}
