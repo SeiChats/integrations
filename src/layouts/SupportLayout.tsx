@@ -4,6 +4,7 @@ import logo from '../assets/placeholder-logo.jpg'
 import RouteContext from '@/providers/ContextProvider'
 import Footer from '@/components/Footer'
 import Support from '@/pages/Support'
+import seichatsConfig from '@/../seichats.config'
 
 const SupportLayout = function () {
   const { navigateTo } = useContext(RouteContext)
@@ -21,8 +22,12 @@ const SupportLayout = function () {
             className="flex items-center gap-2 cursor-pointer relative"
             onClick={() => navigateTo('support')}
           >
-            pallet support{' '}
-            <img src={logo} alt={`pallet logo`} className=" rounded-md" />
+            {seichatsConfig.name} support{' '}
+            <img
+              src={seichatsConfig.logo}
+              alt={`${seichatsConfig.name} logo`}
+              className=" rounded-md"
+            />
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
           {/*TODO make name and logo dynamic*/}

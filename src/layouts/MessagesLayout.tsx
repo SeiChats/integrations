@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 
-import logo from '../assets/placeholder-logo.jpg'
 import RouteContext from '../providers/ContextProvider'
 import Messages from '../pages/Messages'
 import Footer from '../components/Footer'
 import SentMessages from '../pages/SentMessages'
 import newMessageImg from '../assets/new-message.svg'
 import Drafts from '@/pages/Drafts'
+import seichatsConfig from 'seichats.config'
 
 const MessagesLayout = function () {
   const { route, navigateTo } = useContext(RouteContext)
@@ -26,10 +26,13 @@ const MessagesLayout = function () {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigateTo('support')}
           >
-            pallet support{' '}
-            <img src={logo} alt={`pallet logo`} className=" rounded-md" />
+            {seichatsConfig.name} support{' '}
+            <img
+              src={seichatsConfig.logo}
+              alt={`${seichatsConfig.name} logo`}
+              className=" rounded-md"
+            />
           </li>
-          {/*TODO make name and logo dynamic*/}
         </ul>
       </header>
       {route === 'inbox' ? (
