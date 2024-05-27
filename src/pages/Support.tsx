@@ -11,7 +11,8 @@ import seichatsConfig from '@/../seichats.config'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
-import { formatDate, isSameDay } from '@/utils/utils'
+import { formatDate, generateId, isSameDay } from '@/utils/utils'
+import { Message } from './SentMessages'
 
 const Support = function () {
   const { address, route } = useContext(RouteContext)
@@ -41,7 +42,6 @@ const Support = function () {
             tag: 'support',
             address: seichatsConfig.address,
           }),
-        // TODO filter to only messages received by you
         refetchInterval: 15 * 1000,
       },
     ],
@@ -67,10 +67,58 @@ const Support = function () {
     mutationFn: handleSaveToDraft,
     mutationKey: [address, 'support'],
     onSuccess() {
+      messageRef.current!.value = ''
       queryClient.invalidateQueries({
         queryKey: [isAdmin ? userAddress : address!, 'support-messages'],
       })
     },
+    // onMutate: async newMessage => {
+    //   // Cancel any outgoing refetches
+    //   // (so they don't overwrite our optimistic update)
+    //   await queryClient.cancelQueries({
+    //     queryKey: [isAdmin ? userAddress : address!, 'support-messages'],
+    //   })
+
+    //   // Snapshot the previous value
+    //   const previousMessages = queryClient.getQueryData([
+    //     isAdmin ? address : userAddress,
+    //     'support-messages',
+    //   ])
+
+    //   const message = {
+    //     messageId: generateId(),
+    //     isRead: false,
+    //     message: {
+    //       message: newMessage.message,
+    //       createdAt: Date.now(),
+    //     },
+    //     receiver: newMessage.receiver,
+    //     sender: newMessage.address,
+    //     timeStamp: Date.now(),
+    //   }
+    //   // Optimistically update to the new value
+    //   queryClient.setQueryData(
+    //     [isAdmin ? address : userAddress, 'support-messages'],
+    //     old => [...old, message]
+    //   )
+
+    //   // Return a context object with the snapshotted value
+    //   return { previousMessages }
+    // },
+    // // If the mutation fails,
+    // // use the context returned from onMutate to roll back
+    // onError: (err, newTodo, context) => {
+    //   queryClient.setQueryData(
+    //     [isAdmin ? address : userAddress, 'support-messages'],
+    //     context.previousMessages
+    //   )
+    // },
+    // // Always refetch after error or success:
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: [isAdmin ? address : userAddress, 'support-messages'],
+    //   })
+    // },
   })
 
   console.log(data, userAddress)
