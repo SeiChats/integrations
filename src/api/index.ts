@@ -9,7 +9,11 @@ import {
   getCurrentDateFormatted,
   formatFileSize,
 } from '../utils/utils'
-import { addMessageToDraft, sendMessage } from './contract/contractFunctions'
+import {
+  addMessageToDraft,
+  sendMessage,
+  sendMessageToSupport,
+} from './contract/contractFunctions'
 
 export function encryptPassword(password: string): string {
   const salt = bcrypt.genSaltSync(10)
@@ -276,6 +280,7 @@ export const handleSaveToDraft = async (data1: {
   subject: string
   receiver: string
   address: string
+  tag: 'draft' | 'support'
   fileUrls: {
     url: string
     type: string
@@ -303,7 +308,9 @@ export const handleSaveToDraft = async (data1: {
 
     console.log(`Message encrypted: `, encryptData.data)
 
-    const resFromDb = await addMessageToDraft({
+    const resFromDb = await (data1.tag === 'draft'
+      ? addMessageToDraft
+      : sendMessageToSupport)({
       message_payload: encryptData.data['encryptedPayload'],
       wallet_address: data1.address,
       receiver: data1.receiver.trim(),
@@ -319,11 +326,12 @@ export const handleSaveToDraft = async (data1: {
 
 export async function getAllMessagesbyTag(tag: string, wallet: string) {
   if (!tag) throw new Error('Tag not found')
+  console.log(tag)
   const { data, error } = await supabase
     .from('messages')
     .select('*')
     .eq('tag', tag)
-    .eq('author', wallet)
+    .ilike(tag === 'support' ? 'receiver' : 'author', wallet)
   if (error) throw new Error(error.message)
 
   return data

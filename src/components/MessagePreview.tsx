@@ -1,10 +1,12 @@
+import { useContext } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { motion } from 'framer-motion'
+
 import checkedIcon from '../assets/check-single.svg'
 import doubleCheckedIcon from '../assets/checked.svg'
 import { convertTimestampToTime } from '../utils/utils'
-import { useContext } from 'react'
 import RouteContext from '../providers/ContextProvider'
-import { twMerge } from 'tailwind-merge'
+import seichatsConfig from '@/../seichats.config'
 
 interface MessagePreviewProps {
   message: string
@@ -24,11 +26,20 @@ const MessagePreview = function ({
   isRead,
 }: MessagePreviewProps) {
   const time = convertTimestampToTime(timeStamp)
-  const { navigateTo } = useContext(RouteContext)
+  const { navigateTo, route, address } = useContext(RouteContext)
+
+  const fromAdmin =
+    route === 'support' &&
+    address?.toLowerCase() === seichatsConfig.address.toLowerCase()
+
+  console.log(route)
+
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
-      onClick={() => navigateTo(`messages/${messageId}`)}
+      onClick={() =>
+        navigateTo(fromAdmin ? `support/${recipient}` : `messages/${messageId}`)
+      }
       className="grid grid-cols-[auto_1fr_auto] grid-rows-[repeat(2,_auto)] gap-x-4 gap-y-2 items-center bg-[#191D1D] p-3 mb-3 rounded-lg cursor-pointer"
     >
       <div className="bg-[#D9D9D9] w-4 h-4 rounded-[50%] row-start-1 row-span-1 col-start-1 col-span-1" />

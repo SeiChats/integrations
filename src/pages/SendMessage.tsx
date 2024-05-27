@@ -163,6 +163,7 @@ const SendMessage = function () {
                   subject: subjectInputRef.current!.value,
                   fileUrls: fileList,
                   address: address!,
+                  tag: 'draft',
                 })
               }}
               className="flex items-center gap-2 text-sm text-[#D6D6D6] disabled:cursor-not-allowed disabled:opacity-80"

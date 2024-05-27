@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 import SentMessages from '../pages/SentMessages'
 import newMessageImg from '../assets/new-message.svg'
 import Drafts from '@/pages/Drafts'
-import seichatsConfig from 'seichats.config'
+import seichatsConfig from '@/../seichats.config'
 
 const MessagesLayout = function () {
   const { route, navigateTo } = useContext(RouteContext)

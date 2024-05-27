@@ -1,13 +1,14 @@
 import { useContext } from 'react'
 
-import logo from '../assets/placeholder-logo.jpg'
 import RouteContext from '@/providers/ContextProvider'
 import Footer from '@/components/Footer'
 import Support from '@/pages/Support'
 import seichatsConfig from '@/../seichats.config'
+import SupportAdmin from '@/pages/SupportAdmin'
 
 const SupportLayout = function () {
-  const { navigateTo } = useContext(RouteContext)
+  const { navigateTo, address, route } = useContext(RouteContext)
+
   return (
     <div className="h-full grid grid-rows-[max-content_1fr_max-content] relative">
       <header className="h-max mb-6 border-b border-white/5 pb-2">
@@ -26,7 +27,7 @@ const SupportLayout = function () {
             <img
               src={seichatsConfig.logo}
               alt={`${seichatsConfig.name} logo`}
-              className=" rounded-md"
+              className="rounded-md"
             />
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
@@ -34,7 +35,18 @@ const SupportLayout = function () {
         </ul>
       </header>
       <div className="grid grid-rows-[1fr_auto]">
-        <Support />
+        {route === 'support' &&
+          address!.toLowerCase() === seichatsConfig.address.toLowerCase() && (
+            <SupportAdmin />
+          )}
+        {route === 'support' &&
+          address!.toLowerCase() !== seichatsConfig.address.toLowerCase() && (
+            <Support />
+          )}
+        {route.startsWith('support/') &&
+          address!.toLowerCase() === seichatsConfig.address.toLowerCase() && (
+            <Support />
+          )}
       </div>
       <Footer />
     </div>

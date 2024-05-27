@@ -1,6 +1,6 @@
 const seichatsConfig = {
-  name: 'Pallet',
-  address: '0x09A90b7C954246D527d1237044B432B80Ec6b75C',
+  name: 'pallet',
+  address: '0x80d52fFbdf4141919eb5eb0b80362913537873f8',
   logo: '/placeholder-logo.jpg',
 }
 

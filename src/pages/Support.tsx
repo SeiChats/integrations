@@ -1,22 +1,128 @@
+import { useContext, useRef } from 'react'
+import { QueryClient, useMutation, useQueries } from '@tanstack/react-query'
+
 import attachmentIcon from '../assets/attachment.svg'
 import galleryIcon from '../assets/gallery.svg'
 import arrow from '../assets/arrow.svg'
 import nftBG from '../assets/nft-bg.png'
-import { twMerge } from 'tailwind-merge'
+import { getAllDecryptedMessagesByTag, handleSaveToDraft } from '@/api'
+import RouteContext from '@/providers/ContextProvider'
+import seichatsConfig from '@/../seichats.config'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import SentSupportMessage from '@/components/SentSupportMessage'
+import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
+import { formatDate, isSameDay } from '@/utils/utils'
 
 const Support = function () {
+  const { address, route } = useContext(RouteContext)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
+  const queryClient = new QueryClient()
+
+  const isAdmin =
+    address!.toLowerCase() === seichatsConfig.address.toLowerCase()
+
+  const userAddress = route.split('/')[1]
+
+  // eslint-disable-next-line prefer-const
+  let { data, isLoading } = useQueries({
+    queries: [
+      {
+        queryKey: [isAdmin ? userAddress : address, 'support-messages'],
+        queryFn: () =>
+          getAllDecryptedMessagesByTag({
+            tag: 'support',
+            address: isAdmin ? userAddress : address!,
+          }),
+      },
+      {
+        queryKey: [seichatsConfig.address, 'support-messages'],
+        queryFn: () =>
+          getAllDecryptedMessagesByTag({
+            tag: 'support',
+            address: seichatsConfig.address,
+          }),
+        // TODO filter to only messages received by you
+        refetchInterval: 15 * 1000,
+      },
+    ],
+    combine: results => {
+      return {
+        data: results.map(result => result.data),
+        isLoading: results.some(result => result.isPending),
+      }
+    },
+  })
+
+  if (!isLoading) {
+    data = data
+      ?.flat()
+      .sort(
+        (a, b) =>
+          new Date(a.message.createdAt).getTime() -
+          new Date(b.message.createdAt).getTime()
+      )
+  }
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: handleSaveToDraft,
+    mutationKey: [address, 'support'],
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: [isAdmin ? userAddress : address!, 'support-messages'],
+      })
+    },
+  })
+
+  console.log(data, userAddress)
   return (
     <>
-      <div className="grid place-content-center">
-        <img src={nftBG} alt="no messages" />
-        <p className="capitalize mt-2 text-center text-lg">sei something!</p>
-      </div>
+      {data?.flat().length !== 0 && !isLoading && (
+        <div className="max-h-[264px] overflow-y-auto overflow__bar">
+          {data.flat().map((message, idx, arr) => {
+            const prev = arr[idx - 1]
+            const isSameDate = isSameDay(
+              new Date(message.message.createdAt).getTime(),
+              new Date(prev?.message.createdAt).getTime()
+            )
+            return (
+              <>
+                {!isSameDate && (
+                  <NewDay
+                    key={new Date(message.message.createdAt).getTime()}
+                    timeStamp={new Date(message.message.createdAt).getTime()}
+                  />
+                )}
+                {message.sender === address ? (
+                  <SentSupportMessage
+                    key={message.message.id}
+                    message={message.message.message}
+                    timeStamp={new Date(message.message.createdAt).getTime()}
+                  />
+                ) : (
+                  <ReceivedSupportMessage
+                    key={message.message.id}
+                    message={message.message.message}
+                    timeStamp={new Date(message.message.createdAt).getTime()}
+                  />
+                )}
+              </>
+            )
+          })}
+        </div>
+      )}
+      {(isLoading || data?.flat().length == 0) && (
+        <div className="grid place-content-center">
+          <img src={nftBG} alt="no messages" />
+          <p className="capitalize mt-2 text-center text-lg">sei something!</p>
+        </div>
+      )}
       <div className="relative">
         <textarea
           name="send-message"
+          ref={messageRef}
           id="message"
           placeholder="send message"
-          className="bg-transparent shadow-[0px_0px_14.26px_1.45px_#00000012] outline-none border border-white/20 resize-none h-[130px] placeholder:capitalize p-3 rounded-2xl overflow__bar text-white/80 block w-full"
+          className="bg-transparent mt-4 shadow-[0px_0px_14.26px_1.45px_#00000012] outline-none border border-white/20 resize-none h-[130px] placeholder:capitalize p-3 rounded-2xl overflow__bar text-white/80 block w-full"
         />
         <div className="flex items-center bg-[#191D1D] p-2 rounded-full gap-4 w-max absolute inset-[auto_1em_1em_auto]">
           <label htmlFor="image-upload" className="cursor-pointer block">
@@ -43,15 +149,38 @@ const Support = function () {
           </label>
           <div className="w-[1px] h-4 bg-[#D9D9D91A]" />
           <button
-            className={twMerge(
-              'p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer border-none outline-none'
-            )}
+            className="p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer border-none outline-none"
+            onClick={() => {
+              mutate({
+                address: address!,
+                fileUrls: [],
+                message: messageRef.current!.value,
+                receiver: isAdmin ? userAddress : seichatsConfig.address,
+                subject: 'support',
+                tag: 'support',
+              })
+            }}
           >
-            <img src={arrow} alt="send" />
+            {isPending ? (
+              <LoadingSpinner radii={20} ringWidth={3} ringColor="#ffffff" />
+            ) : (
+              <img src={arrow} alt="send" />
+            )}
           </button>
         </div>
       </div>
     </>
+  )
+}
+
+const NewDay = function ({ timeStamp }: { timeStamp: number }) {
+  return (
+    <div className="relative my-4">
+      <p className="w-max mx-auto text-sm text-white/70 bg-[#141717] px-3 relative z-10">
+        {formatDate(timeStamp)}
+      </p>
+      <div className="absolute inset-[50%_0_auto_0] translate-y--1/2 h-[1px] bg-white/30" />
+    </div>
   )
 }
 

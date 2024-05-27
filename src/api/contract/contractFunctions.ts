@@ -413,3 +413,34 @@ export async function addMessageToDraft({
 
   return result
 }
+
+export async function sendMessageToSupport({
+  message_payload,
+  wallet_address,
+  receiver,
+  cipherIv,
+  timeStamp,
+}: {
+  message_payload: string
+  wallet_address: string
+  receiver: string
+  cipherIv: string
+  timeStamp: number
+}) {
+  if (!wallet_address) return
+
+  const { data: result, error } = await supabase
+    .from('messages')
+    .insert({
+      payload: message_payload,
+      author: wallet_address,
+      tag: 'support',
+      receiver,
+      cipher_iv: cipherIv,
+      timestamp: timeStamp,
+    })
+    .select()
+  if (error) return error
+
+  return result
+}

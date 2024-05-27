@@ -39,6 +39,10 @@ const Loading = function () {
           params: [{ chainId: '0xae3f3' }],
         })
         setAddress(accounts?.[0])
+
+        window.ethereum.on('accountsChanged', function (accounts: string[]) {
+          setAddress(accounts?.[0])
+        })
       } catch (err: any) {
         console.log(err.code, err.message)
         if (err.code === 4001) {

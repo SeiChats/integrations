@@ -302,3 +302,23 @@ export const messageCardTime = (time: number | Date): string => {
 
   return `${count} ${name}${count > 1 ? 's' : ''} ago`
 }
+
+export function isSameDay(timestamp1: number, timestamp2: number) {
+  const date1 = new Date(timestamp1)
+  const date2 = new Date(timestamp2)
+
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  )
+}
+
+export function formatDate(timestamp: number) {
+  const date = new Date(timestamp)
+  const day = date.getDate()
+  const month = date.toLocaleString('default', { month: 'long' })
+  const year = date.getFullYear()
+
+  return `${day} ${month} ${year}`
+}
