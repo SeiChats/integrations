@@ -6,10 +6,12 @@ import { getAllDecryptedMessagesByTag } from '@/api'
 import seichatsConfig from '@/../seichats.config'
 import nftBG from '../assets/nft-bg.png'
 import MessagePreview from '@/components/MessagePreview'
+import { Message } from './SentMessages'
 
 const SupportAdmin = function () {
   const { address } = useContext(RouteContext)
 
+  // eslint-disable-next-line prefer-const
   let { data, isLoading } = useQuery({
     queryKey: ['all-messages', 'support-messages'],
     queryFn: () =>
@@ -24,7 +26,8 @@ const SupportAdmin = function () {
         new Date(b.message.createdAt).getTime()
     )
     .reduce((acc, curr) => {
-      if (acc.some(message => message.sender === curr.sender)) return acc
+      if (acc.some((message: Message) => message.sender === curr.sender))
+        return acc
       if (curr.sender === seichatsConfig.address.toLowerCase()) return acc
       return [...acc, curr]
     }, [])
