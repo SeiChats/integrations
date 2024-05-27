@@ -15,11 +15,11 @@ Add the following lines of code to the `<head>` section of your HTML file. This 
 ```html
 <head>
   <link
-    href="https://keith-web3.github.io/integrations/dist/index.css"
+    href="https://seichats.github.io/integrations/dist/index.css"
     rel="stylesheet"
   />
   <script
-    src="https://keith-web3.github.io/integrations/dist/index.js"
+    src="https://seichats.github.io/integrations/dist/index.js"
     defer
   ></script>
 </head>
@@ -44,29 +44,30 @@ Include the following `<div>` element in the `<body>` section of your HTML file.
 After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.
 
 ### Example
+
 Here’s an example of a complete HTML file with the Seichats Widget integrated:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Application</title>
-  <link
-    href="https://keith-web3.github.io/integrations/dist/index.css"
-    rel="stylesheet"
-  />
-  <script
-    src="https://keith-web3.github.io/integrations/dist/index.js"
-    defer
-  ></script>
-</head>
-<body>
-  <h1>Welcome to My Application</h1>
-  <p>This is a sample application with the Seichats Widget integrated.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Application</title>
+    <link
+      href="https://keith-web3.github.io/integrations/dist/index.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://keith-web3.github.io/integrations/dist/index.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <h1>Welcome to My Application</h1>
+    <p>This is a sample application with the Seichats Widget integrated.</p>
 
-  <div id="seichats-widget"></div>
-</body>
+    <div id="seichats-widget"></div>
+  </body>
 </html>
 ```
