@@ -5,6 +5,10 @@ import seichatLogo from '../assets/seichat.svg'
 import RouteContext from '../providers/ContextProvider'
 import { motion } from 'framer-motion'
 
+fetch('../../seichats.config.json')
+  .then(data => data.json())
+  .then(config => console.log(config))
+
 const Loading = function () {
   const { setIsWidgetVisible, setAddress } = useContext(RouteContext)
 

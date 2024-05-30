@@ -11,8 +11,7 @@ import seichatsConfig from '@/../seichats.config'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
-import { formatDate, generateId, isSameDay } from '@/utils/utils'
-import { Message } from './SentMessages'
+import { formatDate, isSameDay } from '@/utils/utils'
 
 const Support = function () {
   const { address, route } = useContext(RouteContext)
