@@ -55,11 +55,11 @@ Here’s an example of a complete HTML file with the Seichats Widget integrated:
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Application</title>
     <link
-      href="https://keith-web3.github.io/integrations/dist/index.css"
+      href="https://seichats.github.io/integrations/dist/index.css"
       rel="stylesheet"
     />
     <script
-      src="https://keith-web3.github.io/integrations/dist/index.js"
+      src="https://seichats.github.io/integrations/dist/index.js"
       defer
     ></script>
   </head>
