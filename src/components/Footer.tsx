@@ -37,7 +37,7 @@ const Footer = function ({ className }: FooterProps) {
         <img src={draft} alt="draft" className="mx-auto mb-1 mt-1" />
         <span className="opacity-80">draft</span>
       </div>
-      <a href="/">
+      <a href="https://app.seichats.com" target="_blank">
         <img src={logoWhite} alt="home" className="mx-auto" />
       </a>
     </footer>
