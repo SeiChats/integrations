@@ -23,7 +23,7 @@ export interface FileData {
 }
 
 const SendMessage = function () {
-  const { address } = useContext(RouteContext)
+  const { address, navigateTo } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
   const subjectInputRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
@@ -37,9 +37,9 @@ const SendMessage = function () {
   const queryClient = new QueryClient()
   const { mutate, isPending } = useMutation({
     mutationFn: handleSendMessage,
-    onSuccess(data) {
-      console.log(data)
+    onSuccess() {
       queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
+      navigateTo('sent-messages')
     },
   })
 

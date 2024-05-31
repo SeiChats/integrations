@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 const Loading = function () {
   const { setIsWidgetVisible, setAddress, setSeichatConfig } =
     useContext(RouteContext)
-  const { data } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ['seichats-config'],
     queryFn: async function () {
       const res = await fetch('../../seichats.config.json')
@@ -18,7 +18,10 @@ const Loading = function () {
     },
     staleTime: Infinity,
   })
-  setSeichatConfig(data)
+
+  useEffect(() => {
+    setSeichatConfig(data)
+  }, [isSuccess])
   useEffect(() => {
     const getProvider = async () => {
       const provider = await detectEthereumProvider({ silent: true })
@@ -93,7 +96,14 @@ const Loading = function () {
       className="h-full grid place-items-center"
       exit={{ opacity: 0, x: '-100%' }}
     >
-      <img src={seichatLogo} alt="seichat logo" className="w-16 block" />
+      <motion.img
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ repeat: Infinity, duration: 0.5, repeatType: 'reverse' }}
+        src={seichatLogo}
+        alt="seichat logo"
+        className="w-16 block"
+      />
     </motion.div>
   )
 }
