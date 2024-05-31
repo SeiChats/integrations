@@ -4,13 +4,19 @@ import detectEthereumProvider from '@metamask/detect-provider'
 import seichatLogo from '../assets/seichat.svg'
 import RouteContext from '../providers/ContextProvider'
 import { motion } from 'framer-motion'
-
-fetch('../../seichats.config.json')
-  .then(data => data.json())
-  .then(config => console.log(config))
+import { useQuery } from '@tanstack/react-query'
 
 const Loading = function () {
   const { setIsWidgetVisible, setAddress } = useContext(RouteContext)
+  useQuery({
+    queryKey: ['seichats-config'],
+    queryFn: async function () {
+      const res = await fetch('../../seichats.config.json')
+      const data = await res.json()
+      return data
+    },
+    staleTime: Infinity,
+  })
 
   useEffect(() => {
     const getProvider = async () => {

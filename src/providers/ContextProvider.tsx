@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
+
 import { insertUser, lookupUser } from '../api'
 
 const RouteContext = createContext<{

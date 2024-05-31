@@ -2,12 +2,16 @@ import { useContext } from 'react'
 
 import RouteContext from '@/providers/ContextProvider'
 import Footer from '@/components/Footer'
-import Support from '@/pages/Support'
-import seichatsConfig from '@/../seichats.config'
+import Support, { SeichatsConfig } from '@/pages/Support'
 import SupportAdmin from '@/pages/SupportAdmin'
+import { queryClient } from '@/providers/QueryProvider'
 
 const SupportLayout = function () {
   const { navigateTo, address, route } = useContext(RouteContext)
+
+  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
+    'seichats-config',
+  ])!
 
   return (
     <div className="h-full grid grid-rows-[max-content_1fr_max-content] relative">

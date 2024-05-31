@@ -7,19 +7,28 @@ import arrow from '../assets/arrow.svg'
 import nftBG from '../assets/nft-bg.png'
 import { getAllDecryptedMessagesByTag, handleSaveToDraft } from '@/api'
 import RouteContext from '@/providers/ContextProvider'
-import seichatsConfig from '@/../seichats.config'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
 import { formatDate, isSameDay } from '@/utils/utils'
+
+export interface SeichatsConfig {
+  name: string
+  address: string
+  logo: string
+}
 
 const Support = function () {
   const { address, route } = useContext(RouteContext)
   const messageRef = useRef<HTMLTextAreaElement>(null)
   const queryClient = new QueryClient()
 
+  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
+    'seichats-config',
+  ])
+
   const isAdmin =
-    address!.toLowerCase() === seichatsConfig.address.toLowerCase()
+    address!.toLowerCase() === seichatsConfig!.address.toLowerCase()
 
   const userAddress = route.split('/')[1]
 
@@ -35,11 +44,11 @@ const Support = function () {
           }),
       },
       {
-        queryKey: [seichatsConfig.address, 'support-messages'],
+        queryKey: [seichatsConfig!.address, 'support-messages'],
         queryFn: () =>
           getAllDecryptedMessagesByTag({
             tag: 'support',
-            address: seichatsConfig.address,
+            address: seichatsConfig!.address,
           }),
         refetchInterval: 15 * 1000,
       },
@@ -202,7 +211,7 @@ const Support = function () {
                 address: address!,
                 fileUrls: [],
                 message: messageRef.current!.value,
-                receiver: isAdmin ? userAddress : seichatsConfig.address,
+                receiver: isAdmin ? userAddress : seichatsConfig!.address,
                 subject: 'support',
                 tag: 'support',
               })

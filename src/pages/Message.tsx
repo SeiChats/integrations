@@ -42,6 +42,8 @@ const Message = function () {
     fromDraft ? message.id === messageId : message.messageId === messageId
   )
 
+  console.log(messageData)
+
   return (
     <div className="h-full grid grid-rows-[repeat(4,_auto)_1fr_auto]">
       <header className="grid grid-cols-[auto_auto_1fr_auto] grid-rows-[repeat(2,_auto)] items-center gap-x-3 gap-y-1 mt-2 mb-3">

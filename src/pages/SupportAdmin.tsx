@@ -3,13 +3,18 @@ import { useQuery } from '@tanstack/react-query'
 
 import RouteContext from '@/providers/ContextProvider'
 import { getAllDecryptedMessagesByTag } from '@/api'
-import seichatsConfig from '@/../seichats.config'
 import nftBG from '../assets/nft-bg.png'
 import MessagePreview from '@/components/MessagePreview'
 import { Message } from './SentMessages'
+import { SeichatsConfig } from './Support'
+import { queryClient } from '@/providers/QueryProvider'
 
 const SupportAdmin = function () {
   const { address } = useContext(RouteContext)
+
+  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
+    'seichats-config',
+  ])!
 
   // eslint-disable-next-line prefer-const
   let { data, isLoading } = useQuery({
