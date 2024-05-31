@@ -2,6 +2,12 @@ import { createContext, ReactNode, useEffect, useState } from 'react'
 
 import { insertUser, lookupUser } from '../api'
 
+interface SeichatConfig {
+  name: string
+  address: string
+  logo: string
+}
+
 const RouteContext = createContext<{
   route: string
   prevRoute: string | null
@@ -10,6 +16,8 @@ const RouteContext = createContext<{
   address: string | null
   setAddress: React.Dispatch<React.SetStateAction<string | null>>
   setIsWidgetVisible: React.Dispatch<React.SetStateAction<boolean>>
+  seichatConfig: SeichatConfig | null
+  setSeichatConfig: React.Dispatch<React.SetStateAction<SeichatConfig | null>>
 }>({
   route: '/',
   prevRoute: null,
@@ -18,6 +26,8 @@ const RouteContext = createContext<{
   address: null,
   setAddress: () => {},
   setIsWidgetVisible: () => {},
+  seichatConfig: null,
+  setSeichatConfig: () => {},
 })
 
 export function Provider({ children }: { children: ReactNode }) {
@@ -25,6 +35,7 @@ export function Provider({ children }: { children: ReactNode }) {
   const [prevRoute, setPrevRoute] = useState<string | null>(null)
   const [isWidgetVisible, setIsWidgetVisible] = useState(false)
   const [address, setAddress] = useState<string | null>(null)
+  const [seichatConfig, setSeichatConfig] = useState<SeichatConfig | null>(null)
 
   useEffect(() => {
     if (!address) return
@@ -68,6 +79,8 @@ export function Provider({ children }: { children: ReactNode }) {
         setAddress,
         isWidgetVisible,
         setIsWidgetVisible,
+        seichatConfig,
+        setSeichatConfig,
       }}
     >
       {children}

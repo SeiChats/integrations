@@ -2,16 +2,11 @@ import { useContext } from 'react'
 
 import RouteContext from '@/providers/ContextProvider'
 import Footer from '@/components/Footer'
-import Support, { SeichatsConfig } from '@/pages/Support'
+import Support from '@/pages/Support'
 import SupportAdmin from '@/pages/SupportAdmin'
-import { queryClient } from '@/providers/QueryProvider'
 
 const SupportLayout = function () {
-  const { navigateTo, address, route } = useContext(RouteContext)
-
-  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
-    'seichats-config',
-  ])!
+  const { navigateTo, address, route, seichatConfig } = useContext(RouteContext)
 
   return (
     <div className="h-full grid grid-rows-[max-content_1fr_max-content] relative">
@@ -27,10 +22,10 @@ const SupportLayout = function () {
             className="flex items-center gap-2 cursor-pointer relative"
             onClick={() => navigateTo('support')}
           >
-            {seichatsConfig.name} support{' '}
+            {seichatConfig!.name} support{' '}
             <img
-              src={seichatsConfig.logo}
-              alt={`${seichatsConfig.name} logo`}
+              src={seichatConfig!.logo}
+              alt={`${seichatConfig!.name} logo`}
               className="rounded-md"
             />
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
@@ -40,15 +35,15 @@ const SupportLayout = function () {
       </header>
       <div className="grid grid-rows-[1fr_auto]">
         {route === 'support' &&
-          address!.toLowerCase() === seichatsConfig.address.toLowerCase() && (
+          address!.toLowerCase() === seichatConfig!.address.toLowerCase() && (
             <SupportAdmin />
           )}
         {route === 'support' &&
-          address!.toLowerCase() !== seichatsConfig.address.toLowerCase() && (
+          address!.toLowerCase() !== seichatConfig!.address.toLowerCase() && (
             <Support />
           )}
         {route.startsWith('support/') &&
-          address!.toLowerCase() === seichatsConfig.address.toLowerCase() && (
+          address!.toLowerCase() === seichatConfig!.address.toLowerCase() && (
             <Support />
           )}
       </div>

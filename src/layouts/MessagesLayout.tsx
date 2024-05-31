@@ -6,15 +6,9 @@ import Footer from '../components/Footer'
 import SentMessages from '../pages/SentMessages'
 import newMessageImg from '../assets/new-message.svg'
 import Drafts from '@/pages/Drafts'
-import { SeichatsConfig } from '@/pages/Support'
-import { queryClient } from '@/providers/QueryProvider'
 
 const MessagesLayout = function () {
-  const { route, navigateTo } = useContext(RouteContext)
-
-  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
-    'seichats-config',
-  ])
+  const { route, navigateTo, seichatConfig } = useContext(RouteContext)
 
   return (
     <div className="h-full grid grid-rows-[max-content_max-content_1fr_max-content] relative">
@@ -31,10 +25,10 @@ const MessagesLayout = function () {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigateTo('support')}
           >
-            {seichatsConfig!.name} support{' '}
+            {seichatConfig!.name} support{' '}
             <img
-              src={seichatsConfig!.logo}
-              alt={`${seichatsConfig!.name} logo`}
+              src={seichatConfig!.logo}
+              alt={`${seichatConfig!.name} logo`}
               className=" rounded-md"
             />
           </li>

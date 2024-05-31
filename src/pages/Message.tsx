@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 
 import caretIcon from '../assets/caret.svg'
 import RouteContext from '../providers/ContextProvider'
@@ -10,7 +11,6 @@ import {
 import { Message as MessageInterface } from './SentMessages'
 import { formatTimestamp } from '../utils/utils'
 import Footer from '../components/Footer'
-import { motion } from 'framer-motion'
 import SentDocumentCard from '../components/SentDocument'
 import { FileData } from './SendMessage'
 import { getAllDecryptedMessagesByTag } from '@/api'
@@ -42,7 +42,14 @@ const Message = function () {
     fromDraft ? message.id === messageId : message.messageId === messageId
   )
 
-  console.log(messageData)
+  // const id = messageData?.messageId || messageData?.id
+
+  // console.log(messageData)
+  // useEffect(() => {
+  //   ;(async function () {
+  //     await isRead(id)
+  //   })()
+  // }, [id])
 
   return (
     <div className="h-full grid grid-rows-[repeat(4,_auto)_1fr_auto]">

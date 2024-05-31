@@ -6,8 +6,6 @@ import checkedIcon from '../assets/check-single.svg'
 import doubleCheckedIcon from '../assets/checked.svg'
 import { convertTimestampToTime } from '../utils/utils'
 import RouteContext from '../providers/ContextProvider'
-import { SeichatsConfig } from '@/pages/Support'
-import { queryClient } from '@/providers/QueryProvider'
 
 interface MessagePreviewProps {
   message: string
@@ -27,15 +25,11 @@ const MessagePreview = function ({
   isRead,
 }: MessagePreviewProps) {
   const time = convertTimestampToTime(timeStamp)
-  const { navigateTo, route, address } = useContext(RouteContext)
-
-  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
-    'seichats-config',
-  ])!
+  const { navigateTo, route, address, seichatConfig } = useContext(RouteContext)
 
   const fromAdmin =
     route === 'support' &&
-    address?.toLowerCase() === seichatsConfig.address.toLowerCase()
+    address?.toLowerCase() === seichatConfig!.address.toLowerCase()
 
   return (
     <motion.div

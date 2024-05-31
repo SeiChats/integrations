@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react'
-import { QueryClient, useMutation, useQueries } from '@tanstack/react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 
 import attachmentIcon from '../assets/attachment.svg'
 import galleryIcon from '../assets/gallery.svg'
@@ -11,24 +11,14 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
 import { formatDate, isSameDay } from '@/utils/utils'
-
-export interface SeichatsConfig {
-  name: string
-  address: string
-  logo: string
-}
+import { queryClient } from '@/providers/QueryProvider'
 
 const Support = function () {
-  const { address, route } = useContext(RouteContext)
+  const { address, route, seichatConfig } = useContext(RouteContext)
   const messageRef = useRef<HTMLTextAreaElement>(null)
-  const queryClient = new QueryClient()
-
-  const seichatsConfig = queryClient.getQueryData<SeichatsConfig>([
-    'seichats-config',
-  ])
 
   const isAdmin =
-    address!.toLowerCase() === seichatsConfig!.address.toLowerCase()
+    address!.toLowerCase() === seichatConfig!.address.toLowerCase()
 
   const userAddress = route.split('/')[1]
 
@@ -44,11 +34,11 @@ const Support = function () {
           }),
       },
       {
-        queryKey: [seichatsConfig!.address, 'support-messages'],
+        queryKey: [seichatConfig!.address, 'support-messages'],
         queryFn: () =>
           getAllDecryptedMessagesByTag({
             tag: 'support',
-            address: seichatsConfig!.address,
+            address: seichatConfig!.address,
           }),
         refetchInterval: 15 * 1000,
       },
@@ -211,7 +201,7 @@ const Support = function () {
                 address: address!,
                 fileUrls: [],
                 message: messageRef.current!.value,
-                receiver: isAdmin ? userAddress : seichatsConfig!.address,
+                receiver: isAdmin ? userAddress : seichatConfig!.address,
                 subject: 'support',
                 tag: 'support',
               })

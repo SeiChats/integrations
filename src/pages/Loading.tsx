@@ -7,8 +7,9 @@ import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 
 const Loading = function () {
-  const { setIsWidgetVisible, setAddress } = useContext(RouteContext)
-  useQuery({
+  const { setIsWidgetVisible, setAddress, setSeichatConfig } =
+    useContext(RouteContext)
+  const { data } = useQuery({
     queryKey: ['seichats-config'],
     queryFn: async function () {
       const res = await fetch('../../seichats.config.json')
@@ -17,7 +18,7 @@ const Loading = function () {
     },
     staleTime: Infinity,
   })
-
+  setSeichatConfig(data)
   useEffect(() => {
     const getProvider = async () => {
       const provider = await detectEthereumProvider({ silent: true })
