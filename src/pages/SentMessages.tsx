@@ -5,6 +5,7 @@ import seichatLogo from '../assets/seichat.svg'
 import { getMessagesSentBy } from '../api/contract/contractFunctions'
 import MessagePreview from '../components/MessagePreview'
 import RouteContext from '../providers/ContextProvider'
+import { motion } from 'framer-motion'
 
 export interface Message {
   messageId: string
@@ -30,9 +31,16 @@ const SentMessages = function () {
   return (
     <div className=" row-start-2 row-end-4 min-h-full relative overflow-y-auto overflow-x-hidden overflow__bar">
       {isLoading ? (
-        <img
+        <motion.img
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          transition={{
+            repeat: Infinity,
+            duration: 0.5,
+            repeatType: 'reverse',
+          }}
           src={seichatLogo}
-          className="absolute inset-[50%_50%_auto_auto] w-16 block translate-y--1/2 translate-x-1/2"
+          className="absolute inset-[50%_50%_auto_auto] w-16 block !translate-y--1/2 !translate-x-1/2"
         />
       ) : (
         data

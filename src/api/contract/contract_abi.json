@@ -1,785 +1,661 @@
 [
+  { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_messageId",
-        "type": "uint256"
-      }
-    ],
+    "type": "function",
     "name": "deleteMessage",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+    "inputs": [
+      { "name": "_messageId", "type": "uint256", "internalType": "uint256" }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "nonpayable"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_parentId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_replyIndex",
-        "type": "uint256"
-      }
-    ],
+    "type": "function",
     "name": "deleteReply",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_messageId",
-        "type": "uint256"
-      }
+      { "name": "_parentId", "type": "uint256", "internalType": "uint256" },
+      { "name": "_replyIndex", "type": "uint256", "internalType": "uint256" }
     ],
-    "name": "isRead",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "nonpayable"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "messageId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "deleter",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MessageDeleted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "messageId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "mover",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MessageMovedToTrash",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "messageId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MessageRead",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "parentId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "replyId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "cipherIv",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "encryptedMessage",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MessageReplied",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "messageId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "cipherIv",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "encryptedMessage",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MessageSent",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_messageId",
-        "type": "uint256"
-      }
-    ],
-    "name": "moveToTrash",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_messageId",
-        "type": "uint256"
-      }
-    ],
-    "name": "removeFromTrash",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "parentId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "replyId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "deleter",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "ReplyDeleted",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_receiver",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_parentId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_cipherIv",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_encryptedMessage",
-        "type": "string"
-      }
-    ],
-    "name": "replyToMessage",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_receiver",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_cipherIv",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_encryptedMessage",
-        "type": "string"
-      }
-    ],
-    "name": "sendMessage",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
+    "type": "function",
     "name": "getMessageCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
   },
   {
+    "type": "function",
+    "name": "getMessagesMovedToTrash",
+    "inputs": [
+      { "name": "_user", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "internalType": "struct SeiChat.Message[]",
+        "components": [
+          { "name": "messageId", "type": "uint256", "internalType": "uint256" },
+          { "name": "sender", "type": "address", "internalType": "address" },
+          { "name": "receiver", "type": "address", "internalType": "address" },
+          { "name": "cipherIv", "type": "string", "internalType": "string" },
+          {
+            "name": "encryptedMessage",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "replies",
+            "type": "tuple[]",
+            "internalType": "struct SeiChat.Replymessage[]",
+            "components": [
+              {
+                "name": "parentMessageId",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "sender",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "receiver",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "cipherIv",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "encryptedMessage",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "deletedBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "deletedByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "isReadByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "timestamp",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ]
+          },
+          { "name": "deletedBySender", "type": "bool", "internalType": "bool" },
+          {
+            "name": "deletedByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashBySender",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "isReadByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          { "name": "timestamp", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getMessagesReceivedBy",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "internalType": "struct SeiChat.Message[]",
+        "components": [
+          { "name": "messageId", "type": "uint256", "internalType": "uint256" },
+          { "name": "sender", "type": "address", "internalType": "address" },
+          { "name": "receiver", "type": "address", "internalType": "address" },
+          { "name": "cipherIv", "type": "string", "internalType": "string" },
+          {
+            "name": "encryptedMessage",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "replies",
+            "type": "tuple[]",
+            "internalType": "struct SeiChat.Replymessage[]",
+            "components": [
+              {
+                "name": "parentMessageId",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "sender",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "receiver",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "cipherIv",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "encryptedMessage",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "deletedBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "deletedByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "isReadByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "timestamp",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ]
+          },
+          { "name": "deletedBySender", "type": "bool", "internalType": "bool" },
+          {
+            "name": "deletedByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashBySender",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "isReadByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          { "name": "timestamp", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getMessagesSentBy",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "internalType": "struct SeiChat.Message[]",
+        "components": [
+          { "name": "messageId", "type": "uint256", "internalType": "uint256" },
+          { "name": "sender", "type": "address", "internalType": "address" },
+          { "name": "receiver", "type": "address", "internalType": "address" },
+          { "name": "cipherIv", "type": "string", "internalType": "string" },
+          {
+            "name": "encryptedMessage",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "replies",
+            "type": "tuple[]",
+            "internalType": "struct SeiChat.Replymessage[]",
+            "components": [
+              {
+                "name": "parentMessageId",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "sender",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "receiver",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "cipherIv",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "encryptedMessage",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "deletedBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "deletedByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashBySender",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "movedToTrashByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "isReadByReceiver",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "timestamp",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ]
+          },
+          { "name": "deletedBySender", "type": "bool", "internalType": "bool" },
+          {
+            "name": "deletedByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashBySender",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "movedToTrashByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "isReadByReceiver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          { "name": "timestamp", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isRead",
+    "inputs": [
+      { "name": "_messageId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "messageCount",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "moveToTrash",
+    "inputs": [
+      { "name": "_messageId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address", "internalType": "address payable" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "removeFromTrash",
+    "inputs": [
+      { "name": "_messageId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "replyToMessage",
+    "inputs": [
+      { "name": "_receiver", "type": "address", "internalType": "address" },
+      { "name": "_parentId", "type": "uint256", "internalType": "uint256" },
+      { "name": "_cipherIv", "type": "string", "internalType": "string" },
+      {
+        "name": "_encryptedMessage",
+        "type": "string",
+        "internalType": "string"
+      },
+      { "name": "fee", "type": "uint256", "internalType": "uint256" },
+      { "name": "_owner", "type": "address", "internalType": "address payable" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "sendMessage",
+    "inputs": [
+      { "name": "_receiver", "type": "address", "internalType": "address" },
+      { "name": "_cipherIv", "type": "string", "internalType": "string" },
+      {
+        "name": "_encryptedMessage",
+        "type": "string",
+        "internalType": "string"
+      },
+      { "name": "fee", "type": "uint256", "internalType": "uint256" },
+      { "name": "_owner", "type": "address", "internalType": "address payable" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "submitCalenderFee",
+    "inputs": [
+      { "name": "fee", "type": "uint256", "internalType": "uint256" },
+      { "name": "_owner", "type": "address", "internalType": "address payable" }
+    ],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "transferOwnership",
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        "name": "newOwner",
+        "type": "address",
+        "internalType": "address payable"
       }
     ],
-    "name": "getMessagesMovedToTrash",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "messageId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sender",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "receiver",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "cipherIv",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "encryptedMessage",
-            "type": "string"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "parentMessageId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "cipherIv",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "encryptedMessage",
-                "type": "string"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "isReadByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "uint256",
-                "name": "timestamp",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct SeiChat.Replymessage[]",
-            "name": "replies",
-            "type": "tuple[]"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isReadByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct SeiChat.Message[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "nonpayable"
   },
   {
-    "inputs": [],
-    "name": "getMessagesReceivedBy",
-    "outputs": [
+    "type": "event",
+    "name": "MessageDeleted",
+    "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "messageId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sender",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "receiver",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "cipherIv",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "encryptedMessage",
-            "type": "string"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "parentMessageId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "cipherIv",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "encryptedMessage",
-                "type": "string"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "isReadByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "uint256",
-                "name": "timestamp",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct SeiChat.Replymessage[]",
-            "name": "replies",
-            "type": "tuple[]"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isReadByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct SeiChat.Message[]",
-        "name": "",
-        "type": "tuple[]"
+        "name": "messageId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "deleter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "anonymous": false
   },
   {
-    "inputs": [],
-    "name": "getMessagesSentBy",
-    "outputs": [
+    "type": "event",
+    "name": "MessageMovedToTrash",
+    "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "messageId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sender",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "receiver",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "cipherIv",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "encryptedMessage",
-            "type": "string"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "parentMessageId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "cipherIv",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "encryptedMessage",
-                "type": "string"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "deletedByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashBySender",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "movedToTrashByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "isReadByReceiver",
-                "type": "bool"
-              },
-              {
-                "internalType": "uint256",
-                "name": "timestamp",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct SeiChat.Replymessage[]",
-            "name": "replies",
-            "type": "tuple[]"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "deletedByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashBySender",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "movedToTrashByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isReadByReceiver",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct SeiChat.Message[]",
-        "name": "",
-        "type": "tuple[]"
+        "name": "messageId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "mover",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "anonymous": false
   },
   {
-    "inputs": [],
-    "name": "messageCount",
-    "outputs": [
+    "type": "event",
+    "name": "MessageRead",
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "name": "messageId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "MessageReplied",
+    "inputs": [
+      {
+        "name": "parentId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "replyId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "cipherIv",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "encryptedMessage",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "MessageSent",
+    "inputs": [
+      {
+        "name": "messageId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "cipherIv",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "encryptedMessage",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ReplyDeleted",
+    "inputs": [
+      {
+        "name": "parentId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "replyId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "deleter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SubmitCalender",
+    "inputs": [
+      {
+        "name": "fee",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
   }
 ]
