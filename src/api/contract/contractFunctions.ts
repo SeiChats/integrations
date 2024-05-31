@@ -29,17 +29,10 @@ export const sendMessage = async (data: sendMessageDTO) => {
     const contract = await getContract()
     if (contract) console.log(contract)
 
-    const fee = (0.08 * 10 ** 18).toString()
-    const options = { value: fee }
-    const ownerAddress = '0xbf769A3dcd497351A324438395fD01478f8f8A14'
-
     const transactionResponse = await contract.sendMessage(
       receiver,
       cipherIv,
-      message,
-      fee,
-      ownerAddress,
-      options
+      message
     )
 
     return transactionResponse
@@ -148,34 +141,32 @@ export const getMessagesSentBy = async () => {
             encryptedData: message.encryptedMessage,
           })
           // check if the message has replies and decrypt
-          if (message.replies.length > 0) {
-            const Replies = await Promise.all(
-              message.replies.map(async (reply: any) => {
-                try {
-                  const decryptedReply = await axios.post(url, {
-                    iv: reply.cipherIv,
-                    encryptedData: reply.encryptedMessage,
-                  })
-                  return {
-                    parentMessageId: reply.parentMessageId.toString(),
-                    sender: reply.sender,
-                    receiver: reply.receiver,
-                    decryptedreply: JSON.parse(
-                      decryptedReply.data['decryptedData']
-                    ),
-                    deletedBySender: reply.deletedBySender,
-                    deletedByReceiver: reply.deletedByReceiver,
-                    movedToTrashBySender: reply.movedToTrashBySender,
-                    movedToTrashByReceiver: reply.movedToTrashByReceiver,
-                    isReadByReceiver: reply.isReadByReceiver,
-                    timestamp: reply.timestamp.toString(),
-                  }
-                } catch (error) {
-                  console.log(error)
-                  throw error
+          if (message.replies.length !== 0) {
+            const Replies = message.replies.map(async (reply: any) => {
+              try {
+                const decryptedReply = await axios.post(url, {
+                  iv: reply.cipherIv,
+                  encryptedData: reply.encryptedMessage,
+                })
+                return {
+                  parentMessageId: reply.parentMessageId.toString(),
+                  sender: reply.sender,
+                  receiver: reply.receiver,
+                  decryptedreply: JSON.parse(
+                    decryptedReply.data['decryptedData']
+                  ),
+                  deletedBySender: reply.deletedBySender,
+                  deletedByReceiver: reply.deletedByReceiver,
+                  movedToTrashBySender: reply.movedToTrashBySender,
+                  movedToTrashByReceiver: reply.movedToTrashByReceiver,
+                  isReadByReceiver: reply.isReadByReceiver,
+                  timestamp: reply.timestamp.toString(),
                 }
-              })
-            )
+              } catch (error) {
+                console.log(error)
+                throw error
+              }
+            })
             const decryptedMessage = {
               messageId: message.messageId.toString(),
               sender: message.sender,
