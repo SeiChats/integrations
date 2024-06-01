@@ -1,4 +1,4 @@
-import { QueryClient, useMutation } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -9,9 +9,15 @@ import MessagingWidget from '../components/MessagingWidget'
 import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
-import { handleSaveToDraft, handleSendMessage } from '../api'
+import {
+  handleReplyMessage,
+  handleSaveToDraft,
+  handleSendMessage,
+} from '../api'
 import DocumentCard from '../components/Document'
 import { Progress } from '../components/shadcn/ui/progress'
+import { Message as MessageInterface } from './SentMessages'
+import { getMessagesReceivedBy } from '@/api/contract/contractFunctions'
 
 export interface FileData {
   url: string
@@ -23,8 +29,9 @@ export interface FileData {
 }
 
 const SendMessage = function () {
-  const { address, navigateTo } = useContext(RouteContext)
+  const { address, navigateTo, prevRoute } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
+  const receiverRef = useRef<HTMLInputElement>(null)
   const subjectInputRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
   const [fileList, setFileList] = useState<FileData[]>([])
@@ -35,8 +42,10 @@ const SendMessage = function () {
   const [isDisabled, setIsDisabled] = useState(true)
 
   const queryClient = new QueryClient()
+  const isReply = prevRoute?.startsWith('messages/')
+
   const { mutate, isPending } = useMutation({
-    mutationFn: handleSendMessage,
+    mutationFn: isReply ? handleReplyMessage : handleSendMessage,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
       navigateTo('sent-messages')
@@ -50,6 +59,17 @@ const SendMessage = function () {
     },
   })
 
+  const { data: receivedMessages, isSuccess } = useQuery({
+    queryFn: getMessagesReceivedBy,
+    queryKey: [address, 'messages-received'],
+    enabled: isReply,
+  })
+
+  const messageId = prevRoute?.split('/')[1]
+  const messageData = receivedMessages?.find(
+    (message: MessageInterface) => message.messageId === messageId
+  )
+
   const updateDisabled = function () {
     const receiver = !!sendTo.trim().length
     const subject = !!subjectInputRef.current?.value.trim().length
@@ -60,6 +80,22 @@ const SendMessage = function () {
   }
 
   useEffect(updateDisabled, [fileList.length])
+  useEffect(() => {
+    if (!isReply || !receiverRef.current) return
+    const senderAddress = messageData?.sender || ''
+
+    setSendTo(senderAddress)
+    const address = senderAddress.trim()
+
+    receiverRef.current!.disabled = true
+    subjectInputRef.current!.value = messageData.message.subject
+    subjectInputRef.current!.disabled = true
+
+    if (address.length < 37) return
+    receiverRef.current.value = `${address?.slice(0, 5)}....${address?.slice(
+      37
+    )}`
+  }, [isSuccess])
 
   return (
     <div className="grid grid-rows-[1fr_auto] h-full">
@@ -83,6 +119,7 @@ const SendMessage = function () {
             <p className="capitalize text-sm flex items-center gap-4">
               to:
               <input
+                ref={receiverRef}
                 onBlur={e => {
                   setSendTo(e.target.value)
                   const address = e.target.value.trim()
@@ -103,7 +140,7 @@ const SendMessage = function () {
           <div className="relative py-4 mt-4">
             <Divider />
             <p className="capitalize text-sm flex items-center gap-4">
-              subject:
+              {isReply ? 'reply' : 'subject'}:
               <input
                 ref={subjectInputRef}
                 type="text"
@@ -195,6 +232,7 @@ const SendMessage = function () {
                   receiver: sendTo,
                   subject: subjectInputRef.current!.value,
                   fileUrls: fileList,
+                  messageId: messageData.messageId,
                 })
               }}
             />

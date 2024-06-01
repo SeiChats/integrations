@@ -74,12 +74,35 @@ export const replyToMessage = async (data: replyMessageDTO) => {
     const contract = await getContract()
     if (contract) console.log(contract)
 
+    const fee = (0.08 * 10 ** 18).toString()
+    const options = { value: fee }
+    const ownerAddress = '0xbf769A3dcd497351A324438395fD01478f8f8A14'
+
     const transactionResponse = await contract.replyToMessage(
       receiver,
       parentId,
       cipherIv,
-      message
+      message,
+      fee,
+      ownerAddress,
+      options
     )
+
+    if (transactionResponse.hash) {
+      // socket.emit(
+      //   "sendMessage",
+      //   {
+      //     sender: transactionResponse.from,
+      //     reciever: receiver,
+      //     messageType: "reply",
+      //   },
+      //   (Response: any) => {
+      //     console.log(Response);
+      //   }
+      // );
+
+      return transactionResponse
+    }
 
     return transactionResponse
   } catch (error) {

@@ -108,3 +108,6 @@ html {
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word;
 }
+.translate__center {
+  translate: 50%, -50%;
+}

@@ -81,7 +81,10 @@ const Message = function () {
               : messageData.timestamp
           )}
         </p>
-        <p className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm flex items-center gap-2 cursor-pointer">
+        <p
+          className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm flex items-center gap-2 cursor-pointer"
+          onClick={() => navigateTo('send-message')}
+        >
           <img src={replyImg} alt="reply" />
           Reply
         </p>

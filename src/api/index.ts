@@ -11,9 +11,12 @@ import {
 } from '../utils/utils'
 import {
   addMessageToDraft,
+  replyToMessage,
   sendMessage,
   sendMessageToSupport,
 } from './contract/contractFunctions'
+import crypto from 'crypto-browserify'
+import { Buffer } from 'buffer/'
 
 export function encryptPassword(password: string): string {
   const salt = bcrypt.genSaltSync(10)
@@ -373,4 +376,62 @@ export const getAllDecryptedMessagesByTag = async (data: {
     }
   }
   return transactionResponse
+}
+
+export const handleReplyMessage = async (data: {
+  message: string
+  subject: string
+  receiver: string
+  messageId: string
+  fileUrls: {
+    url: string
+    type: string
+    name: string
+    size: string
+    CID: any
+  }[]
+}) => {
+  const payload = JSON.stringify({
+    id: generateId(),
+    message: data.message,
+    attachments: data.fileUrls ?? [],
+    createdAt: new Date().toUTCString(),
+    time: getCurrentTime12HrFormat(),
+    date: getCurrentDateFormatted(),
+  })
+
+  try {
+    const algorithm = `aes-256-cbc`
+    const key = import.meta.env.VITE_ENCRYPTION_KEY!
+
+    const iv = crypto.randomBytes(16)
+
+    console.log(key, iv)
+    // encrypting the spayload using encryption algorithm, private key and initialization vector
+    const cipher = crypto.createCipheriv(algorithm, key, iv)
+    let encryptedPayload = cipher.update(
+      JSON.stringify(payload),
+      'utf-8',
+      'hex'
+    )
+    encryptedPayload += cipher.final('hex')
+
+    console.log('PAYLOAD encryptedData', encryptedPayload)
+    // converting vector to base64 string
+    const base64data = Buffer.from(iv).toString('base64')
+    const encryptData = {
+      iv: base64data,
+      encryptedPayload,
+    }
+
+    const SendMessageContract = await replyToMessage({
+      receiver: data.receiver.trim(),
+      cipherIv: encryptData['iv'],
+      encryptedMessage: encryptData['encryptedPayload'],
+      parentMessageId: data.messageId,
+    })
+    console.log(SendMessageContract)
+  } catch (err) {
+    console.log(err)
+  }
 }

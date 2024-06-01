@@ -37,10 +37,11 @@ const SentMessages = function () {
           transition={{
             repeat: Infinity,
             duration: 0.5,
+            type: 'tween',
             repeatType: 'reverse',
           }}
           src={seichatLogo}
-          className="absolute inset-[50%_50%_auto_auto] w-16 block !translate-y--1/2 !translate-x-1/2"
+          className="absolute inset-[45%_40%_auto_auto] w-16 block translate__center"
         />
       ) : (
         data
