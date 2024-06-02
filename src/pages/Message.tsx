@@ -14,7 +14,6 @@ import Footer from '../components/Footer'
 import SentDocumentCard from '../components/SentDocument'
 import { FileData } from './SendMessage'
 import { getAllDecryptedMessagesByTag } from '@/api'
-import replyImg from '../assets/reply.svg'
 
 const Message = function () {
   const { route, address, navigateTo, prevRoute } = useContext(RouteContext)
@@ -41,15 +40,6 @@ const Message = function () {
   const messageData = data?.find((message: MessageInterface) =>
     fromDraft ? message.id === messageId : message.messageId === messageId
   )
-
-  // const id = messageData?.messageId || messageData?.id
-
-  // console.log(messageData)
-  // useEffect(() => {
-  //   ;(async function () {
-  //     await isRead(id)
-  //   })()
-  // }, [id])
 
   return (
     <div className="h-full grid grid-rows-[repeat(4,_auto)_1fr_auto]">
@@ -80,13 +70,6 @@ const Message = function () {
               ? new Date(messageData.message.createdAt).getTime() / 1000
               : messageData.timestamp
           )}
-        </p>
-        <p
-          className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm flex items-center gap-2 cursor-pointer"
-          onClick={() => navigateTo('send-message')}
-        >
-          <img src={replyImg} alt="reply" />
-          Reply
         </p>
       </header>
       <div className="bg-[#4A4C54] h-[1px] my-4" />
