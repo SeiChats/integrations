@@ -36,7 +36,11 @@ const MessagePreview = function ({
       whileHover={{ scale: 1.03 }}
       onClick={() =>
         navigateTo(
-          fromAdmin ? `support/${recipient}` : `sent-message/${messageId}`
+          fromAdmin
+            ? `support/${recipient}`
+            : isDraft
+            ? `messages/${messageId}`
+            : `sent-message/${messageId}`
         )
       }
       className="grid grid-cols-[auto_1fr_auto] grid-rows-[repeat(2,_auto)] gap-x-4 gap-y-2 items-center bg-[#191D1D] p-3 mb-3 rounded-lg cursor-pointer"
@@ -48,7 +52,7 @@ const MessagePreview = function ({
         </p>
         {isDraft && (
           <p className="bg-[#EFFCF4] text-[#507A5F] capitalize p-1 rounded text-[0.7rem] font-semibold">
-            'draft'
+            draft
           </p>
         )}
       </div>
