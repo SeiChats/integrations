@@ -17,7 +17,10 @@ import {
 import DocumentCard from '../components/Document'
 import { Progress } from '../components/shadcn/ui/progress'
 import { Message as MessageInterface } from './SentMessages'
-import { getMessagesReceivedBy } from '@/api/contract/contractFunctions'
+import {
+  getMessagesReceivedBy,
+  getMessagesSentBy,
+} from '@/api/contract/contractFunctions'
 
 export interface FileData {
   url: string
@@ -29,7 +32,7 @@ export interface FileData {
 }
 
 const SendMessage = function () {
-  const { address, navigateTo, prevRoute } = useContext(RouteContext)
+  const { address, navigateTo, prevRoute, data } = useContext(RouteContext)
   const [sendTo, setSendTo] = useState('')
   const receiverRef = useRef<HTMLInputElement>(null)
   const subjectInputRef = useRef<HTMLInputElement>(null)
@@ -42,7 +45,9 @@ const SendMessage = function () {
   const [isDisabled, setIsDisabled] = useState(true)
 
   const queryClient = new QueryClient()
-  const isReply = prevRoute?.startsWith('messages/')
+  const isReply = prevRoute?.startsWith('sent-message/')
+
+  console.log('isReply', isReply)
 
   const { mutate, isPending } = useMutation({
     mutationFn: isReply ? handleReplyMessage : handleSendMessage,
@@ -60,11 +65,16 @@ const SendMessage = function () {
   })
 
   const { data: receivedMessages, isSuccess } = useQuery({
-    queryFn: getMessagesReceivedBy,
-    queryKey: [address, 'messages-received'],
+    queryFn: data?.fromReceivedMessages
+      ? getMessagesReceivedBy
+      : getMessagesSentBy,
+    queryKey: [
+      address,
+      data?.fromReceivedMessages ? 'messages-received' : 'messages-sent',
+    ],
     enabled: isReply,
   })
-
+  console.log(receivedMessages)
   const messageId = prevRoute?.split('/')[1]
   const messageData = receivedMessages?.find(
     (message: MessageInterface) => message.messageId === messageId
@@ -232,7 +242,7 @@ const SendMessage = function () {
                   receiver: sendTo,
                   subject: subjectInputRef.current!.value,
                   fileUrls: fileList,
-                  messageId: messageData.messageId,
+                  messageId: messageData?.messageId,
                 })
               }}
             />

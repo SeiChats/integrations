@@ -35,7 +35,9 @@ const MessagePreview = function ({
     <motion.div
       whileHover={{ scale: 1.03 }}
       onClick={() =>
-        navigateTo(fromAdmin ? `support/${recipient}` : `messages/${messageId}`)
+        navigateTo(
+          fromAdmin ? `support/${recipient}` : `sent-message/${messageId}`
+        )
       }
       className="grid grid-cols-[auto_1fr_auto] grid-rows-[repeat(2,_auto)] gap-x-4 gap-y-2 items-center bg-[#191D1D] p-3 mb-3 rounded-lg cursor-pointer"
     >
@@ -44,9 +46,11 @@ const MessagePreview = function ({
         <p className="font-semibold">
           {recipient.slice(0, 5)}***{recipient.slice(37)}
         </p>
-        <p className="bg-[#EFFCF4] text-[#507A5F] capitalize p-1 rounded text-[0.7rem] font-semibold">
-          {isDraft ? 'draft' : 'trusted'}
-        </p>
+        {isDraft && (
+          <p className="bg-[#EFFCF4] text-[#507A5F] capitalize p-1 rounded text-[0.7rem] font-semibold">
+            'draft'
+          </p>
+        )}
       </div>
       <time className="row-start-1 row-span-1 col-start-3 col-span-1">
         {time}

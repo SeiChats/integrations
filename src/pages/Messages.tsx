@@ -2,7 +2,7 @@ import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
 import seichatLogo from '../assets/seichat.svg'
 
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import RouteContext from '../providers/ContextProvider'
 import { useQuery } from '@tanstack/react-query'
 import { getMessagesReceivedBy } from '../api/contract/contractFunctions'
@@ -12,11 +12,15 @@ import { twMerge } from 'tailwind-merge'
 import { motion } from 'framer-motion'
 
 const Messages = function () {
-  const { navigateTo, address } = useContext(RouteContext)
+  const { navigateTo, address, setData } = useContext(RouteContext)
   const { data, isLoading } = useQuery({
     queryFn: getMessagesReceivedBy,
     queryKey: [address, 'messages-received'],
   })
+
+  useEffect(() => {
+    setData({ fromReceivedMessages: true })
+  }, [])
 
   return (
     <>
@@ -39,7 +43,7 @@ const Messages = function () {
             src={seichatLogo}
             className="w-16 block"
           />
-        ) : data.length === 0 ? (
+        ) : data?.length == 0 ? (
           <>
             <div>
               <img src={nftBG} alt="no messages" />

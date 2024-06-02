@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 import seichatLogo from '../assets/seichat.svg'
 import { getMessagesSentBy } from '../api/contract/contractFunctions'
@@ -22,11 +22,15 @@ export interface Message {
 }
 
 const SentMessages = function () {
-  const { address } = useContext(RouteContext)
+  const { address, setData } = useContext(RouteContext)
   const { data, isLoading } = useQuery({
     queryFn: getMessagesSentBy,
     queryKey: [address, 'messages-sent'],
   })
+
+  useEffect(() => {
+    setData({ fromSentMessages: true })
+  }, [])
 
   return (
     <div className=" row-start-2 row-end-4 min-h-full relative overflow-y-auto overflow-x-hidden overflow__bar">

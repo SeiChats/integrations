@@ -18,6 +18,8 @@ const RouteContext = createContext<{
   setIsWidgetVisible: React.Dispatch<React.SetStateAction<boolean>>
   seichatConfig: SeichatConfig | null
   setSeichatConfig: React.Dispatch<React.SetStateAction<SeichatConfig | null>>
+  data: any
+  setData: React.Dispatch<any>
 }>({
   route: '/',
   prevRoute: null,
@@ -28,6 +30,8 @@ const RouteContext = createContext<{
   setIsWidgetVisible: () => {},
   seichatConfig: null,
   setSeichatConfig: () => {},
+  data: null,
+  setData: () => {},
 })
 
 export function Provider({ children }: { children: ReactNode }) {
@@ -36,6 +40,7 @@ export function Provider({ children }: { children: ReactNode }) {
   const [isWidgetVisible, setIsWidgetVisible] = useState(false)
   const [address, setAddress] = useState<string | null>(null)
   const [seichatConfig, setSeichatConfig] = useState<SeichatConfig | null>(null)
+  const [data, setData] = useState<any>()
 
   useEffect(() => {
     if (!address) return
@@ -81,6 +86,8 @@ export function Provider({ children }: { children: ReactNode }) {
         setIsWidgetVisible,
         seichatConfig,
         setSeichatConfig,
+        data,
+        setData,
       }}
     >
       {children}
