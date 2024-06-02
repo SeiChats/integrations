@@ -30,7 +30,6 @@ const SupportLayout = function () {
             />
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
-          {/*TODO make name and logo dynamic*/}
         </ul>
       </header>
       <div className="grid grid-rows-[1fr_auto]">

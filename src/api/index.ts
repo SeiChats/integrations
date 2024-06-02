@@ -159,7 +159,7 @@ export const handleSendMessage = async function (data1: {
       id: generateId(),
       subject: data1.subject,
       message: data1.message,
-      attachments: data1.fileUrls, //TODO check back on this
+      attachments: data1.fileUrls,
       createdAt: new Date().toUTCString(),
       time: getCurrentTime12HrFormat(),
       date: getCurrentDateFormatted(),
