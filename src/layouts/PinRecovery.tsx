@@ -14,10 +14,10 @@ const PinRecovery = function () {
       <div>
         <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">
-          pin recovery
+          password recovery
         </h1>
         <p className="text-sm opacity-80">
-          Lets setup your pin recovery support, wink wink
+          Lets setup your password recovery support, wink wink
         </p>
         <form
           action=""
@@ -29,7 +29,6 @@ const PinRecovery = function () {
           {route === 'enter-pin' ? <EnterPin /> : <RecoverPin />}
         </form>
       </div>
-      {/* TODO check back on width and height */}
       <img className="mt-auto mx-auto my-4" src={logo} alt="seichat logo" />
     </div>
   )

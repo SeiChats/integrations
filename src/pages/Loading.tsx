@@ -25,7 +25,6 @@ const Loading = function () {
   useEffect(() => {
     const getProvider = async () => {
       const provider = await detectEthereumProvider({ silent: true })
-      console.log(provider)
       // Transform provider to true or false.
       const hasProvider = Boolean(provider)
 

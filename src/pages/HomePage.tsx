@@ -35,12 +35,12 @@ export default function Home() {
       <div>
         <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2 capitalize">
-          create pin
+          create password
         </h1>
         <p className="text-sm opacity-80">
           Create a{' '}
-          <span className="text-[#57E44B] font-semibold">Six-digit</span> pin
-          for extra security
+          <span className="text-[#57E44B] font-semibold">Six-character</span>{' '}
+          password for extra security
         </p>
         <form
           method="GET"

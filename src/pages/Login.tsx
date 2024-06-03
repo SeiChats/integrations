@@ -35,7 +35,9 @@ const Login = function () {
       <div>
         <CloseWidget />
         <h1 className="font-semibold text-3xl mt-3 mb-2">Log in</h1>
-        <p className="text-sm opacity-80">Enter pin to access your account</p>
+        <p className="text-sm opacity-80">
+          Enter password to access your account
+        </p>
         <form
           action=""
           onSubmit={e => {
@@ -46,12 +48,12 @@ const Login = function () {
           <PasswordInput
             onChange={e => setPassword((e.target as HTMLInputElement).value)}
             label="login"
-            htmlFor="pin"
+            htmlFor="password"
           >
             {!isPasswordValid && (
               <p className="flex items-center gap-2 ml-auto text-sm text-white/80">
                 <img src={incorrect} alt="incorrect password" className="w-4" />
-                incorrect pin
+                incorrect password
               </p>
             )}
           </PasswordInput>

@@ -4,7 +4,7 @@ import PasswordInput from '../components/PasswordInput'
 const EnterPin = function () {
   return (
     <>
-      <PasswordInput label="enter pin" htmlFor="pin" />
+      <PasswordInput label="enter password" htmlFor="password" />
       <FormButton>Let me in!</FormButton>
     </>
   )

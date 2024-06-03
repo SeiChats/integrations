@@ -31,7 +31,6 @@ export const insertUser = async (user: any) => {
     const { data, error } = await supabase
       .from('users')
       .insert({ wallet_address: user.wallet_address })
-    console.log('INSERT DATA ERROR', error)
 
     if (error) return { status: 500, error }
     return {
@@ -407,7 +406,7 @@ export const handleReplyMessage = async (data: {
     const iv = crypto.randomBytes(16)
 
     console.log(key, iv)
-    // encrypting the spayload using encryption algorithm, private key and initialization vector
+    // encrypting the payload using encryption algorithm, private key and initialization vector
     const cipher = crypto.createCipheriv(algorithm, key, iv)
     let encryptedPayload = cipher.update(
       JSON.stringify(payload),

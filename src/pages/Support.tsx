@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { Fragment, useContext, useRef } from 'react'
 import { useMutation, useQueries } from '@tanstack/react-query'
 
 import attachmentIcon from '../assets/attachment.svg'
@@ -131,7 +131,12 @@ const Support = function () {
               new Date(prev?.message.createdAt).getTime()
             )
             return (
-              <>
+              <Fragment
+                key={
+                  message.message.id +
+                  new Date(message.message.createdAt).getTime()
+                }
+              >
                 {!isSameDate && (
                   <NewDay
                     key={new Date(message.message.createdAt).getTime()}
@@ -151,7 +156,7 @@ const Support = function () {
                     timeStamp={new Date(message.message.createdAt).getTime()}
                   />
                 )}
-              </>
+              </Fragment>
             )
           })}
         </div>
