@@ -15,7 +15,7 @@ interface FooterProps {
 
 const Footer = function ({ className }: FooterProps) {
   const { navigateTo, route, prevRoute } = useContext(RouteContext)
-  const [activeRoute, setActiveRoute] = useState('inbox')
+  const [activeRoute, setActiveRoute] = useState('')
 
   useEffect(() => {
     if (route === 'inbox') {
