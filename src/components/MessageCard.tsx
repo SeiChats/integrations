@@ -45,7 +45,9 @@ const MessageCard = function ({
         </p>
         <p
           className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm flex items-center gap-2 cursor-pointer"
-          onClick={() => navigateTo('send-message')}
+          onClick={() => {
+            navigateTo('send-message')
+          }}
         >
           <img src={replyImg} alt="reply" />
           Reply

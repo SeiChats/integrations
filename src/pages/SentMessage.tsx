@@ -16,9 +16,16 @@ interface MessageReply {
   decryptedreply: string
 }
 const SentMessage = function () {
-  const { address, route, prevRoute } = useContext(RouteContext)
+  const {
+    address,
+    route,
+    prevRoute,
+    data: contextData,
+  } = useContext(RouteContext)
 
-  const fromSent = prevRoute === 'sent-messages'
+  console.log(contextData)
+
+  const fromSent = prevRoute === 'sent-messages' || contextData.fromSentMessages
 
   const { data, isSuccess } = useQuery({
     queryFn: fromSent ? getMessagesSentBy : getMessagesReceivedBy,

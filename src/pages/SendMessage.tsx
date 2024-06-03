@@ -113,8 +113,20 @@ const SendMessage = function () {
         <SearchBar />
         <div className="bg-[#141717] p-4 rounded-[13.62px_13.62px_0px_0px] grid grid-rows-[auto_auto_auto_auto_1fr_auto] h-full">
           <div className="flex items-center gap-4 justify-end">
-            <img src={minimizeIcon} alt="minimize" className="cursor-pointer" />
-            <img src={closeIcon} alt="close" className="cursor-pointer" />
+            <img
+              src={minimizeIcon}
+              alt="minimize"
+              onClick={() => {
+                navigateTo(-1)
+              }}
+              className="cursor-pointer"
+            />
+            <img
+              src={closeIcon}
+              alt="close"
+              onClick={() => navigateTo(-1)}
+              className="cursor-pointer"
+            />
           </div>
           <div>
             <p className="capitalize text-sm flex items-center gap-4">
