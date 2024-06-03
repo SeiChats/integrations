@@ -22,9 +22,7 @@ export interface Message {
 }
 
 const SentMessages = function () {
-  const { address, setData, data: contextData } = useContext(RouteContext)
-
-  console.log(contextData)
+  const { address, setData } = useContext(RouteContext)
 
   const { data, isLoading } = useQuery({
     queryFn: getMessagesSentBy,

@@ -129,7 +129,6 @@ export const moveToTrash = async ({ messageId }: { messageId: string }) => {
   if (contract) console.log(contract)
 
   const transactionResponse = await contract.moveToTrash(messageId)
-  console.log(transactionResponse)
 
   return transactionResponse
 }

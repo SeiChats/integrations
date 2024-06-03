@@ -23,8 +23,6 @@ const SentMessage = function () {
     data: contextData,
   } = useContext(RouteContext)
 
-  console.log(contextData)
-
   const fromSent = prevRoute === 'sent-messages' || contextData.fromSentMessages
 
   const { data, isSuccess } = useQuery({
@@ -47,8 +45,6 @@ const SentMessage = function () {
       setMessageReplies(replies)
     })()
   }, [isSuccess])
-
-  console.log(messageReplies)
 
   return (
     <div className="grid h-full grid-rows-[1fr_auto]">

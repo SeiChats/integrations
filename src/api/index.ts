@@ -329,7 +329,7 @@ export const handleSaveToDraft = async (data1: {
 
 export async function getAllMessagesbyTag(tag: string, wallet: string) {
   if (!tag) throw new Error('Tag not found')
-  console.log(tag)
+
   const { data, error } = await supabase
     .from('messages')
     .select('*')

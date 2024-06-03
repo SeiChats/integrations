@@ -47,8 +47,6 @@ const SendMessage = function () {
   const queryClient = new QueryClient()
   const isReply = prevRoute?.startsWith('sent-message/')
 
-  console.log('isReply', isReply)
-
   const { mutate, isPending } = useMutation({
     mutationFn: isReply ? handleReplyMessage : handleSendMessage,
     onSuccess() {
