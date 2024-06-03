@@ -38,8 +38,22 @@ Include the following `<div>` element in the `<body>` section of your HTML file.
   <!-- Other content of your body -->
 </body>
 ```
+### Step 3: Add Configuration File
 
-### Step 3: Run Your Application
+Create a `seichats.config.json` file in the top level of the folder where your index.html is located. This file should have the following structure:
+
+```json
+{
+  "name": "organization or individual name",
+  "address": "support email address",
+  "logo": "URL to logo image"
+}
+```
+- Note: If the logo is stored locally in your codebase, use a relative URL that is relative to the public folder.
+
+Ensure this file is correctly formatted and placed in the same directory as your index.html.
+
+### Step 4: Run Your Application
 
 After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.
 
