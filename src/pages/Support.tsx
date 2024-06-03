@@ -12,6 +12,8 @@ import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
 import { formatDate, isSameDay } from '@/utils/utils'
 import { queryClient } from '@/providers/QueryProvider'
+import seichatLogo from '../assets/seichat.svg'
+import { motion } from 'framer-motion'
 
 const Support = function () {
   const { address, route, seichatConfig } = useContext(RouteContext)
@@ -120,7 +122,18 @@ const Support = function () {
   })
 
   console.log(data, userAddress)
-  return (
+  return isLoading ? (
+    <div className="h-full grid place-items-center">
+      <motion.img
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ repeat: Infinity, duration: 0.5, repeatType: 'reverse' }}
+        src={seichatLogo}
+        alt="seichat logo"
+        className="w-16 block"
+      />
+    </div>
+  ) : (
     <>
       {data?.flat().length !== 0 && !isLoading && (
         <div className="max-h-[264px] overflow-y-auto overflow__bar">
@@ -161,7 +174,7 @@ const Support = function () {
           })}
         </div>
       )}
-      {(isLoading || data?.flat().length == 0) && (
+      {data?.flat().length == 0 && (
         <div className="grid place-content-center">
           <img src={nftBG} alt="no messages" />
           <p className="capitalize mt-2 text-center text-lg">sei something!</p>
