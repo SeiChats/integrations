@@ -1,16 +1,20 @@
-import { Fragment, useContext, useRef } from 'react'
+import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { useMutation, useQueries } from '@tanstack/react-query'
 
 import attachmentIcon from '../assets/attachment.svg'
 import galleryIcon from '../assets/gallery.svg'
 import arrow from '../assets/arrow.svg'
 import nftBG from '../assets/nft-bg.png'
-import { getAllDecryptedMessagesByTag, handleSaveToDraft } from '@/api'
+import {
+  getAllDecryptedMessagesByTag,
+  handleSaveToDraft,
+  handleUploadFiles,
+} from '@/api'
 import RouteContext from '@/providers/ContextProvider'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import SentSupportMessage from '@/components/SentSupportMessage'
 import ReceivedSupportMessage from '@/components/ReceivedSupportMessage'
-import { formatDate, isSameDay } from '@/utils/utils'
+import { formatDate, generateId, isSameDay } from '@/utils/utils'
 import { queryClient } from '@/providers/QueryProvider'
 import seichatLogo from '../assets/seichat.svg'
 import { motion } from 'framer-motion'
@@ -53,6 +57,8 @@ const Support = function () {
     },
   })
 
+  console.log(data)
+
   if (!isLoading) {
     data = data
       ?.flat()
@@ -72,56 +78,24 @@ const Support = function () {
         queryKey: [isAdmin ? userAddress : address!, 'support-messages'],
       })
     },
-    // onMutate: async newMessage => {
-    //   // Cancel any outgoing refetches
-    //   // (so they don't overwrite our optimistic update)
-    //   await queryClient.cancelQueries({
-    //     queryKey: [isAdmin ? userAddress : address!, 'support-messages'],
-    //   })
-
-    //   // Snapshot the previous value
-    //   const previousMessages = queryClient.getQueryData([
-    //     isAdmin ? address : userAddress,
-    //     'support-messages',
-    //   ])
-
-    //   const message = {
-    //     messageId: generateId(),
-    //     isRead: false,
-    //     message: {
-    //       message: newMessage.message,
-    //       createdAt: Date.now(),
-    //     },
-    //     receiver: newMessage.receiver,
-    //     sender: newMessage.address,
-    //     timeStamp: Date.now(),
-    //   }
-    //   // Optimistically update to the new value
-    //   queryClient.setQueryData(
-    //     [isAdmin ? address : userAddress, 'support-messages'],
-    //     old => [...old, message]
-    //   )
-
-    //   // Return a context object with the snapshotted value
-    //   return { previousMessages }
-    // },
-    // // If the mutation fails,
-    // // use the context returned from onMutate to roll back
-    // onError: (err, newTodo, context) => {
-    //   queryClient.setQueryData(
-    //     [isAdmin ? address : userAddress, 'support-messages'],
-    //     context.previousMessages
-    //   )
-    // },
-    // // Always refetch after error or success:
-    // onSettled: () => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: [isAdmin ? address : userAddress, 'support-messages'],
-    //   })
-    // },
   })
 
-  console.log(data, userAddress)
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
+  const handleSendFile = async function (file: File & { id: string }) {
+    console.log(file)
+    file.id = generateId()
+
+    console.log(file)
+    const fileData = await handleUploadFiles([file])
+
+    return fileData
+  }
+
+  const [isDisabled, setIsDisabled] = useState(true)
+
   return isLoading ? (
     <div className="h-full grid place-items-center">
       <motion.img
@@ -136,7 +110,7 @@ const Support = function () {
   ) : (
     <>
       {data?.flat().length !== 0 && !isLoading && (
-        <div className="max-h-[264px] overflow-y-auto overflow__bar">
+        <div className="max-h-[347px] overflow-y-auto overflow__bar">
           {data.flat().map((message, idx, arr) => {
             const prev = arr[idx - 1]
             const isSameDate = isSameDay(
@@ -160,13 +134,17 @@ const Support = function () {
                   <SentSupportMessage
                     key={message.message.id}
                     message={message.message.message}
-                    timeStamp={new Date(message.message.createdAt).getTime()}
+                    time={message.message.time}
+                    attachment={message.message.attachments}
+                    sender={message.sender}
                   />
                 ) : (
                   <ReceivedSupportMessage
                     key={message.message.id}
                     message={message.message.message}
-                    timeStamp={new Date(message.message.createdAt).getTime()}
+                    time={message.message.time}
+                    attachment={message.message.attachments}
+                    sender={message.sender}
                   />
                 )}
               </Fragment>
@@ -184,6 +162,9 @@ const Support = function () {
         <textarea
           name="send-message"
           ref={messageRef}
+          onChange={e => {
+            setIsDisabled(e.target.value.trim() === '')
+          }}
           id="message"
           placeholder="send message"
           className="bg-transparent mt-4 shadow-[0px_0px_14.26px_1.45px_#00000012] outline-none border border-white/20 resize-none h-[130px] placeholder:capitalize p-3 rounded-2xl overflow__bar text-white/80 block w-full"
@@ -197,7 +178,32 @@ const Support = function () {
               name="image-upload"
               accept="image/*"
               className="hidden"
-              multiple
+              onChange={async e => {
+                const file = e.target.files?.[0]
+
+                console.log(file)
+                messageRef.current!.value = 'uploading file...'
+                messageRef.current!.disabled = true
+
+                try {
+                  //@ts-ignore
+                  const fileData = (await handleSendFile(file))!
+
+                  mutate({
+                    address: address!,
+                    fileUrls: fileData,
+                    message: messageRef.current!.value,
+                    receiver: isAdmin ? userAddress : seichatConfig!.address,
+                    subject: 'support',
+                    tag: 'support',
+                  })
+                } catch (err) {
+                  console.log(err)
+                } finally {
+                  messageRef.current!.value = ''
+                  messageRef.current!.disabled = false
+                }
+              }}
             />
           </label>
           <label htmlFor="file-upload" className="cursor-pointer block">
@@ -208,12 +214,38 @@ const Support = function () {
               id="file-upload"
               accept="application/pdf"
               className="hidden"
-              multiple
+              onChange={async e => {
+                const file = e.target.files?.[0]
+
+                console.log(file)
+                messageRef.current!.value = 'uploading file...'
+                messageRef.current!.disabled = true
+
+                try {
+                  //@ts-ignore
+                  const fileData = (await handleSendFile(file))!
+
+                  mutate({
+                    address: address!,
+                    fileUrls: fileData,
+                    message: messageRef.current!.value,
+                    receiver: isAdmin ? userAddress : seichatConfig!.address,
+                    subject: 'support',
+                    tag: 'support',
+                  })
+                } catch (err) {
+                  console.log(err)
+                } finally {
+                  messageRef.current!.value = ''
+                  messageRef.current!.disabled = false
+                }
+              }}
             />
           </label>
           <div className="w-[1px] h-4 bg-[#D9D9D91A]" />
           <button
-            className="p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer border-none outline-none"
+            className="p-2 rounded-[50%] bg-[#CF3A46] cursor-pointer border-none outline-none disabled:opacity-70 disabled:cursor-not-allowed"
+            disabled={isDisabled}
             onClick={() => {
               mutate({
                 address: address!,

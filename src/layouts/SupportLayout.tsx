@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 
 import RouteContext from '@/providers/ContextProvider'
-import Footer from '@/components/Footer'
 import Support from '@/pages/Support'
 import SupportAdmin from '@/pages/SupportAdmin'
 
@@ -46,7 +45,6 @@ const SupportLayout = function () {
             <Support />
           )}
       </div>
-      <Footer />
     </div>
   )
 }

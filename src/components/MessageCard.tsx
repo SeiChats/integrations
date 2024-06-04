@@ -6,6 +6,7 @@ import RouteContext from '@/providers/ContextProvider'
 import { motion } from 'framer-motion'
 import { FileData } from '@/pages/SendMessage'
 import SentDocumentCard from './SentDocument'
+import { twMerge } from 'tailwind-merge'
 
 interface MessageCardProps {
   wallet: string
@@ -27,24 +28,46 @@ const MessageCard = function ({
   const { navigateTo } = useContext(RouteContext)
   return (
     <div className="bg-[#1A1D1D] p-4 rounded-3xl mb-4">
-      <header className="grid grid-cols-[auto_auto_1fr_auto] grid-rows-[repeat(2,_auto)] items-center gap-x-3 gap-y-1 mt-2 mb-3">
-        <img
-          src={caretIcon}
-          alt="back"
-          onClick={() => navigateTo(-1)}
-          className="rotate-90 row-start-1 row-span-2 col-start-1 col-span-1 cursor-pointer"
+      <header
+        className={twMerge(
+          'grid grid-rows-[repeat(2,_auto)] items-center gap-x-3 gap-y-1 mt-2 mb-3',
+          isMain
+            ? 'grid-cols-[auto_auto_1fr_auto]'
+            : 'grid-cols-[auto_1fr_auto]'
+        )}
+      >
+        {isMain && (
+          <img
+            src={caretIcon}
+            alt="back"
+            onClick={() => navigateTo(-1)}
+            className="rotate-90 row-start-1 row-span-2 col-start-1 col-span-1 cursor-pointer"
+          />
+        )}
+        <div
+          className={twMerge(
+            'row-start-1 row-span-2 w-12 h-12 bg-[#1777BC] rounded-[50%]',
+            isMain ? 'col-start-2 col-span-1' : 'col-start-1 col-span-1'
+          )}
         />
-        <div className="row-start-1 row-span-2 col-start-2 col-span-1 w-12 h-12 bg-[#1777BC] rounded-[50%]" />
         <p>
           {wallet?.slice(0, 5)}
           ***
           {wallet?.slice(37)}
         </p>
-        <p className="row-start-2 row-span-1 col-start-3 col-span-1 text-[0.75rem]">
+        <p
+          className={twMerge(
+            'row-start-2 row-span-1 text-[0.75rem]',
+            isMain ? 'col-start-3 col-span-1' : 'col-start-2 col-span-1'
+          )}
+        >
           {formatTimestamp(timestamp)}
         </p>
         <p
-          className="row-start-1 row-span-2 col-start-4 col-span-1 text-sm flex items-center gap-2 cursor-pointer"
+          className={twMerge(
+            'row-start-1 row-span-2 text-sm flex items-center gap-2 cursor-pointer',
+            isMain ? 'col-start-4 col-span-1' : 'col-start-3 col-span-1'
+          )}
           onClick={() => {
             navigateTo('send-message')
           }}
@@ -55,14 +78,14 @@ const MessageCard = function ({
       </header>
       {isMain && (
         <>
-          <div className="bg-[#4A4C54] h-[1px] my-4" />
+          <div className="bg-[#4A4C54] opacity-[21%] h-[1px] my-4" />
           <div className="flex items-center gap-3">
             <p className="capitalize text-[#8F8F8F] font-normal">subject:</p>
             <p>{subject}</p>
           </div>
         </>
       )}
-      <div className="bg-[#4A4C54] h-[1px] my-4" />
+      <div className="bg-[#4A4C54] opacity-[21%] h-[1px] my-4" />
       <div className="max-h-[312px] overflow-y-auto overflow__bar">
         <pre className="whitespace-pre-wrap word__break break-words font-inter font-normal leading-6 block max-w-[352px]">
           {message}
