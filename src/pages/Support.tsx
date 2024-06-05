@@ -23,6 +23,8 @@ const Support = function () {
   const { address, route, seichatConfig } = useContext(RouteContext)
   const messageRef = useRef<HTMLTextAreaElement>(null)
 
+  const bottomDiv = useRef<HTMLDivElement>(null)
+
   const isAdmin =
     address!.toLowerCase() === seichatConfig!.address.toLowerCase()
 
@@ -81,7 +83,7 @@ const Support = function () {
   })
 
   useEffect(() => {
-    messageRef.current?.scrollIntoView({ behavior: 'smooth' })
+    bottomDiv.current?.scrollIntoView()
   }, [])
 
   const handleSendFile = async function (file: File & { id: string }) {
@@ -150,6 +152,7 @@ const Support = function () {
               </Fragment>
             )
           })}
+          <div ref={bottomDiv} />
         </div>
       )}
       {data?.flat().length == 0 && (

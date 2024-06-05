@@ -57,8 +57,8 @@ const SendMessage = function () {
 
   const { mutate: saveToDraft, isPending: isSavingToDraft } = useMutation({
     mutationFn: handleSaveToDraft,
-    onSuccess(data) {
-      console.log(data)
+    onSuccess() {
+      navigateTo(-1)
     },
   })
 

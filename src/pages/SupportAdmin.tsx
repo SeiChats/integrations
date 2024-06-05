@@ -21,8 +21,8 @@ const SupportAdmin = function () {
   data = data
     ?.sort(
       (a, b) =>
-        new Date(a.message.createdAt).getTime() -
-        new Date(b.message.createdAt).getTime()
+        new Date(b.message.createdAt).getTime() -
+        new Date(a.message.createdAt).getTime()
     )
     .reduce((acc, curr) => {
       if (acc.some((message: Message) => message.sender === curr.sender))
@@ -39,18 +39,25 @@ const SupportAdmin = function () {
         </div>
       ) : (
         <div>
-          {data?.map(supportMessage => (
-            <MessagePreview
-              key={supportMessage.id}
-              message={supportMessage.message.message}
-              messageId={supportMessage.id}
-              recipient={supportMessage.sender}
-              timeStamp={
-                new Date(supportMessage.message.createdAt).getTime() / 1000
-              }
-              isRead={supportMessage.isRead}
-            />
-          ))}
+          {data?.map(supportMessage => {
+            let message = supportMessage.message.message
+
+            if (supportMessage.message.attachments?.length > 0) {
+              message = supportMessage.message.attachments[0].name
+            }
+            return (
+              <MessagePreview
+                key={supportMessage.id}
+                message={message}
+                messageId={supportMessage.id}
+                recipient={supportMessage.sender}
+                timeStamp={
+                  new Date(supportMessage.message.createdAt).getTime() / 1000
+                }
+                isRead={supportMessage.isRead}
+              />
+            )
+          })}
         </div>
       )}
     </>
