@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 export function convertTimestampToTime(timestamp: number) {
   // Create a new Date object using the timestamp
   const date = new Date(timestamp * 1000)
+  const now = new Date()
 
   // Get the hours and minutes from the date object
   let hours = date.getHours()
@@ -17,10 +18,26 @@ export function convertTimestampToTime(timestamp: number) {
   // Pad the minutes with leading zero if necessary
   minutes = minutes < 10 ? '0' + minutes : `${minutes}`
 
+  // Calculate the difference in days
+  const dateDiff = Math.floor(
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+  )
+
   // Construct the time string in the format "hh:mmAM/PM"
   const timeString = hours + ':' + minutes + amOrPm
 
-  return timeString
+  // Determine the appropriate return value based on the date difference
+  if (dateDiff === 0) {
+    return timeString
+  } else if (dateDiff === 1) {
+    return 'yesterday'
+  } else {
+    // Format the date as "MM/DD/YY"
+    const day = date.getDate()
+    const month = date.getMonth() + 1 // Months are zero-indexed
+    const year = date.getFullYear().toString().slice(-2) // Get last two digits of the year
+    return `${day}/${month}/${year}`
+  }
 }
 
 export function formatTimestamp(timestamp: number) {
