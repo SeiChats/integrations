@@ -2,7 +2,7 @@ import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
 import seichatLogo from '../assets/seichat.svg'
 
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import RouteContext from '../providers/ContextProvider'
 import { useQuery } from '@tanstack/react-query'
 import { getMessagesReceivedBy } from '../api/contract/contractFunctions'
@@ -13,6 +13,8 @@ import { motion } from 'framer-motion'
 
 const Messages = function () {
   const { navigateTo, address, setData } = useContext(RouteContext)
+  const [searchQuery, setSearchQuery] = useState('')
+
   const { data, isLoading } = useQuery({
     queryFn: getMessagesReceivedBy,
     queryKey: [address, 'messages-received'],
@@ -24,7 +26,7 @@ const Messages = function () {
 
   return (
     <>
-      <SearchBar />
+      <SearchBar setSearchQuery={setSearchQuery} />
       <div
         className={twMerge(
           'h-full grid',
@@ -62,6 +64,11 @@ const Messages = function () {
           <div>
             {data
               ?.sort((a: Message, b: Message) => +b.timestamp - +a.timestamp)
+              .filter((message: Message) =>
+                message.sender
+                  .toLowerCase()
+                  .includes(searchQuery.trim().toLowerCase())
+              )
               .map((message: Message) => (
                 <MessagePreview
                   key={message.messageId}

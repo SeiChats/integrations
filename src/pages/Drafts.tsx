@@ -2,7 +2,7 @@ import nftBG from '../assets/nft-bg.png'
 import SearchBar from '../components/SearchBar'
 import seichatLogo from '../assets/seichat.svg'
 
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import RouteContext from '../providers/ContextProvider'
 import { useQuery } from '@tanstack/react-query'
 import MessagePreview from '../components/MessagePreview'
@@ -13,6 +13,8 @@ import { motion } from 'framer-motion'
 
 const Drafts = function () {
   const { navigateTo, address } = useContext(RouteContext)
+  const [searchQuery, setSearchQuery] = useState('')
+
   const { data, isLoading } = useQuery({
     queryFn: function () {
       return getAllDecryptedMessagesByTag({ tag: 'draft', address: address! })
@@ -22,7 +24,7 @@ const Drafts = function () {
 
   return (
     <>
-      <SearchBar />
+      <SearchBar setSearchQuery={setSearchQuery} />
       <div
         className={twMerge(
           'h-full grid',
@@ -60,6 +62,11 @@ const Drafts = function () {
           <div>
             {data
               ?.sort((a: Message, b: Message) => +b.timestamp - +a.timestamp)
+              .filter((message: Message) =>
+                message.receiver
+                  .toLowerCase()
+                  .includes(searchQuery.trim().toLowerCase())
+              )
               .map((message: Message) => (
                 <MessagePreview
                   key={message.id}

@@ -165,19 +165,15 @@ export const handleSendMessage = async function (data1: {
     }),
   }
   const url = `https://chatbackend-production-9908.up.railway.app/encryption`
-  try {
-    const encryptData = await axios.post(url, data)
-    // this is the sendMessage contract function
+  const encryptData = await axios.post(url, data)
+  // this is the sendMessage contract function
 
-    const SendMessageContract = await sendMessage({
-      receiver: data1.receiver.trim(),
-      cipherIv: encryptData.data['iv'],
-      encryptedMessage: encryptData.data['encryptedPayload'],
-    })
-    console.log(SendMessageContract)
-  } catch (error) {
-    console.log(`Error: `, error)
-  }
+  const SendMessageContract = await sendMessage({
+    receiver: data1.receiver.trim(),
+    cipherIv: encryptData.data['iv'],
+    encryptedMessage: encryptData.data['encryptedPayload'],
+  })
+  console.log(SendMessageContract)
 }
 
 export const handleUploadFiles = async function (
@@ -277,7 +273,7 @@ export const handleUploadFiles = async function (
   return fileData
 }
 
-export const handleSaveToDraft = async (data1: {
+export const handleSaveToDraft = async (payload: {
   message: string
   subject: string
   receiver: string
@@ -294,9 +290,9 @@ export const handleSaveToDraft = async (data1: {
   const data = {
     payload: JSON.stringify({
       id: generateId(),
-      subject: data1.subject,
-      message: data1.message,
-      attachments: data1.fileUrls ?? [],
+      subject: payload.subject,
+      message: payload.message,
+      attachments: payload.fileUrls ?? [],
       createdAt: new Date().toUTCString(),
       time: getCurrentTime12HrFormat(),
       date: getCurrentDateFormatted(),
@@ -310,12 +306,12 @@ export const handleSaveToDraft = async (data1: {
 
     console.log(`Message encrypted: `, encryptData.data)
 
-    const resFromDb = await (data1.tag === 'draft'
+    const resFromDb = await (payload.tag === 'draft'
       ? addMessageToDraft
       : sendMessageToSupport)({
       message_payload: encryptData.data['encryptedPayload'],
-      wallet_address: data1.address,
-      receiver: data1.receiver.trim(),
+      wallet_address: payload.address,
+      receiver: payload.receiver.trim(),
       cipherIv: encryptData.data['iv'],
       timeStamp: Date.now(),
     })

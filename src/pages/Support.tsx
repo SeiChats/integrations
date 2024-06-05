@@ -48,7 +48,7 @@ const Support = function () {
             tag: 'support',
             address: seichatConfig!.address,
           }),
-        refetchInterval: 15 * 1000,
+        refetchInterval: 3 * 1000,
       },
     ],
     combine: results => {

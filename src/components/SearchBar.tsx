@@ -1,6 +1,10 @@
 import search from '../assets/sms-search.svg'
 
-const SearchBar = function () {
+const SearchBar = function ({
+  setSearchQuery,
+}: {
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
+}) {
   return (
     <label htmlFor="mail-search" className="block mb-4 relative">
       <img
@@ -11,6 +15,7 @@ const SearchBar = function () {
       <input
         type="text"
         name="mail-search"
+        onChange={e => setSearchQuery(e.target.value.trim())}
         className="outline-none pl-12 pr-4 py-3 bg-[#191D1D] rounded-xl w-full"
       />
     </label>

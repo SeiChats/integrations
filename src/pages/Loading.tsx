@@ -13,13 +13,28 @@ const Loading = function () {
     queryKey: ['seichats-config'],
     queryFn: async function () {
       const res = await fetch('../../seichats.config.json')
+
       const data = await res.json()
+
+      if (!data) {
+        console.log('missing config file')
+      }
+
+      // if (!data.name?.trim().length && !data.address?.trim().length && !data.logo?.trim().length) {
+      //   throw new Error("Missing field in config file. Please provide all")
+      // }
       return data
     },
     staleTime: Infinity,
+    retry: 1,
   })
 
   useEffect(() => {
+    // console.log(data, isSuccess)
+    // if (!isSuccess) return
+    // if (!data) {
+    //   //TODO navigate to error page
+    // }
     setSeichatConfig(data)
   }, [isSuccess])
   useEffect(() => {
@@ -38,18 +53,18 @@ const Loading = function () {
           method: 'eth_requestAccounts',
           params: [
             {
-              chainId: '0xae3f3',
-              chainName: 'Sei Devnet',
+              chainId: '0x531',
+              chainName: 'Sei Network',
               rpcUrls: [
-                'https://evm-rpc.arctic-1.seinetwork.io',
-                'https://evm-rpc.arctic-1.seinetwork.io',
+                'https://evm-rpc.sei-apis.com',
+                'wss://evm-ws.sei-apis.com',
               ],
             },
           ],
         })
         await window.ethereum?.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xae3f3' }],
+          params: [{ chainId: '0x531' }],
         })
         setAddress(accounts?.[0])
 
@@ -68,17 +83,18 @@ const Loading = function () {
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0xae3f3',
-                chainName: 'Sei Devnet',
+                chainId: '0x531',
+                chainName: 'Sei Network',
                 nativeCurrency: {
                   name: 'Sei',
                   symbol: 'SEI',
                   decimals: 18,
                 },
                 rpcUrls: [
-                  'https://evm-rpc-arctic-1.sei-apis.com',
-                  'https://evm-rpc-arctic-1.sei-apis.com',
+                  'https://evm-rpc.sei-apis.com',
+                  'wss://evm-ws.sei-apis.com',
                 ],
+                blockExplorerUrls: ['https://seitrace.com'],
               },
             ],
           })

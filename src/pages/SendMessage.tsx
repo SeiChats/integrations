@@ -6,7 +6,6 @@ import minimizeIcon from '../assets/minus.svg'
 import closeIcon from '../assets/cancel.svg'
 import trashIcon from '../assets/trash.svg'
 import MessagingWidget from '../components/MessagingWidget'
-import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import RouteContext from '../providers/ContextProvider'
 import {
@@ -21,7 +20,6 @@ import {
   getMessagesReceivedBy,
   getMessagesSentBy,
 } from '@/api/contract/contractFunctions'
-
 export interface FileData {
   url: string
   type: string
@@ -50,8 +48,14 @@ const SendMessage = function () {
   const { mutate, isPending } = useMutation({
     mutationFn: isReply ? handleReplyMessage : handleSendMessage,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: [address, 'messages-sent'] })
+      queryClient.invalidateQueries({
+        queryKey: [address, 'messages-sent'],
+        refetchType: 'all',
+      })
       navigateTo('sent-messages')
+    },
+    onError(error) {
+      console.log(error.message)
     },
   })
 
@@ -107,8 +111,7 @@ const SendMessage = function () {
 
   return (
     <div className="grid grid-rows-[1fr_auto] h-full">
-      <div className="p-6 grid grid-rows-[auto_1fr] h-full">
-        <SearchBar />
+      <div className="p-6 grid h-full">
         <div className="bg-[#141717] p-4 rounded-[13.62px_13.62px_0px_0px] grid grid-rows-[auto_auto_auto_auto_1fr_auto] h-full">
           <div className="flex items-center gap-4 justify-end">
             <img
@@ -171,7 +174,7 @@ const SendMessage = function () {
             <Divider position="bottom" />
           </div>
           <div
-            className="relative mt-4 max-h-[119px] overflow-y-auto overflow__bar cursor-text"
+            className="relative mt-4 max-h-[169px] overflow-y-auto overflow__bar cursor-text"
             onClick={() => messageRef.current?.focus()}
           >
             <textarea

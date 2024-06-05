@@ -3,6 +3,8 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { supabase } from '@/services/supabase'
 
+const ownerAddress = '0xbf769A3dcd497351A324438395fD01478f8f8A14'
+
 interface sendMessageDTO {
   receiver: string
   cipherIv: string
@@ -21,17 +23,12 @@ export const sendMessage = async (data: sendMessageDTO) => {
   const cipherIv = data.cipherIv
   const message = data.encryptedMessage
   try {
-    await window.ethereum?.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0xae3f3' }],
-    })
-
     const contract = await getContract()
     if (contract) console.log(contract)
 
     const fee = (0.08 * 10 ** 18).toString()
+
     const options = { value: fee }
-    const ownerAddress = '0xbf769A3dcd497351A324438395fD01478f8f8A14'
 
     const transactionResponse = await contract.sendMessage(
       receiver,
@@ -42,9 +39,21 @@ export const sendMessage = async (data: sendMessageDTO) => {
       options
     )
 
+    if (transactionResponse.hash) {
+      ;(async () => {
+        const provider = new ethers.JsonRpcProvider(
+          'https://evm-rpc.sei-apis.com'
+        )
+        const txReceipt = await provider.waitForTransaction(
+          transactionResponse.hash
+        )
+        console.log('THIS IS RECIEPT :', txReceipt?.status)
+      })()
+      return transactionResponse
+    }
     return transactionResponse
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    console.log(error.info.message)
     throw error
   }
 }
