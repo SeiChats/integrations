@@ -14,6 +14,7 @@ html {
   padding: 1em;
   inset: auto 0 0 auto;
   border-radius: 20px;
+  z-index: 9999;
 }
 
 .overflow__bar::-webkit-scrollbar {
