@@ -1,87 +1,149 @@
-# Seichats Widget Integration Guide
+# Seichats Integration Guide
 
 ## Introduction
-
-The Seichats Widget allows you to easily add a chat widget to your website. Follow these simple steps to integrate the widget into your application.
+This guide provides detailed instructions on how to integrate the Seichats widget into your ReactJS or Next.js application.
 
 ## Integration Steps
 
-To integrate the Seichats Widget, you need to add a few lines of code to your HTML file and include a specific `<div>` element in your HTML body.
+### ReactJS
 
-### Step 1: Add Stylesheet and Script
+1. **Create the Configuration File:**
+    - In the root directory of your project (where `index.html` is located), create a file named `seichats.config.json` with the following structure:
 
-Add the following lines of code to the `<head>` section of your HTML file. This includes the necessary CSS and JavaScript for the widget.
+    ```json
+    {
+      "name": "Your Organization's Name",
+      "address": "0x1234567890abcdef1234567890abcdef12345678",
+      "logo": "https://example.com/logo.png"
+    }
+    ```
 
-```html
-<head>
-  <link
-    href="https://seichats.github.io/integrations/dist/index.css"
-    rel="stylesheet"
-  />
-  <script
-    src="https://seichats.github.io/integrations/dist/index.js"
-    defer
-  ></script>
-</head>
-```
+    Note: If the logo is stored locally within your codebase, use a relative URL that is relative to the public folder.
 
-### Step 2: Add Widget Container
+2. **Include the Necessary Links in the `<head>` Tag:**
+    - Add the following lines to the `<head>` section of your HTML file:
 
-Include the following `<div>` element in the `<body>` section of your HTML file. This is where the Seichats Widget will be rendered.
+    ```html
+    <head>
+      <link href="https://seichats.github.io/integrations/dist/index.css" rel="stylesheet"/>
+      <script src="https://seichats.github.io/integrations/dist/index.js" defer></script>
+    </head>
+    ```
 
-```html
-<body>
-  <!-- Other content of your body -->
+3. **Insert the Widget Placeholder:**
+    - Add the following line to the `<body>` section of your HTML file, where you want the widget to appear:
 
-  <div id="seichats-widget"></div>
+    ```html
+      <body>
+        <!-- Other content of your body -->
 
-  <!-- Other content of your body -->
-</body>
-```
-### Step 3: Add Configuration File
+        <div id="seichats-widget"></div>
+      
+        <!-- Other content of your body -->
 
-Create a `seichats.config.json` file in the top level of the folder where your index.html is located. This file should have the following structure:
+      </body>
+    ```
 
-```json
-{
-  "name": "organization or individual name",
-  "address": "support email address",
-  "logo": "URL to logo image"
-}
-```
-- Note: If the logo is stored locally in your codebase, use a relative URL that is relative to the public folder.
+4. **Run Your Application:**
+   After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.   
 
-Ensure this file is correctly formatted and placed in the same directory as your index.html.
+**Example**
 
-### Step 4: Run Your Application
-
-After adding the above lines of code, run your application. The Seichats Widget should now be integrated and functional on your website.
-
-### Example
-
-Here’s an example of a complete HTML file with the Seichats Widget integrated:
-
+Here's an example of a complete HTML file with the Seichats Widget integrated:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Application</title>
-    <link
-      href="https://seichats.github.io/integrations/dist/index.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://seichats.github.io/integrations/dist/index.js"
-      defer
-    ></script>
-  </head>
-  <body>
-    <h1>Welcome to My Application</h1>
-    <p>This is a sample application with the Seichats Widget integrated.</p>
-
-    <div id="seichats-widget"></div>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Application</title>
+  <link href="https://seichats.github.io/integrations/dist/index.css" rel="stylesheet"/>
+  <script src="https://seichats.github.io/integrations/dist/index.js" defer></script>
+</head>
+<body>
+  <h1>Welcome to My Application</h1>
+  <p>This is a sample application with the Seichats Widget integrated.</p>
+  <div id="seichats-widget"></div>
+</body>
 </html>
 ```
+
+### Next.js
+
+1. **Create the Configuration File:**
+    - In the `public` folder of your Next.js project, create a file named `seichats.config.json` with the following structure:
+
+    ```json
+    {
+      "name": "Your Organization's Name",
+      "address": "0x1234567890abcdef1234567890abcdef12345678",
+      "logo": "https://example.com/logo.png"
+    }
+    ```
+
+    Note: If the logo is stored locally within your codebase, use a relative URL that is relative to the public folder.
+
+2. **In the RootLayout, import the Script component from Next.js and include the Seichats script at the bottom of the <html> tag. Additionally, add the `html <div id="seichats-widget"></div>` to the `<body>` section to designate where the widget will be rendered.**
+    ```tsx
+    import Script from "next/script"
+
+    <html lang="en">
+      <body className={inter.className}>
+        {children}
+        <div id="seichats-widget"></div>
+      </body>
+      <Script src="https://seichats.github.io/integrations/dist/index.js" />
+    </html>
+      )
+    ```
+3. **Include the Seichats CSS:**
+    - Visit the [CSS file link](https://seichats.github.io/integrations/dist/index.css), copy the code, and paste it into a new file named `seichats.css` in your project.
+
+4. **Import the Seichats CSS into your RootLayout:**
+    - Ensure that you import the `seichats.css` file above the `globals.css` file in your `RootLayout` component:
+
+    ```javascript
+    import './seichats.css'
+    import './globals.css'
+    ```
+
+5. **Run Your Application:**
+    - Start your Next.js application, and the Seichats widget should now be integrated and functional.
+  
+**Example**
+
+Here's an example of a complete RootLayout file with the Seichats Widget integrated:
+
+  ```javascript
+    import type { Metadata } from 'next'
+    import { Inter } from 'next/font/google'
+    import Script from 'next/script'
+    import './seichats.css'
+    import './globals.css'
+
+    const inter = Inter({ subsets: ['latin'] })
+
+    export const metadata: Metadata = {
+      title: 'Create Next App',
+      description: 'Generated by create next app',
+    }
+
+    export default function RootLayout({
+      children,
+    }: Readonly<{
+      children: React.ReactNode
+    }>) {
+      return (
+        <html lang="en">
+          <body className={inter.className}>
+            {children}
+            <div id="seichats-widget"></div>
+          </body>
+          <Script src="https://seichats.github.io/integrations/dist/index.js" />
+        </html>
+      )
+    }
+  ```
+
+
+By following these steps, you will successfully integrate the Seichats widget into your ReactJS or Next.js application.
