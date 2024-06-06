@@ -99,7 +99,7 @@ Here's an example of a complete HTML file with the Seichats Widget integrated:
 3. **Include the Seichats CSS:**
     - Visit the [CSS file link](https://seichats.github.io/integrations/dist/index.css), copy the code, and paste it into a new file named `seichats.css` in your project.
 
-4. **Import the Seichats CSS:**
+4. **Import the Seichats CSS into your RootLayout:**
     - Ensure that you import the `seichats.css` file above the `globals.css` file in your `RootLayout` component:
 
     ```javascript
