@@ -21,17 +21,19 @@ const MessagesLayout = function () {
             messages
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
-          <li
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => navigateTo('support')}
-          >
-            {seichatConfig!.name} support{' '}
-            <img
-              src={seichatConfig!.logo}
-              alt={`${seichatConfig!.name} logo`}
-              className=" rounded-md"
-            />
-          </li>
+          {seichatConfig?.isRegistered && (
+            <li
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => navigateTo('support')}
+            >
+              {seichatConfig!.projectName} support{' '}
+              <img
+                src={seichatConfig!.logo}
+                alt={`${seichatConfig!.projectName} logo`}
+                className=" rounded-md"
+              />
+            </li>
+          )}
         </ul>
       </header>
       {route === 'inbox' ? (

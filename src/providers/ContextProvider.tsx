@@ -3,9 +3,10 @@ import { createContext, ReactNode, useEffect, useState } from 'react'
 import { insertUser, lookupUser } from '../api'
 
 interface SeichatConfig {
-  name: string
+  projectName: string
   address: string
   logo: string
+  isRegistered: boolean
 }
 
 const RouteContext = createContext<{
@@ -48,6 +49,8 @@ export function Provider({ children }: { children: ReactNode }) {
       const data = await insertUser({
         wallet_address: address,
       })
+
+      console.log(data)
       if (
         data.status === 500 ||
         data?.error?.code === '23505' ||

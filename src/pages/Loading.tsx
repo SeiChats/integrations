@@ -5,6 +5,7 @@ import seichatLogo from '../assets/seichat.svg'
 import RouteContext from '../providers/ContextProvider'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
 const Loading = function () {
   const { setIsWidgetVisible, setAddress, setSeichatConfig } =
@@ -12,11 +13,21 @@ const Loading = function () {
   const { data, isSuccess } = useQuery({
     queryKey: ['seichats-config'],
     queryFn: async function () {
-      const res = await fetch('../../seichats.config.json')
+      const seichatsJSON = await fetch('../../seichats.config.json')
 
-      const data = await res.json()
+      const projectInfo = await seichatsJSON.json()
 
-      if (!data) {
+      console.log(projectInfo.address)
+
+      const res = await axios.post(
+        'https://chatbackend-336t.onrender.com/data/get',
+        { walletAddress: projectInfo.address }
+      )
+
+      const data = res.data
+      console.log(data)
+
+      if (!data.result) {
         console.log('missing config file')
       }
 
@@ -25,17 +36,22 @@ const Loading = function () {
       // }
       return data
     },
-    staleTime: Infinity,
     retry: 1,
   })
 
   useEffect(() => {
     // console.log(data, isSuccess)
-    // if (!isSuccess) return
+    if (!isSuccess) return
     // if (!data) {
     //   //TODO navigate to error page
     // }
-    setSeichatConfig(data)
+    console.log(data)
+    setSeichatConfig({
+      projectName: data.result?.projectName,
+      logo: data.result?.logo,
+      address: data.result?.walletAddress,
+      isRegistered: !!data.result,
+    })
   }, [isSuccess])
   useEffect(() => {
     const getProvider = async () => {

@@ -19,8 +19,8 @@ const SentSupportMessage = function ({
   const isAdmin = seichatConfig!.address.toLowerCase() === sender!.toLowerCase()
 
   const name =
-    seichatConfig!.name[0].toUpperCase() +
-    seichatConfig!.name.toLowerCase().slice(1)
+    seichatConfig!.projectName[0].toUpperCase() +
+    seichatConfig!.projectName.toLowerCase().slice(1)
 
   return (
     <div className="bg-[#191D1D] p-4 rounded-[18px_18px_0px_18px] w-[90%] ml-auto mb-3">

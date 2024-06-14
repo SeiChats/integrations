@@ -21,10 +21,10 @@ const SupportLayout = function () {
             className="flex items-center gap-2 cursor-pointer relative"
             onClick={() => navigateTo('support')}
           >
-            {seichatConfig!.name} support{' '}
+            {seichatConfig!.projectName} support{' '}
             <img
               src={seichatConfig!.logo}
-              alt={`${seichatConfig!.name} logo`}
+              alt={`${seichatConfig!.projectName} logo`}
               className="rounded-md"
             />
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
