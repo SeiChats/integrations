@@ -21,7 +21,7 @@ const MessagesLayout = function () {
             messages
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
-          {seichatConfig?.isRegistered && (
+          {seichatConfig?.isRegistered ? (
             <li
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => navigateTo('support')}
@@ -33,6 +33,16 @@ const MessagesLayout = function () {
                 className=" rounded-md"
               />
             </li>
+          ) : location.hostname === 'localhost' ||
+            location.hostname === '127.0.0.1' ? (
+            <li
+              className="cursor-pointer"
+              onClick={() => navigateTo('support/unregistered')}
+            >
+              support
+            </li>
+          ) : (
+            false
           )}
         </ul>
       </header>

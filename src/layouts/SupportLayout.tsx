@@ -3,9 +3,13 @@ import { useContext } from 'react'
 import RouteContext from '@/providers/ContextProvider'
 import Support from '@/pages/Support'
 import SupportAdmin from '@/pages/SupportAdmin'
+import UnregisteredSupport from '@/pages/Unregistered'
 
 const SupportLayout = function () {
   const { navigateTo, address, route, seichatConfig } = useContext(RouteContext)
+
+  const inDev =
+    location.hostname === 'localhost' || location.hostname === '127.0.0.1'
 
   return (
     <div className="h-full grid grid-rows-[max-content_1fr_max-content] relative">
@@ -19,14 +23,23 @@ const SupportLayout = function () {
           </li>
           <li
             className="flex items-center gap-2 cursor-pointer relative"
-            onClick={() => navigateTo('support')}
+            onClick={() => {
+              if (inDev) return
+              navigateTo('support')
+            }}
           >
-            {seichatConfig!.projectName} support{' '}
-            <img
-              src={seichatConfig!.logo}
-              alt={`${seichatConfig!.projectName} logo`}
-              className="rounded-md"
-            />
+            {inDev ? (
+              'support'
+            ) : (
+              <>
+                {seichatConfig!.projectName} support{' '}
+                <img
+                  src={seichatConfig!.logo}
+                  alt={`${seichatConfig!.projectName} logo`}
+                  className="rounded-md"
+                />
+              </>
+            )}
             <span className="absolute inset-[auto_-2px_-8px_-2px] h-[4px] rounded-[30px_30px_0_0] bg-white" />
           </li>
         </ul>
@@ -41,9 +54,11 @@ const SupportLayout = function () {
             <Support />
           )}
         {route.startsWith('support/') &&
+          !route.endsWith('/unregistered') &&
           address!.toLowerCase() === seichatConfig!.address.toLowerCase() && (
             <Support />
           )}
+        {route === 'support/unregistered' && <UnregisteredSupport />}
       </div>
     </div>
   )
