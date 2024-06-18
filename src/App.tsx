@@ -15,6 +15,7 @@ import SendMessage from './pages/SendMessage'
 import Message from './pages/Message'
 import SupportLayout from './layouts/SupportLayout'
 import SentMessage from './pages/SentMessage'
+import { DiscoverWalletProviders } from './components/DiscoverWalletProviders'
 
 function App() {
   const { route, setIsWidgetVisible } = useContext(RouteContext)
@@ -54,7 +55,8 @@ function App() {
         {route.startsWith('support') && <SupportLayout />}
         {(route === 'enter-pin' || route === 'recover-pin') && <PinRecovery />}
         {route === 'set-pin' && <Home />}
-        {route === '/' && <Loading />}
+        {route === '/' && <DiscoverWalletProviders />}
+        {route === 'loading' && <Loading />}
         {route === 'login' && <Login />}
         {route === 'send-message' && <SendMessage />}
         {route.startsWith('sent-message/') && <SentMessage />}

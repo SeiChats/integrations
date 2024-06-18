@@ -1,5 +1,4 @@
 import { useEffect, useContext } from 'react'
-import detectEthereumProvider from '@metamask/detect-provider'
 
 import seichatLogo from '../assets/seichat.svg'
 import RouteContext from '../providers/ContextProvider'
@@ -8,8 +7,12 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
 const Loading = function () {
-  const { setIsWidgetVisible, setAddress, setSeichatConfig } =
-    useContext(RouteContext)
+  const {
+    setIsWidgetVisible,
+    setAddress,
+    setSeichatConfig,
+    data: routeData,
+  } = useContext(RouteContext)
   const { data, isSuccess } = useQuery({
     queryKey: ['seichats-config'],
     queryFn: async function () {
@@ -54,18 +57,31 @@ const Loading = function () {
     })
   }, [isSuccess])
   useEffect(() => {
-    const getProvider = async () => {
-      const provider = await detectEthereumProvider({ silent: true })
-      // Transform provider to true or false.
-      const hasProvider = Boolean(provider)
-
-      if (!hasProvider) {
-        setIsWidgetVisible(false)
-        return
-      }
-
+    // Connect to the selected provider using eth_requestAccounts.
+    const handleConnect = async (providerWithInfo: EIP6963ProviderDetail) => {
       try {
-        const accounts = await window.ethereum.request({
+        if (routeData === 'keplr') {
+          const chainId = '0x531'
+
+          // Enabling before using the Keplr is recommended.
+          // This method will ask the user whether to allow access if they haven't visited this website.
+          // Also, it will request that the user unlock the wallet if the wallet is locked.
+          await window.keplr.enable(chainId)
+
+          const offlineSigner = window.keplr.getOfflineSigner(chainId)
+
+          // You can get the address/public keys by `getAccounts` method.
+          // It can return the array of address/public key.
+          // But, currently, Keplr extension manages only one address/public key pair.
+          // XXX: This line is needed to set the sender address for SigningCosmosClient.
+          const accounts = await offlineSigner.getAccounts()
+
+          console.log(accounts)
+
+          return
+        }
+
+        const accounts = (await providerWithInfo.provider.request({
           method: 'eth_requestAccounts',
           params: [
             {
@@ -77,17 +93,26 @@ const Loading = function () {
               ],
             },
           ],
-        })
-        await window.ethereum?.request({
+        })) as string[]
+
+        await providerWithInfo.provider.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0x531' }],
         })
-        setAddress(accounts?.[0])
 
-        window.ethereum.on('accountsChanged', function (accounts: string[]) {
-          setAddress(accounts?.[0])
-        })
-      } catch (err: any) {
+        providerWithInfo.provider.on(
+          'accountsChanged',
+          function (accounts: string[]) {
+            console.log(accounts)
+            setAddress(accounts?.[0])
+          }
+        )
+
+        console.log(accounts)
+        setAddress(accounts?.[0])
+      } catch (error) {
+        const err = error as { code: number; message: string }
+
         console.log(err.code, err.message)
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error.
@@ -95,7 +120,7 @@ const Loading = function () {
           setIsWidgetVisible(false)
           console.log('Please connect to MetaMask.')
         } else if (err.code === 4902) {
-          await window.ethereum.request({
+          await providerWithInfo.provider.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
@@ -114,12 +139,13 @@ const Loading = function () {
               },
             ],
           })
-
-          getProvider()
+          handleConnect(providerWithInfo)
+        } else if (err.code === -32603) {
+          handleConnect(providerWithInfo)
         }
       }
     }
-    getProvider()
+    handleConnect(routeData)
   }, [])
 
   return (

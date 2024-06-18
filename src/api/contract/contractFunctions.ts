@@ -1,4 +1,4 @@
-import { getContract } from './getContract'
+import { getContract, getProvider } from './getContract'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import { supabase } from '@/services/supabase'
@@ -338,7 +338,7 @@ export const getMessagesReceivedBy = async () => {
 
 // get messages moved to trash
 export const getMessagesMovedToTrash = async () => {
-  const provider = new ethers.BrowserProvider(window.ethereum!)
+  const provider = await getProvider()
   const address = (await provider.getSigner()).getAddress()
   const contract = await getContract()
 
