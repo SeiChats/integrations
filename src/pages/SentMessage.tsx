@@ -8,12 +8,17 @@ import { useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useState } from 'react'
 import { Message as MessageInterface } from './SentMessages'
 import MessageCard from '@/components/MessageCard'
+import { FileData } from './SendMessage'
 
 interface MessageReply {
   receiver: string
   sender: string
   timestamp: string
-  decryptedreply: string
+  decryptedreply: {
+    id: string
+    message: string
+    attachments: FileData[]
+  }
 }
 const SentMessage = function () {
   const {
@@ -58,7 +63,8 @@ const SentMessage = function () {
           isMain
         />
         {messageReplies.map(reply => {
-          const message = JSON.parse(reply.decryptedreply)
+          console.log(reply)
+          const message = reply.decryptedreply
 
           return (
             <MessageCard
