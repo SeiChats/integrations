@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { useSyncProviders } from '../hooks/useSyncProviders'
 import keplr from '../assets/keplr.svg'
 import metamask from '../assets/metamask.svg'
-import compass from '../assets/compass.png'
+import rabby from '../assets/rabby.svg'
 import { twMerge } from 'tailwind-merge'
 import RouteContext from '@/providers/ContextProvider'
 import { ethers } from 'ethers'
@@ -12,8 +12,7 @@ export const DiscoverWalletProviders = () => {
   const { navigateTo, setData } = useContext(RouteContext)
   const providers = useSyncProviders().filter(({ info: { name } }) => {
     return (
-      name.toLowerCase() === 'metamask' ||
-      name.toLowerCase() === 'compass wallet'
+      name.toLowerCase() === 'metamask' || name.toLowerCase() === 'rabby wallet'
     )
   })
 
@@ -28,10 +27,10 @@ export const DiscoverWalletProviders = () => {
     },
     compass: {
       isInstalled: providers.some(
-        ({ info: { name } }) => name.toLowerCase() === 'compass wallet'
+        ({ info: { name } }) => name.toLowerCase() === 'rabby wallet'
       ),
       provider: providers.find(
-        ({ info: { name } }) => name.toLowerCase() === 'compass wallet'
+        ({ info: { name } }) => name.toLowerCase() === 'rabby wallet'
       ),
     },
     keplr: !!window.keplr,
@@ -91,8 +90,8 @@ export const DiscoverWalletProviders = () => {
           navigateTo('loading')
         }}
       >
-        <img className="w-7" src={compass} alt="compass" />
-        <p className="text-white font-semibold text-lg">Compass</p>
+        <img className="w-7" src={rabby} alt="rabby" />
+        <p className="text-white font-semibold text-lg">Rabby</p>
       </div>
     </div>
   )
