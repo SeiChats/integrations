@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 
-import { insertUser, lookupUser } from '../api'
+import { insertUser } from '../api'
 
 interface SeichatConfig {
   projectName: string
@@ -51,22 +51,23 @@ export function Provider({ children }: { children: ReactNode }) {
       })
 
       console.log(data)
-      if (
-        data.status === 500 ||
-        data?.error?.code === '23505' ||
-        data?.error?.details.endsWith('already exists.')
-      ) {
-        const isUser = await lookupUser(address)
+      setRoute('inbox')
+      // if (
+      //   data.status === 500 ||
+      //   data?.error?.code === '23505' ||
+      //   data?.error?.details.endsWith('already exists.')
+      // ) {
+      //   const isUser = await lookupUser(address)
 
-        if (isUser.status === 200 || isUser.data?.length === 0) {
-          setRoute('login')
-        } else {
-          setRoute('set-pin')
-        }
-      } else {
-        setIsWidgetVisible(false)
-        console.log(`Something went wrong. Please try again later.`)
-      }
+      //   if (isUser.status === 200 || isUser.data?.length === 0) {
+      //     setRoute('login')
+      //   } else {
+      //     setRoute('set-pin')
+      //   }
+      // } else {
+      //   setIsWidgetVisible(false)
+      //   console.log(`Something went wrong. Please try again later.`)
+      // }
     })()
   }, [address])
 
